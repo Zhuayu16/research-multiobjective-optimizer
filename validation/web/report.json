@@ -1,0 +1,124 @@
+{
+  "status": "passed",
+  "url": "http://127.0.0.1:36820/",
+  "date": "2026-10-05T15:13:53.126Z",
+  "browser": "154.0.8037.93",
+  "candidateCounts": {
+    "battery": 32,
+    "exchanger": 29,
+    "structure": 32
+  },
+  "checks": [
+    {
+      "name": "Preview is explicitly synthetic and cannot be exported",
+      "status": "passed",
+      "detail": {}
+    },
+    {
+      "name": "Project restoration reproduces candidates with fixed seed",
+      "status": "passed",
+      "detail": 32
+    },
+    {
+      "name": "Real browser computation: battery",
+      "status": "passed",
+      "detail": {
+        "candidates": 32,
+        "model": {
+          "Tmax_K": "RSM-Quadratic",
+          "deltaT_K": "RSM-Quadratic",
+          "pump_W": "RSM-Quadratic"
+        },
+        "holdout": 10
+      }
+    },
+    {
+      "name": "Real browser computation: exchanger",
+      "status": "passed",
+      "detail": {
+        "candidates": 29,
+        "model": {
+          "heat_W": "RSM-Quadratic",
+          "dp_Pa": "RSM-Quadratic"
+        },
+        "holdout": 0
+      }
+    },
+    {
+      "name": "Real browser computation: structure",
+      "status": "passed",
+      "detail": {
+        "candidates": 32,
+        "model": {
+          "mass_kg": "GaussianProcess",
+          "deflection_mm": "GaussianProcess",
+          "safety_margin": "GaussianProcess",
+          "cost": "GaussianProcess"
+        },
+        "holdout": 0
+      }
+    },
+    {
+      "name": "Forest estimators run without process spawning",
+      "status": "passed",
+      "detail": {
+        "Tmax_K": "RandomForest",
+        "deltaT_K": "RandomForest",
+        "pump_W": "RandomForest"
+      }
+    },
+    {
+      "name": "Configuration changes invalidate previous results",
+      "status": "passed",
+      "detail": {}
+    },
+    {
+      "name": "Auto, forward validation, auxiliary responses and convex hull",
+      "status": "passed",
+      "detail": {
+        "heat_W": "RSM-Quadratic",
+        "dp_Pa": "RSM-Quadratic"
+      }
+    },
+    {
+      "name": "Invalid validation configuration reports a recoverable error",
+      "status": "passed",
+      "detail": {}
+    },
+    {
+      "name": "CSV data import",
+      "status": "passed",
+      "detail": 60
+    },
+    {
+      "name": "Excel import and worksheet selection",
+      "status": "passed",
+      "detail": 14
+    },
+    {
+      "name": "Next experiment design exports 30 samples and 3 centres",
+      "status": "passed",
+      "detail": 33
+    },
+    {
+      "name": "Cancellation stops computation and invalidates results",
+      "status": "passed",
+      "detail": {}
+    },
+    {
+      "name": "Mobile layout has no horizontal overflow",
+      "status": "passed",
+      "detail": {
+        "width": 390
+      }
+    },
+    {
+      "name": "No uncaught page errors or outgoing data requests",
+      "status": "passed",
+      "detail": {
+        "page_errors": 0,
+        "requests": 32
+      }
+    }
+  ]
+}

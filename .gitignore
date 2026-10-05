@@ -11,3 +11,4 @@ data/research_46_20261002.json
 .pytest_cache/
 .idea/
 .vscode/
+web/node_modules/

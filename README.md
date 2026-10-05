@@ -16,6 +16,8 @@
 
 [数值验证与原始数据](docs/verification.md) · [完整图集：18 张软件截图 + 8 组验证图](docs/gallery.md)
 
+**[打开在线研究工作台 ↗](https://Zhuayu16.github.io/research-multiobjective-optimizer/)** · [网页版使用与实测记录](docs/web-guide.md)
+
 </div>
 
 将 Excel、CSV 等数值表格中的设计变量与响应指标，转化为可检验、可比较、可导出的优化结果。通过桌面界面配置变量、目标方向、工程约束和验证策略，无需为每个研究对象修改源码。
@@ -25,6 +27,16 @@
 ![通用研究界面：目标配置、Pareto 权衡与偏好排序](docs/assets/overview.png)
 
 <p align="center"><sub>真实软件运行截图 · 电池液冷合成函数示例 · 左侧配置目标，右侧查看预测与输入表 Pareto、目标平衡和偏好排序。</sub></p>
+
+## 在线使用，无需安装
+
+[打开网页版](https://Zhuayu16.github.io/research-multiobjective-optimizer/) → 导入数据或选择合成示例 → 定义问题 → 运行优化。
+
+网页采用静态托管，复用桌面软件的 Python 计算内核，**在浏览器中完成代理建模、验证、约束 NSGA-II 搜索与结果导出**。无需部署后端或注册账户，导入的数据留在当前浏览器内存中。首次计算需要联网下载科学计算环境；关闭页面前请下载项目。
+
+![网页版真实实算：50 个训练样本、10 个独立留出、32 个预测候选](docs/assets/web/workspace.png)
+
+三个合成领域、整数/集合变量、原函数复算、分组及时间验证、Auto 选型、随机森林、凸包、辅助响应、14 页 Excel 工作簿、CSV、项目重算、取消与手机布局均经过真实浏览器验证。[查看运行报告与截图](docs/web-guide.md#浏览器验证)。MTPV/MTEG 专用物理耦合界面仍使用桌面版。
 
 ## 结果能否验证？
 

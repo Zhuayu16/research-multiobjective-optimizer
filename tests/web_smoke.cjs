@@ -1,0 +1,59 @@
+/* Real browser integration checks: no mocked scientific computation. */
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE_PATH || '../web/node_modules/playwright');
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),http=require('node:http');
+const root=path.resolve(__dirname,'..'),out=path.resolve(process.env.WEB_CHECK_OUTPUT || path.join(root,'outputs/web_validation'));
+fs.mkdirSync(out,{recursive:true});
+const checks=[],errors=[],requests=[];
+const record=(name,detail)=>{checks.push({name,status:'passed',detail});console.log('PASS',name,JSON.stringify(detail));};
+let server,browser,page;
+async function waitIdle(){await page.waitForFunction(()=>!document.querySelector('#run-button').disabled,null,{timeout:300000});}
+async function tab(kind,value){await page.locator(`[data-${kind}="${value}"]`).click();}
+async function run(){await page.locator('#run-button').click();await waitIdle();assert.equal(await page.locator('#result-state').innerText(),'本次优化已完成',await page.locator('#run-status').innerText());}
+async function settings(){await tab('config','settings');await page.locator('#population').fill('32');await page.locator('#population').blur();await page.locator('#generations').fill('10');await page.locator('#generations').blur();await page.locator('#runs').fill('1');await page.locator('#runs').blur();}
+async function download(kind,name){await page.locator('#export-toggle').click();const promise=page.waitForEvent('download');await page.locator(`[data-export="${kind}"]`).click();const d=await promise;const file=path.join(out,name || d.suggestedFilename());await d.saveAs(file);await waitIdle();assert(fs.statSync(file).size>50);return file;}
+async function csvRows(file){const content=fs.readFileSync(file,'utf8').replace(/^\ufeff/,'').trim().split(/\r?\n/);const split=s=>s.match(/("[^"]*(?:""[^"]*)*"|[^,]+)(,|$)/g).map(x=>x.replace(/,$/,'').replace(/^"|"$/g,'').replace(/""/g,'"'));const columns=split(content[0]);return content.slice(1).map(line=>Object.fromEntries(split(line).map((v,i)=>[columns[i],Number(v)])));}
+(async()=>{
+ let url=process.env.WEB_CHECK_URL;
+ if(!url){server=http.createServer((req,res)=>{const requested=decodeURIComponent(new URL(req.url,'http://localhost').pathname);const relative=requested==='/'?'index.html':requested.slice(1);const file=path.resolve(root,'web',relative);if(!file.startsWith(path.join(root,'web')+path.sep)){res.writeHead(403);res.end();return;}fs.readFile(file,(error,data)=>{if(error){res.writeHead(404);res.end();return;}res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.py':'text/plain','.zip':'application/zip'})[path.extname(file)]||'application/octet-stream');res.end(data);});});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));url=`http://127.0.0.1:${server.address().port}/`;}
+ browser=await chromium.launch({headless:true,...(process.env.WEB_BROWSER_EXECUTABLE?{executablePath:process.env.WEB_BROWSER_EXECUTABLE}:{})});
+ const context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});page=await context.newPage();
+ page.on('pageerror',error=>errors.push(error.message));page.on('request',req=>requests.push({method:req.method(),url:req.url()}));
+ await page.goto(url,{waitUntil:'networkidle'});await page.waitForSelector('#main-chart svg');
+ assert.equal(await page.locator('#result-state').innerText(),'合成示例预览');assert(await page.locator('#export-toggle').isDisabled());
+ await page.screenshot({path:path.join(out,'desktop-home.png')});record('Preview is explicitly synthetic and cannot be exported',{});
+ const candidateCounts={};
+ for(const key of ['battery','exchanger','structure']){
+   await page.locator('#example-select').selectOption(key);await settings();
+   if(key==='battery'){await page.locator('#validation').selectOption('group');await page.locator('#group-column').selectOption('batch');await page.locator('#holdout-column').selectOption('batch');await page.locator('#holdout-value').fill('F');await page.locator('#holdout-value').blur();}
+   await run();const config=JSON.parse(fs.readFileSync(await download('config',`${key}-configuration.json`),'utf8'));
+   const rows=await csvRows(await download('csv',`${key}-candidates.csv`));assert(rows.length>0);candidateCounts[key]=rows.length;
+   assert.equal(config.browser_runtime.platform,'emscripten');assert.equal(config.browser_runtime.pyodide,'0.29.3');assert.equal(Object.keys(config.browser_runtime.source_sha256).length,11);
+   for(const row of rows){if(key==='battery'){assert(Number.isInteger(row.channels));assert(row.Tmax_K<=315+1e-8);const truth=320-5*row.flow_L_min-.45*row.channel_mm-.5*row.channels+.2*row.flow_L_min**2;assert(Math.abs(truth-row.Tmax_K)<1e-6);assert(truth<=315+1e-8);}if(key==='exchanger'){assert([2,4,6].includes(row.pitch_mm));assert(row.dp_Pa<=350+1e-8);assert(Math.abs(20+15*row.velocity_m_s**2+4*row.pitch_mm-row.dp_Pa)<1e-6);}if(key==='structure')assert(row.safety_margin>=-1e-8);}
+   await tab('result','validation');assert(await page.locator('#metric-table tbody tr').count()>0);assert(await page.locator('#validation-chart circle').count()>0);
+   if(key==='battery'){
+     assert.equal(config.sample_count,50);assert.equal(config.holdout_count,10);assert(await page.locator('#holdout-table tbody tr').count()>0);
+     await page.waitForTimeout(7100);await page.locator('.workspace-shell').screenshot({path:path.join(out,'desktop-validation.png')});
+     const workbook=await download('xlsx','browser-results.xlsx');assert.equal(fs.readFileSync(workbook).subarray(0,2).toString(),'PK');
+     const project=await download('project','browser-project.optproj');const saved=JSON.parse(fs.readFileSync(project,'utf8'));assert.equal(saved.table.data.length,60);assert.equal(saved.problem.holdout_value,'F');
+     await tab('result','overview');await download('svg','browser-tradeoff.svg');await tab('config','definition');await page.locator('.workspace-shell').screenshot({path:path.join(out,'desktop-computed.png')});
+     await page.locator('#file-input').setInputFiles(project);await page.waitForFunction(()=>document.querySelector('#dataset-name').textContent.endsWith('.optproj'));
+     assert(await page.locator('#export-toggle').isDisabled());assert.equal(await page.locator('#holdout-value').inputValue(),'F');await settings();await run();
+     const repeated=await csvRows(await download('csv','battery-repeated.csv'));assert.deepEqual(repeated,rows);record('Project restoration reproduces candidates with fixed seed',rows.length);
+   }
+   record(`Real browser computation: ${key}`,{candidates:rows.length,model:config.selected_models,holdout:config.holdout_count});
+   await tab('result','overview');
+ }
+ await page.locator('#example-select').selectOption('battery');await settings();await page.locator('#model').selectOption('RandomForest');await run();
+ const forest=JSON.parse(fs.readFileSync(await download('config','forest-configuration.json'),'utf8'));assert(Object.values(forest.selected_models).every(x=>x==='RandomForest'));record('Forest estimators run without process spawning',forest.selected_models);
+ await page.locator('#seed').fill('99');await page.locator('#seed').blur();assert(await page.locator('#export-toggle').isDisabled());assert.equal(await page.locator('#result-state').innerText(),'等待计算');record('Configuration changes invalidate previous results',{});
+ await page.locator('#example-select').selectOption('exchanger');await tab('config','definition');await page.locator('[data-array="targets"][data-index="1"][data-property="role"]').selectOption('aux');await settings();await page.locator('#model').selectOption('Auto');await page.locator('#validation').selectOption('time');await page.locator('#time-column').selectOption('time');await page.locator('#folds').fill('3');await page.locator('#folds').blur();await tab('config','constraints');await page.locator('#domain').selectOption('hull');await run();const auto=JSON.parse(fs.readFileSync(await download('config','auto-time-configuration.json'),'utf8'));assert.equal(auto.responses[0].column,'dp_Pa');assert.equal(auto.cv_folds,3);assert.equal(auto.domain,'hull');await tab('result','validation');assert(await page.locator('#model-table tbody tr').count()>=16);record('Auto, forward validation, auxiliary responses and convex hull',auto.selected_models);
+ await tab('config','settings');await page.locator('#validation').selectOption('group');await page.locator('#group-column').selectOption('batch');await page.locator('#folds').fill('20');await page.locator('#folds').blur();await page.locator('#run-button').click();await waitIdle();assert.match(await page.locator('#run-status').innerText(),/分组数少于折数/);assert(await page.locator('#export-toggle').isDisabled());record('Invalid validation configuration reports a recoverable error',{});
+ await tab('result','data');const d=page.waitForEvent('download');await page.locator('#download-input').click();const input=await d;const inputFile=path.join(out,'import-data.csv');await input.saveAs(inputFile);await page.locator('#file-input').setInputFiles(inputFile);await waitIdle();assert.match(await page.locator('#dataset-info').innerText(),/60 个样本/);record('CSV data import',60);
+ await page.locator('#file-input').setInputFiles(path.join(out,'browser-results.xlsx'));await waitIdle();assert(await page.locator('#sheet-picker').isVisible());assert(await page.locator('#sheet-select option').count()>=10);await page.locator('#sheet-select').selectOption({index:1});await waitIdle();record('Excel import and worksheet selection',await page.locator('#sheet-select option').count());
+ await page.locator('#example-select').selectOption('battery');await settings();await tab('result','trace');const design=page.waitForEvent('download');await page.locator('#doe-button').click();const doe=await design;const doeFile=path.join(out,'browser-doe.csv');await doe.saveAs(doeFile);await waitIdle();assert.equal(fs.readFileSync(doeFile,'utf8').trim().split(/\r?\n/).length,34);record('Next experiment design exports 30 samples and 3 centres',33);
+ await page.locator('#run-button').click();await page.locator('#cancel-button').click();await waitIdle();assert.match(await page.locator('#run-status').innerText(),/已取消/);assert(await page.locator('#export-toggle').isDisabled());record('Cancellation stops computation and invalidates results',{});
+ await page.locator('#example-select').selectOption('exchanger');await tab('config','definition');await tab('result','overview');await page.waitForTimeout(7100);await page.setViewportSize({width:390,height:844});await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:path.join(out,'mobile-home.png')});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));await page.locator('#workspace').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'mobile-workspace.png')});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));record('Mobile layout has no horizontal overflow',{width:390});
+ assert.equal(errors.length,0,errors.join('\n'));assert(requests.every(r=>['GET','HEAD'].includes(r.method)));record('No uncaught page errors or outgoing data requests',{page_errors:errors.length,requests:requests.length});
+ fs.writeFileSync(path.join(out,'report.json'),JSON.stringify({status:'passed',url,date:new Date().toISOString(),browser:await browser.version(),candidateCounts,checks},null,2));
+})().catch(async error=>{console.error(error);fs.writeFileSync(path.join(out,'report.json'),JSON.stringify({status:'failed',checks,error:String(error),pageErrors:errors},null,2));if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});process.exitCode=1;}).finally(async()=>{await browser?.close();server?.close();});

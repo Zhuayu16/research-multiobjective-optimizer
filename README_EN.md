@@ -15,11 +15,17 @@
 
 [Numerical verification and raw data](docs/verification.md) · [Gallery: 18 screenshots and 8 figure groups](docs/gallery.md)
 
+**[Open the browser workspace ↗](https://Zhuayu16.github.io/research-multiobjective-optimizer/)** · [Web guide and actual browser checks](docs/web-guide.md)
+
 </div>
 
 A desktop research tool for surrogate modelling, constrained multi-objective optimization, and preference-based ranking of numerical experimental or simulation data. Configure variables, objective directions, response constraints, and validation settings in the interface without modifying the source for each domain.
 
 The general workflow includes battery cooling, heat exchanger, and structural design presets. A separate MTPV/MTEG workflow retains hydrogen/air fuel-input and power/efficiency coupling.
+
+The static web edition runs the same general numerical-table Python engine in a Pyodide Web Worker. Import data, configure variables/objectives/constraints, compare surrogate models, run constrained NSGA-II, and export CSV, Excel, SVG or a restorable project. Computation and file handling stay in browser memory; the first operation downloads the runtime and libraries. No backend deployment or account is needed. The dedicated MTPV/MTEG physical-coupling interface remains in the desktop edition.
+
+![Actual browser computation with independent holdout](docs/assets/web/workspace.png)
 
 ![Actual application window with the synthetic battery example](docs/assets/overview.png)
 

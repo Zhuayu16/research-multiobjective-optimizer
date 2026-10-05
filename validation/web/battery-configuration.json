@@ -1,0 +1,237 @@
+{
+  "name": "电池液冷",
+  "variables": [
+    "flow_L_min",
+    "channel_mm",
+    "channels"
+  ],
+  "objectives": [
+    {
+      "column": "Tmax_K",
+      "direction": "min",
+      "unit": "K",
+      "weight": 1
+    },
+    {
+      "column": "deltaT_K",
+      "direction": "min",
+      "unit": "K",
+      "weight": 1
+    },
+    {
+      "column": "pump_W",
+      "direction": "min",
+      "unit": "W",
+      "weight": 1
+    }
+  ],
+  "constraints": [
+    {
+      "expression": "Tmax_K",
+      "relation": "<=",
+      "limit": 315,
+      "tolerance": 0,
+      "scale": 10
+    }
+  ],
+  "model": "RSM-Quadratic",
+  "domain": "box",
+  "max_distance": null,
+  "validation": "group",
+  "folds": 5,
+  "group_column": "batch",
+  "time_column": "",
+  "holdout_column": "batch",
+  "holdout_value": "F",
+  "duplicates": "reject",
+  "seed": 42,
+  "population": 32,
+  "generations": 10,
+  "runs": 1,
+  "decision": "IDEAL",
+  "sources": [],
+  "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+  "responses": [],
+  "mode": "general",
+  "problem": {
+    "name": "电池液冷",
+    "variables": [
+      {
+        "column": "flow_L_min",
+        "lower": 0.5,
+        "upper": 3,
+        "unit": "L/min",
+        "kind": "continuous",
+        "allowed": []
+      },
+      {
+        "column": "channel_mm",
+        "lower": 2,
+        "upper": 8,
+        "unit": "mm",
+        "kind": "continuous",
+        "allowed": []
+      },
+      {
+        "column": "channels",
+        "lower": 2,
+        "upper": 6,
+        "unit": "",
+        "kind": "integer",
+        "allowed": []
+      }
+    ],
+    "objectives": [
+      {
+        "column": "Tmax_K",
+        "direction": "min",
+        "unit": "K",
+        "weight": 1
+      },
+      {
+        "column": "deltaT_K",
+        "direction": "min",
+        "unit": "K",
+        "weight": 1
+      },
+      {
+        "column": "pump_W",
+        "direction": "min",
+        "unit": "W",
+        "weight": 1
+      }
+    ],
+    "constraints": [
+      {
+        "expression": "Tmax_K",
+        "relation": "<=",
+        "limit": 315,
+        "tolerance": 0,
+        "scale": 10
+      }
+    ],
+    "model": "RSM-Quadratic",
+    "domain": "box",
+    "max_distance": null,
+    "validation": "group",
+    "folds": 5,
+    "group_column": "batch",
+    "time_column": "",
+    "holdout_column": "batch",
+    "holdout_value": "F",
+    "duplicates": "reject",
+    "seed": 42,
+    "population": 32,
+    "generations": 10,
+    "runs": 1,
+    "decision": "IDEAL",
+    "sources": [],
+    "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+    "responses": []
+  },
+  "target_names": [
+    "Tmax_K",
+    "deltaT_K",
+    "pump_W"
+  ],
+  "software_version": "0.2.0",
+  "directions": [
+    "min",
+    "min",
+    "min"
+  ],
+  "normalized_weights": [
+    0.3333333333333333,
+    0.3333333333333333,
+    0.3333333333333333
+  ],
+  "decision_method": "IDEAL",
+  "anchor_minimum": [
+    300.2,
+    3.9694139786,
+    1.2
+  ],
+  "anchor_maximum": [
+    315.65,
+    6.716834427,
+    12.6
+  ],
+  "anchor_source": "training_only_before_search",
+  "search_lower": [
+    0.5,
+    2.0,
+    2.0
+  ],
+  "search_upper": [
+    3.0,
+    8.0,
+    6.0
+  ],
+  "sample_count": 50,
+  "holdout_count": 10,
+  "cv": "按指定分组验证",
+  "cv_folds": 5,
+  "cv_fold_sizes": [
+    {
+      "train": 40,
+      "validation": 10
+    },
+    {
+      "train": 40,
+      "validation": 10
+    },
+    {
+      "train": 40,
+      "validation": 10
+    },
+    {
+      "train": 40,
+      "validation": 10
+    },
+    {
+      "train": 40,
+      "validation": 10
+    }
+  ],
+  "cv_seed": 42,
+  "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+  "selected_models": {
+    "Tmax_K": "RSM-Quadratic",
+    "deltaT_K": "RSM-Quadratic",
+    "pump_W": "RSM-Quadratic"
+  },
+  "library_versions": {
+    "python": "3.13.2",
+    "numpy": "2.2.5",
+    "pandas": "2.3.3",
+    "scipy": "1.14.1",
+    "sklearn": "1.7.0"
+  },
+  "clean_data_sha256": "02b01a0b9940b22e2b5fe3d3f6153985a9bc91a891c8c06f717c8912b50045d0",
+  "source_sha256": {},
+  "browser_runtime": {
+    "platform": "emscripten",
+    "python": "3.13.2",
+    "numpy": "2.2.5",
+    "pandas": "2.3.3",
+    "scipy": "1.14.1",
+    "sklearn": "1.7.0",
+    "openpyxl": "3.1.5",
+    "pyodide": "0.29.3",
+    "source_sha256": {
+      "mtpv_optimizer/__init__.py": "c5393d3218aca0011f762aefd1443bed0233cfea21e009e6328c0d66d7319bd6",
+      "mtpv_optimizer/core.py": "f0f770bb2813cb503f297b96c80c198b32d1b10d141fd8448085aacda1bc417b",
+      "mtpv_optimizer/coupled.py": "a6869ea24416dc86fc2611f4511ae75dae03c2f2902c54dd3f8a36d388a48d80",
+      "mtpv_optimizer/dat_parser.py": "059582ea4a4f64574b5ed5854ecba11a1bd4a699082a583dacc3c116b25a5fde",
+      "mtpv_optimizer/doe.py": "cbd571d6f4d589f7c057e1cfacbae60c71809ee8be0dd7b11e29f4297e8fd90a",
+      "mtpv_optimizer/domain.py": "5def038bde5d6422f462b721e910440dc5a00ae4f4059b0f31fd053c0071eb20",
+      "mtpv_optimizer/general.py": "2329afad04dd1efdab8dde0e455fbda7e7fcefc90f7b3734abee6c11e4339eb7",
+      "mtpv_optimizer/nsga2.py": "0541ee280ba369059c0b42397cb957975d2577d65576a1813f44f53b3bce688d",
+      "mtpv_optimizer/presets.py": "19622217b24e6c5dbc6f3965f7d8e7b6740409e430af27e756222a8f7dcc2b30",
+      "mtpv_optimizer/problem.py": "71200acc9ff03474b9f61206d365e1a9785008be3e6dc68fdd7fe9a06414a4bb",
+      "mtpv_optimizer/workflow.py": "ca506ec953ec039e31653a23ee09d6289402a242e460705fa7326bc3bda0ef71"
+    },
+    "scope": "General numerical-table workflow; no Qt, no private research records.",
+    "browser_adjustment": "Forest estimators run with n_jobs=1 in the browser."
+  }
+}

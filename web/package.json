@@ -1,0 +1,7 @@
+{
+  "name": "research-optimizer-web-checks",
+  "private": true,
+  "version": "0.2.0",
+  "scripts": {"test": "node ../tests/web_smoke.cjs"},
+  "devDependencies": {"playwright": "1.62.1"}
+}

@@ -1,0 +1,244 @@
+{
+  "name": "结构设计",
+  "variables": [
+    "thickness_mm",
+    "width_mm"
+  ],
+  "objectives": [
+    {
+      "column": "mass_kg",
+      "direction": "min",
+      "unit": "kg",
+      "weight": 1
+    },
+    {
+      "column": "deflection_mm",
+      "direction": "min",
+      "unit": "mm",
+      "weight": 1
+    },
+    {
+      "column": "safety_margin",
+      "direction": "max",
+      "unit": "",
+      "weight": 1
+    },
+    {
+      "column": "cost",
+      "direction": "min",
+      "unit": "",
+      "weight": 1
+    }
+  ],
+  "constraints": [
+    {
+      "expression": "safety_margin",
+      "relation": ">=",
+      "limit": 0,
+      "tolerance": 0,
+      "scale": 1
+    }
+  ],
+  "model": "GaussianProcess",
+  "domain": "box",
+  "max_distance": null,
+  "validation": "shuffled",
+  "folds": 5,
+  "group_column": "",
+  "time_column": "",
+  "holdout_column": "",
+  "holdout_value": "",
+  "duplicates": "reject",
+  "seed": 42,
+  "population": 32,
+  "generations": 10,
+  "runs": 1,
+  "decision": "IDEAL",
+  "sources": [],
+  "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+  "responses": [],
+  "mode": "general",
+  "problem": {
+    "name": "结构设计",
+    "variables": [
+      {
+        "column": "thickness_mm",
+        "lower": 2,
+        "upper": 8,
+        "unit": "mm",
+        "kind": "continuous",
+        "allowed": []
+      },
+      {
+        "column": "width_mm",
+        "lower": 10,
+        "upper": 40,
+        "unit": "mm",
+        "kind": "continuous",
+        "allowed": []
+      }
+    ],
+    "objectives": [
+      {
+        "column": "mass_kg",
+        "direction": "min",
+        "unit": "kg",
+        "weight": 1
+      },
+      {
+        "column": "deflection_mm",
+        "direction": "min",
+        "unit": "mm",
+        "weight": 1
+      },
+      {
+        "column": "safety_margin",
+        "direction": "max",
+        "unit": "",
+        "weight": 1
+      },
+      {
+        "column": "cost",
+        "direction": "min",
+        "unit": "",
+        "weight": 1
+      }
+    ],
+    "constraints": [
+      {
+        "expression": "safety_margin",
+        "relation": ">=",
+        "limit": 0,
+        "tolerance": 0,
+        "scale": 1
+      }
+    ],
+    "model": "GaussianProcess",
+    "domain": "box",
+    "max_distance": null,
+    "validation": "shuffled",
+    "folds": 5,
+    "group_column": "",
+    "time_column": "",
+    "holdout_column": "",
+    "holdout_value": "",
+    "duplicates": "reject",
+    "seed": 42,
+    "population": 32,
+    "generations": 10,
+    "runs": 1,
+    "decision": "IDEAL",
+    "sources": [],
+    "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+    "responses": []
+  },
+  "target_names": [
+    "mass_kg",
+    "deflection_mm",
+    "safety_margin",
+    "cost"
+  ],
+  "software_version": "0.2.0",
+  "directions": [
+    "min",
+    "min",
+    "max",
+    "min"
+  ],
+  "normalized_weights": [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+  ],
+  "decision_method": "IDEAL",
+  "anchor_minimum": [
+    0.04,
+    0.01171875,
+    -0.8,
+    21.6
+  ],
+  "anchor_maximum": [
+    0.64,
+    0.75,
+    2.2,
+    195.6
+  ],
+  "anchor_source": "training_only_before_search",
+  "search_lower": [
+    2.0,
+    10.0
+  ],
+  "search_upper": [
+    8.0,
+    40.0
+  ],
+  "sample_count": 60,
+  "holdout_count": 0,
+  "cv": "随机 K 折验证",
+  "cv_folds": 5,
+  "cv_fold_sizes": [
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    }
+  ],
+  "cv_seed": 42,
+  "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+  "selected_models": {
+    "mass_kg": "GaussianProcess",
+    "deflection_mm": "GaussianProcess",
+    "safety_margin": "GaussianProcess",
+    "cost": "GaussianProcess"
+  },
+  "library_versions": {
+    "python": "3.13.2",
+    "numpy": "2.2.5",
+    "pandas": "2.3.3",
+    "scipy": "1.14.1",
+    "sklearn": "1.7.0"
+  },
+  "clean_data_sha256": "9488fb4ccac1d87bdc9187dab9f44284519e0bd35573a9408f61e196babafef3",
+  "source_sha256": {},
+  "browser_runtime": {
+    "platform": "emscripten",
+    "python": "3.13.2",
+    "numpy": "2.2.5",
+    "pandas": "2.3.3",
+    "scipy": "1.14.1",
+    "sklearn": "1.7.0",
+    "openpyxl": "3.1.5",
+    "pyodide": "0.29.3",
+    "source_sha256": {
+      "mtpv_optimizer/__init__.py": "c5393d3218aca0011f762aefd1443bed0233cfea21e009e6328c0d66d7319bd6",
+      "mtpv_optimizer/core.py": "f0f770bb2813cb503f297b96c80c198b32d1b10d141fd8448085aacda1bc417b",
+      "mtpv_optimizer/coupled.py": "a6869ea24416dc86fc2611f4511ae75dae03c2f2902c54dd3f8a36d388a48d80",
+      "mtpv_optimizer/dat_parser.py": "059582ea4a4f64574b5ed5854ecba11a1bd4a699082a583dacc3c116b25a5fde",
+      "mtpv_optimizer/doe.py": "cbd571d6f4d589f7c057e1cfacbae60c71809ee8be0dd7b11e29f4297e8fd90a",
+      "mtpv_optimizer/domain.py": "5def038bde5d6422f462b721e910440dc5a00ae4f4059b0f31fd053c0071eb20",
+      "mtpv_optimizer/general.py": "2329afad04dd1efdab8dde0e455fbda7e7fcefc90f7b3734abee6c11e4339eb7",
+      "mtpv_optimizer/nsga2.py": "0541ee280ba369059c0b42397cb957975d2577d65576a1813f44f53b3bce688d",
+      "mtpv_optimizer/presets.py": "19622217b24e6c5dbc6f3965f7d8e7b6740409e430af27e756222a8f7dcc2b30",
+      "mtpv_optimizer/problem.py": "71200acc9ff03474b9f61206d365e1a9785008be3e6dc68fdd7fe9a06414a4bb",
+      "mtpv_optimizer/workflow.py": "ca506ec953ec039e31653a23ee09d6289402a242e460705fa7326bc3bda0ef71"
+    },
+    "scope": "General numerical-table workflow; no Qt, no private research records.",
+    "browser_adjustment": "Forest estimators run with n_jobs=1 in the browser."
+  }
+}
