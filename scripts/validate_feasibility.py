@@ -291,7 +291,7 @@ def main():
                    scope="Analytical and synthetic software verification; no private records or physical validation.",
                    sources=["https://pymoo.org/problems/definition.html", "https://pymoo.org/misc/indicators.html"])
     summary["source_hash_encoding"] = "UTF-8 text with LF newlines (platform-independent)"
-    summary["source_sha256"] = {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_text(encoding="utf-8").encode("utf-8")).hexdigest() for p in [Path(__file__), ROOT/'mtpv_optimizer/nsga2.py', ROOT/'mtpv_optimizer/general.py', ROOT/'mtpv_optimizer/core.py']}
+    summary["source_sha256"] = {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_text(encoding="utf-8").encode("utf-8")).hexdigest() for p in [Path(__file__), ROOT/'mtpv_optimizer/nsga2.py', ROOT/'mtpv_optimizer/general.py', ROOT/'mtpv_optimizer/core.py', ROOT/'mtpv_optimizer/problem.py', ROOT/'mtpv_optimizer/presets.py']}
     (folder / "summary.json").write_text(json.dumps(summary, indent=2, default=serial)+"\n", encoding="utf-8")
     make_figures(folder, outputs)
     print(json.dumps({"status":summary["status"], "checks":len(checks), "failed":[c["check"] for c in checks if not c["passed"]]}, ensure_ascii=False), flush=True)

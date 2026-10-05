@@ -96,7 +96,9 @@ python scripts/capture_workflow.py
 
 验证脚本输出 `validation/results/` 与 `docs/assets/verification/`，失败时返回非零退出状态；截图脚本会打开实际窗口，需要可用的桌面会话。数值图同时保存 PNG、SVG 和 PDF，数据、种子、阈值、依赖版本与源码 SHA-256 保存在 [summary.json](../validation/results/summary.json)。
 
-公开代码的回归测试为 **30 项通过、9 项需要私有研究数据的检查跳过**。上述 **13 项数值及工作流检查**另列在 [checks.csv](../validation/results/checks.csv)，不是回归测试数量的重复统计。
+公开代码的回归测试为 **31 项通过、9 项需要私有研究数据的检查跳过**。上述 **13 项数值及工作流检查**另列在 [checks.csv](../validation/results/checks.csv)，不是回归测试数量的重复统计。
+
+首次托管环境运行发现 pandas 3 的只读数组兼容问题：搜索需要累加约束惩罚，而 Copy-on-Write 可能使底层数组不可写。现已在约束评估输出处复制数组，并增加启用 Copy-on-Write 的回归用例；既允许惩罚累加，也不改动评估数据。行为依据 [pandas 官方说明](https://pandas.pydata.org/docs/user_guide/copy_on_write.html)。
 
 仓库另提供 [Windows 持续验证工作流](../.github/workflows/verification.yml)，运行状态以 [GitHub Actions](https://github.com/Zhuayu16/research-multiobjective-optimizer/actions/workflows/verification.yml) 实际记录为准。它在托管机器检查回归测试、解析基准、Qt 界面与独立目录安装包，保留运行产物 14 天。本地结果不能代替其运行结果。
 

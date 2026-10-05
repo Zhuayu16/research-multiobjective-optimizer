@@ -200,7 +200,8 @@ class ConstraintEvaluator:
 
     def __call__(self, x, y):
         detail = self.details(x, y)
-        return detail.filter(like="违反量").sum(axis=1).to_numpy(float) if self.expressions else np.zeros(len(x))
+        # Search augments penalties in place; pandas CoW may expose a read-only view.
+        return detail.filter(like="违反量").sum(axis=1).to_numpy(float, copy=True) if self.expressions else np.zeros(len(x))
 
 
 def save_project(path, problem, frame):

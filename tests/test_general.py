@@ -68,6 +68,19 @@ class GeneralTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "没有找到满足"):
             run_general(self.frame, p)
 
+    def test_constraint_penalties_can_be_augmented_with_copy_on_write(self):
+        p = replace(self.problem, constraints=[Constraint("x", ">=", 0)])
+        evaluator = ConstraintEvaluator(p)
+        x = self.frame[["x"]].to_numpy()
+        y = self.frame[["loss", "benefit"]].to_numpy()
+        with pd.option_context("mode.copy_on_write", True):
+            penalties = evaluator(x, y)
+            penalties[0] = np.inf
+            penalties += .25  # Search adds nonfinite and coverage penalties in place.
+            fresh = evaluator(x, y)
+        self.assertEqual(fresh[0], 1.0)
+        self.assertEqual(fresh[-1], 0.0)
+
     def test_nearest_sample_limit(self):
         p = replace(self.problem, max_distance=.0005, constraints=[Constraint("x", ">=", 0)])
         output = run_general(self.frame, p)

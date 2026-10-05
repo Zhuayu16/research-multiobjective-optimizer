@@ -128,7 +128,7 @@ The [full gallery](docs/gallery.md) contains **18 actual application screenshots
 
 ## Verification and limitations
 
-The public checkout passes **30 regression tests** and explicitly skips nine checks requiring private data. The separate reproducible feasibility suite passes **13 checks**; actual Qt workflow capture verifies calculation, holdout evaluation, model comparison and project restoration. Its installed-package startup check opens both interfaces without bundling research data and reuses the current interpreter's dependencies. A [Windows CI workflow](https://github.com/Zhuayu16/research-multiobjective-optimizer/actions/workflows/verification.yml) provides hosted-runner checks; consult its actual run status. Cross-platform and physical validation remain pending.
+The public checkout passes **31 regression tests** and explicitly skips nine checks requiring private data. The separate reproducible feasibility suite passes **13 checks**; actual Qt workflow capture verifies calculation, holdout evaluation, model comparison and project restoration. Its installed-package startup check opens both interfaces without bundling research data and reuses the current interpreter's dependencies. A [Windows CI workflow](https://github.com/Zhuayu16/research-multiobjective-optimizer/actions/workflows/verification.yml) provides hosted-runner checks; consult its actual run status. Cross-platform and physical validation remain pending.
 
 ```powershell
 python -m unittest discover -s tests -v
