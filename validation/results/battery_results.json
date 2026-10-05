@@ -1,0 +1,212 @@
+{
+  "name": "电池液冷",
+  "variables": [
+    "flow_L_min",
+    "channel_mm",
+    "channels"
+  ],
+  "objectives": [
+    {
+      "column": "Tmax_K",
+      "direction": "min",
+      "unit": "K",
+      "weight": 1.0
+    },
+    {
+      "column": "deltaT_K",
+      "direction": "min",
+      "unit": "K",
+      "weight": 1.0
+    },
+    {
+      "column": "pump_W",
+      "direction": "min",
+      "unit": "W",
+      "weight": 1.0
+    }
+  ],
+  "constraints": [
+    {
+      "expression": "Tmax_K",
+      "relation": "<=",
+      "limit": 315,
+      "tolerance": 0.0,
+      "scale": 10
+    }
+  ],
+  "model": "RSM-Quadratic",
+  "domain": "box",
+  "max_distance": null,
+  "validation": "shuffled",
+  "folds": 5,
+  "group_column": "",
+  "time_column": "",
+  "holdout_column": "",
+  "holdout_value": "",
+  "duplicates": "reject",
+  "seed": 42,
+  "population": 80,
+  "generations": 40,
+  "runs": 2,
+  "decision": "IDEAL",
+  "sources": [],
+  "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+  "responses": [],
+  "mode": "general",
+  "problem": {
+    "name": "电池液冷",
+    "variables": [
+      {
+        "column": "flow_L_min",
+        "lower": 0.5,
+        "upper": 3,
+        "unit": "L/min",
+        "kind": "continuous",
+        "allowed": []
+      },
+      {
+        "column": "channel_mm",
+        "lower": 2,
+        "upper": 8,
+        "unit": "mm",
+        "kind": "continuous",
+        "allowed": []
+      },
+      {
+        "column": "channels",
+        "lower": 2,
+        "upper": 6,
+        "unit": "",
+        "kind": "integer",
+        "allowed": []
+      }
+    ],
+    "objectives": [
+      {
+        "column": "Tmax_K",
+        "direction": "min",
+        "unit": "K",
+        "weight": 1.0
+      },
+      {
+        "column": "deltaT_K",
+        "direction": "min",
+        "unit": "K",
+        "weight": 1.0
+      },
+      {
+        "column": "pump_W",
+        "direction": "min",
+        "unit": "W",
+        "weight": 1.0
+      }
+    ],
+    "constraints": [
+      {
+        "expression": "Tmax_K",
+        "relation": "<=",
+        "limit": 315,
+        "tolerance": 0.0,
+        "scale": 10
+      }
+    ],
+    "model": "RSM-Quadratic",
+    "domain": "box",
+    "max_distance": null,
+    "validation": "shuffled",
+    "folds": 5,
+    "group_column": "",
+    "time_column": "",
+    "holdout_column": "",
+    "holdout_value": "",
+    "duplicates": "reject",
+    "seed": 42,
+    "population": 80,
+    "generations": 40,
+    "runs": 2,
+    "decision": "IDEAL",
+    "sources": [],
+    "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+    "responses": []
+  },
+  "target_names": [
+    "Tmax_K",
+    "deltaT_K",
+    "pump_W"
+  ],
+  "software_version": "0.2.0",
+  "directions": [
+    "min",
+    "min",
+    "min"
+  ],
+  "normalized_weights": [
+    0.3333333333333333,
+    0.3333333333333333,
+    0.3333333333333333
+  ],
+  "decision_method": "IDEAL",
+  "anchor_minimum": [
+    300.2,
+    3.9340310016872073,
+    1.2000000000000002
+  ],
+  "anchor_maximum": [
+    315.65000000000003,
+    6.716834426989741,
+    12.6
+  ],
+  "anchor_source": "training_only_before_search",
+  "search_lower": [
+    0.5,
+    2.0,
+    2.0
+  ],
+  "search_upper": [
+    3.0,
+    8.0,
+    6.0
+  ],
+  "sample_count": 60,
+  "holdout_count": 0,
+  "cv": "随机 K 折验证",
+  "cv_folds": 5,
+  "cv_fold_sizes": [
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    }
+  ],
+  "cv_seed": 42,
+  "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+  "selected_models": {
+    "Tmax_K": "RSM-Quadratic",
+    "deltaT_K": "RSM-Quadratic",
+    "pump_W": "RSM-Quadratic"
+  },
+  "library_versions": {
+    "python": "3.13.5",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "sklearn": "1.6.1"
+  },
+  "clean_data_sha256": "55e47c80f8381c3bf534ab442ecd77aa971a5cb2b6112ce88e4f03e1e34f8527",
+  "source_sha256": {}
+}

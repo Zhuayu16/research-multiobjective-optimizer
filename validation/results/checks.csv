@@ -1,0 +1,14 @@
+check,passed,detail
+ZDT1 known front coverage (all 10 seeds),True,"Mean reference-to-set distance <= 0.02; objectives unscaled [0,1] front"
+ZDT1 dominated area (all 10 seeds),True,"HV / sampled analytical-front HV >= 0.95, reference (1.1,1.1)"
+quadratic excluded-holdout prediction,True,RSM represents these quadratic/linear functions exactly; not evidence of physical accuracy
+Interior analytical optimum (all 10 seeds),True,"Euclidean coordinate error <= 0.02 against (0.37,-0.23), absent from training grid"
+mixed excluded-holdout prediction,True,RSM represents these quadratic/linear functions exactly; not evidence of physical accuracy
+Mixed-variable analytical optimum (all 10 seeds),True,Absolute true loss gap <= 1e-4 against independent finite enumeration
+Mixed-variable ground-truth feasibility,True,"Reevaluate original functions, integer k, allowed d, temperature >=301.5"
+battery synthetic constraints by function reevaluation,True,"Checks the illustrative function, not CFD or experiments"
+exchanger synthetic constraints by function reevaluation,True,"Checks the illustrative function, not CFD or experiments"
+structure synthetic constraints by function reevaluation,True,"Checks the illustrative function, not CFD or experiments"
+Holdout adversarial isolation,True,Adding 10000 to all test responses leaves predictions and training checksum identical
+Project data and configuration round trip,True,Restore raw numerical table and complete configuration
+DOE retained center replicates,True,"30 LHS + 3 center rows, numeric-set and integer validity"

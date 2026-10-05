@@ -1,0 +1,4 @@
+domain,source,samples,variables,objectives,candidates,true_feasible_fraction,worst_candidate_nrmse,max_predicted_constraint_violation
+battery,synthetic_function,60,3,3,151,1.0,3.983362830421732e-15,0.0
+exchanger,synthetic_function,60,2,2,153,1.0,3.044023050322746e-16,0.0
+structure,synthetic_function,60,2,4,158,1.0,0.0002743726641467083,0.0

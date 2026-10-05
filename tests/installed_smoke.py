@@ -51,6 +51,6 @@ with patch.object(QApplication, "exec_", tested_exec):
 assert not failures, failures
 assert len(checks) == 4
 report = {"status": "passed", "version": mtpv_optimizer.__version__, "checks": checks,
-          "environment": "separate package directory; existing Anaconda dependencies"}
+          "environment": "separate package directory; current interpreter dependencies"}
 (output_dir / "installed_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 print(json.dumps(report, ensure_ascii=False))

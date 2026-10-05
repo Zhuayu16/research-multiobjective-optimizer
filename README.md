@@ -14,6 +14,8 @@
 
 [快速开始](#快速开始) · [功能](#功能) · [界面展示](#界面展示) · [示例](#示例项目) · [使用指南](docs/user-guide.zh-CN.md) · [English](README_EN.md)
 
+[数值验证与原始数据](docs/verification.md) · [完整图集：18 张软件截图 + 8 组验证图](docs/gallery.md)
+
 </div>
 
 将 Excel、CSV 等数值表格中的设计变量与响应指标，转化为可检验、可比较、可导出的优化结果。通过桌面界面配置变量、目标方向、工程约束和验证策略，无需为每个研究对象修改源码。
@@ -23,6 +25,30 @@
 ![通用研究界面：目标配置、Pareto 权衡与偏好排序](docs/assets/overview.png)
 
 <p align="center"><sub>真实软件运行截图 · 电池液冷合成函数示例 · 左侧配置目标，右侧查看预测与输入表 Pareto、目标平衡和偏好排序。</sub></p>
+
+## 结果能否验证？
+
+用有解析答案的问题检查算法，再通过原函数重新计算合成案例的候选响应。**30 次优化运行、10 次等预算随机基线和 13 项数值与工作流检查均完成**，逐种子的结果、阈值和复现脚本全部公开。
+
+| 验证问题 | 结果 | 证据 |
+| :--- | :--- | :--- |
+| 二维 ZDT1：能否找到已知前沿？ | 十个种子平均 HV 为参考前沿的 **99.18%**；平均前沿距离 **0.00600** | [逐次运行与等预算基线](docs/verification.md#1-搜索结果是否接近已知-pareto-前沿) |
+| 连续解析问题：能否找回训练网格以外的最优点？ | 十次平均坐标误差 **8.36×10⁻⁵** | [完整代理模型链路](docs/verification.md#2-完整代理模型工作流能否找回已知最优解) |
+| 混合变量约束：离散取值与工程约束是否有效？ | 真值目标差均 **< 3×10⁻⁹**，整数/集合/约束全部通过 | [解析答案与原始候选](docs/verification.md#2-完整代理模型工作流能否找回已知最优解) |
+| 三个合成领域：能否复用配置与流程？ | 原函数复算约束可行率均 **100%** | [151 / 153 / 158 个候选复核](docs/verification.md#3-能否用于不同对象的表格优化) |
+
+![二维 ZDT1：解析前沿、等预算随机搜索与十个种子结果](docs/assets/verification/zdt1_benchmark.png)
+
+![完整代理模型工作流的已知最优解误差](docs/assets/verification/known_optima.png)
+
+<p align="center"><sub>图中点来自独立随机种子，数据可下载复算。这里验证软件计算与工作流，真实工程候选仍需试验或仿真确认。</sub></p>
+
+<table>
+<tr><td width="50%"><img src="docs/assets/workflow/variables.png" alt="变量类型与边界"><br><b>定义问题</b> · 连续、整数、数值集合</td><td width="50%"><img src="docs/assets/workflow/model_comparison.png" alt="模型比较"><br><b>比较模型</b> · 逐响应交叉验证</td></tr>
+<tr><td><img src="docs/assets/workflow/holdout.png" alt="独立留出"><br><b>检验预测</b> · 留出样本与冻结模型</td><td><img src="docs/assets/workflow/project_restored.png" alt="项目恢复"><br><b>复现计算</b> · 打开项目后重新运行</td></tr>
+</table>
+
+[浏览全部界面与验证图片 →](docs/gallery.md) · [查看方法、数据与复现命令 →](docs/verification.md)
 
 ## 快速开始
 
@@ -171,15 +197,17 @@ flowchart LR
 
 ## 验证与适用边界
 
-**v0.2.0 本地验证：35 项自动测试通过，两套真实 Qt 界面测试通过，安装包在独立目录中的启动与数据加载检查通过。** 安装包检查复用了已有 Anaconda 依赖，尚未完成所有操作系统或全新机器验证。
+**公开版本回归测试：30 项通过，9 项需要私有数据的检查跳过；另有 13 项解析与合成可行性检查通过。** 新增 12 张截图对应真实 Qt 计算、留出验证、模型比较和项目恢复。详细指标与原始数据见 [验证报告](docs/verification.md)。
 
 ```powershell
 python -m unittest discover -s tests -v
 python tests/gui_general_smoke.py
 python tests/gui_smoke.py
+python scripts/validate_feasibility.py
+python scripts/capture_workflow.py
 ```
 
-公开版本运行 26 项自动测试；9 项依赖私有研究数据的检查明确跳过。通用界面测试会打开窗口、执行后台优化并检查交互与导出，然后关闭窗口。专用界面测试需要私有数据，否则报告跳过。生成文件位于被忽略的 `outputs/` 目录。
+通用界面测试会打开窗口、执行后台优化并检查交互与导出，然后关闭窗口。专用界面测试需要私有数据，否则报告跳过。安装包在独立目录中的启动检查复用当前解释器依赖；仓库提供 [Windows 持续验证](https://github.com/Zhuayu16/research-multiobjective-optimizer/actions/workflows/verification.yml)，运行状态以其实际记录为准。数值验证产物在 `validation/results/`，界面测试产物在被忽略的 `outputs/`。
 
 - 当前面向**数值表格**，不直接支持无序类别变量；单位用于标注与记录，不自动换算。
 - 通用训练集至少需要 10 个不同设计；连续变量至少 3 个水平，整数/集合变量至少 2 个水平。
@@ -197,7 +225,8 @@ research-multiobjective-optimizer/
 ├── data/                     # 数据格式说明（真实研究数据未公开）
 ├── examples/                 # 可打开的跨领域示例项目
 ├── docs/                     # 使用指南、架构说明与真实截图
-├── scripts/                  # 截图复现脚本
+├── scripts/                  # 解析验证与真实截图复现脚本
+├── validation/results/       # 公开的合成/解析数据、指标与工作簿
 └── tests/                    # 算法、数据、图表与界面检查
 ```
 

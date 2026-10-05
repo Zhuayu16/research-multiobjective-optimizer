@@ -9,3 +9,6 @@
 *.svg text eol=lf
 *.bat text eol=crlf
 *.png binary
+*.pdf binary
+*.xlsx binary
+*.yml text eol=lf

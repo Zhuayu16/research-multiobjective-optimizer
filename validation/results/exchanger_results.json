@@ -1,0 +1,187 @@
+{
+  "name": "换热器",
+  "variables": [
+    "velocity_m_s",
+    "pitch_mm"
+  ],
+  "objectives": [
+    {
+      "column": "heat_W",
+      "direction": "max",
+      "unit": "W",
+      "weight": 1.0
+    },
+    {
+      "column": "dp_Pa",
+      "direction": "min",
+      "unit": "Pa",
+      "weight": 1.0
+    }
+  ],
+  "constraints": [
+    {
+      "expression": "dp_Pa",
+      "relation": "<=",
+      "limit": 350,
+      "tolerance": 0.0,
+      "scale": 100
+    }
+  ],
+  "model": "RSM-Quadratic",
+  "domain": "box",
+  "max_distance": null,
+  "validation": "shuffled",
+  "folds": 5,
+  "group_column": "",
+  "time_column": "",
+  "holdout_column": "",
+  "holdout_value": "",
+  "duplicates": "reject",
+  "seed": 42,
+  "population": 80,
+  "generations": 40,
+  "runs": 2,
+  "decision": "IDEAL",
+  "sources": [],
+  "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+  "responses": [],
+  "mode": "general",
+  "problem": {
+    "name": "换热器",
+    "variables": [
+      {
+        "column": "velocity_m_s",
+        "lower": 1,
+        "upper": 5,
+        "unit": "m/s",
+        "kind": "continuous",
+        "allowed": []
+      },
+      {
+        "column": "pitch_mm",
+        "lower": 2,
+        "upper": 6,
+        "unit": "mm",
+        "kind": "discrete",
+        "allowed": [
+          2,
+          4,
+          6
+        ]
+      }
+    ],
+    "objectives": [
+      {
+        "column": "heat_W",
+        "direction": "max",
+        "unit": "W",
+        "weight": 1.0
+      },
+      {
+        "column": "dp_Pa",
+        "direction": "min",
+        "unit": "Pa",
+        "weight": 1.0
+      }
+    ],
+    "constraints": [
+      {
+        "expression": "dp_Pa",
+        "relation": "<=",
+        "limit": 350,
+        "tolerance": 0.0,
+        "scale": 100
+      }
+    ],
+    "model": "RSM-Quadratic",
+    "domain": "box",
+    "max_distance": null,
+    "validation": "shuffled",
+    "folds": 5,
+    "group_column": "",
+    "time_column": "",
+    "holdout_column": "",
+    "holdout_value": "",
+    "duplicates": "reject",
+    "seed": 42,
+    "population": 80,
+    "generations": 40,
+    "runs": 2,
+    "decision": "IDEAL",
+    "sources": [],
+    "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+    "responses": []
+  },
+  "target_names": [
+    "heat_W",
+    "dp_Pa"
+  ],
+  "software_version": "0.2.0",
+  "directions": [
+    "max",
+    "min"
+  ],
+  "normalized_weights": [
+    0.5,
+    0.5
+  ],
+  "decision_method": "IDEAL",
+  "anchor_minimum": [
+    219.77586248449163,
+    43.0
+  ],
+  "anchor_maximum": [
+    586.8654919168777,
+    419.0
+  ],
+  "anchor_source": "training_only_before_search",
+  "search_lower": [
+    1.0,
+    2.0
+  ],
+  "search_upper": [
+    5.0,
+    6.0
+  ],
+  "sample_count": 60,
+  "holdout_count": 0,
+  "cv": "随机 K 折验证",
+  "cv_folds": 5,
+  "cv_fold_sizes": [
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    },
+    {
+      "train": 48,
+      "validation": 12
+    }
+  ],
+  "cv_seed": 42,
+  "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+  "selected_models": {
+    "heat_W": "RSM-Quadratic",
+    "dp_Pa": "RSM-Quadratic"
+  },
+  "library_versions": {
+    "python": "3.13.5",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "sklearn": "1.6.1"
+  },
+  "clean_data_sha256": "40059f80c1a7d18d10436f020c3377fde98ba36b42a64e28896bdf4483575149",
+  "source_sha256": {}
+}

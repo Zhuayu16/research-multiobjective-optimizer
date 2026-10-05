@@ -13,6 +13,8 @@
 
 [简体中文](README.md) · [Examples](examples/README.md) · [User guide (Chinese)](docs/user-guide.zh-CN.md) · [Architecture](docs/architecture.md)
 
+[Numerical verification and raw data](docs/verification.md) · [Gallery: 18 screenshots and 8 figure groups](docs/gallery.md)
+
 </div>
 
 A desktop research tool for surrogate modelling, constrained multi-objective optimization, and preference-based ranking of numerical experimental or simulation data. Configure variables, objective directions, response constraints, and validation settings in the interface without modifying the source for each domain.
@@ -22,6 +24,23 @@ The general workflow includes battery cooling, heat exchanger, and structural de
 ![Actual application window with the synthetic battery example](docs/assets/overview.png)
 
 *Actual running application. This battery example uses synthetic functions, not experimental or CFD results.*
+
+## Results checked against known answers
+
+The reproducible suite runs **30 optimization trials, 10 equal-budget random baselines, three synthetic engineering workflows, and 13 numerical/workflow checks**. It uses analytical answers and reevaluates returned candidates with the original functions.
+
+| Check | Recorded result |
+| :--- | :--- |
+| Two-variable ZDT1, ten seeds | Mean HV / reference-front HV **99.18%**; mean reference-to-set distance **0.00600** |
+| Interior optimum outside the training grid, full surrogate pipeline | Mean coordinate error **8.36×10⁻⁵** across ten seeds |
+| Continuous, integer, finite-set variables and a response constraint | True objective gap **< 3×10⁻⁹** in every seed; all returned candidates feasible |
+| Battery, exchanger and structure synthetic examples | **100%** true-function constraint feasibility for **151 / 153 / 158** candidates |
+
+![Analytical ZDT1 front and equal-budget random baseline](docs/assets/verification/zdt1_benchmark.png)
+
+![Known optima recovered by the full surrogate workflow](docs/assets/verification/known_optima.png)
+
+Each ZDT1 method uses 24,080 function evaluations per seed, population 80 and 100 generations for NSGA-II. This is a two-variable kernel check, not a claim about standard 30-dimensional benchmarks. Exact quadratic examples verify implementation consistency, not physical prediction accuracy. See the [methods and scope](docs/verification.md), [per-seed CSV](validation/results/benchmark_runs.csv), [machine-readable checks](validation/results/summary.json), and [reproduction script](scripts/validate_feasibility.py).
 
 ## Getting started
 
@@ -105,16 +124,18 @@ This screenshot shows the dedicated interface before loading data. Import your o
 
 </details>
 
-All six screenshots come from actual application runs. [Capture script](scripts/capture_screenshots.py).
+The [full gallery](docs/gallery.md) contains **18 actual application screenshots and 8 numerical figure groups**, including model comparison, independent holdout, auxiliary responses and reopening a saved project. Capture scripts: [basic views](scripts/capture_screenshots.py) and [workflow views](scripts/capture_workflow.py).
 
 ## Verification and limitations
 
-The complete local research checkout passed 35 automated tests and both Qt interface checks. The public checkout runs 26 tests and explicitly skips nine checks requiring private data. Its installed-package startup check opens both interfaces without bundling research data. The package check reused existing Anaconda dependencies; a clean-machine and cross-platform verification is still pending.
+The public checkout passes **30 regression tests** and explicitly skips nine checks requiring private data. The separate reproducible feasibility suite passes **13 checks**; actual Qt workflow capture verifies calculation, holdout evaluation, model comparison and project restoration. Its installed-package startup check opens both interfaces without bundling research data and reuses the current interpreter's dependencies. A [Windows CI workflow](https://github.com/Zhuayu16/research-multiobjective-optimizer/actions/workflows/verification.yml) provides hosted-runner checks; consult its actual run status. Cross-platform and physical validation remain pending.
 
 ```powershell
 python -m unittest discover -s tests -v
 python tests/gui_general_smoke.py
 python tests/gui_smoke.py
+python scripts/validate_feasibility.py
+python scripts/capture_workflow.py
 ```
 
 - Inputs are numerical tables; unordered categorical variables are not supported. Units are annotations and are not converted automatically.

@@ -1,0 +1,149 @@
+{
+  "name": "Known interior optimum",
+  "variables": [
+    "x",
+    "y"
+  ],
+  "objectives": [
+    {
+      "column": "loss",
+      "direction": "min",
+      "unit": "",
+      "weight": 1.0
+    }
+  ],
+  "constraints": [],
+  "model": "RSM-Quadratic",
+  "domain": "box",
+  "max_distance": null,
+  "validation": "shuffled",
+  "folds": 5,
+  "group_column": "",
+  "time_column": "",
+  "holdout_column": "role",
+  "holdout_value": "test",
+  "duplicates": "reject",
+  "seed": 0,
+  "population": 80,
+  "generations": 100,
+  "runs": 1,
+  "decision": "IDEAL",
+  "sources": [],
+  "description": "Analytical software verification; not physical measurements.",
+  "responses": [],
+  "mode": "general",
+  "problem": {
+    "name": "Known interior optimum",
+    "variables": [
+      {
+        "column": "x",
+        "lower": -1,
+        "upper": 1,
+        "unit": "",
+        "kind": "continuous",
+        "allowed": []
+      },
+      {
+        "column": "y",
+        "lower": -1,
+        "upper": 1,
+        "unit": "",
+        "kind": "continuous",
+        "allowed": []
+      }
+    ],
+    "objectives": [
+      {
+        "column": "loss",
+        "direction": "min",
+        "unit": "",
+        "weight": 1.0
+      }
+    ],
+    "constraints": [],
+    "model": "RSM-Quadratic",
+    "domain": "box",
+    "max_distance": null,
+    "validation": "shuffled",
+    "folds": 5,
+    "group_column": "",
+    "time_column": "",
+    "holdout_column": "role",
+    "holdout_value": "test",
+    "duplicates": "reject",
+    "seed": 0,
+    "population": 80,
+    "generations": 100,
+    "runs": 1,
+    "decision": "IDEAL",
+    "sources": [],
+    "description": "Analytical software verification; not physical measurements.",
+    "responses": []
+  },
+  "target_names": [
+    "loss"
+  ],
+  "software_version": "0.2.0",
+  "directions": [
+    "min"
+  ],
+  "normalized_weights": [
+    1.0
+  ],
+  "decision_method": "IDEAL",
+  "anchor_minimum": [
+    0.030699999999999946
+  ],
+  "anchor_maximum": [
+    4.9027
+  ],
+  "anchor_source": "training_only_before_search",
+  "search_lower": [
+    -1.0,
+    -1.0
+  ],
+  "search_upper": [
+    1.0,
+    1.0
+  ],
+  "sample_count": 36,
+  "holdout_count": 20,
+  "cv": "随机 K 折验证",
+  "cv_folds": 5,
+  "cv_fold_sizes": [
+    {
+      "train": 28,
+      "validation": 8
+    },
+    {
+      "train": 29,
+      "validation": 7
+    },
+    {
+      "train": 29,
+      "validation": 7
+    },
+    {
+      "train": 29,
+      "validation": 7
+    },
+    {
+      "train": 29,
+      "validation": 7
+    }
+  ],
+  "cv_seed": 0,
+  "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+  "selected_models": {
+    "loss": "RSM-Quadratic"
+  },
+  "library_versions": {
+    "python": "3.13.5",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "sklearn": "1.6.1"
+  },
+  "clean_data_sha256": "85cd6a0903af906e762dcd024cd41820690a0d2e7b3212a4833a905972192b54",
+  "source_sha256": {}
+}

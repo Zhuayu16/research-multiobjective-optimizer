@@ -1,0 +1,50 @@
+name: Software verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install runtime and build dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r requirements.txt
+      - name: Public regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Analytical and synthetic feasibility checks
+        run: python scripts/validate_feasibility.py --output outputs/ci_validation
+      - name: Actual Qt workflow
+        run: python tests/gui_general_smoke.py
+      - name: Build wheel
+        run: python -m pip wheel . --no-deps --no-build-isolation -w outputs/ci_wheel
+      - name: Install wheel in separate directory
+        run: python -m pip install --no-deps --target outputs/ci_install outputs/ci_wheel/research_multiobjective_optimizer-0.2.0-py3-none-any.whl
+      - name: Installed package and both interfaces
+        run: python tests/installed_smoke.py outputs/ci_install outputs/ci_wheel
+      - name: Keep machine-generated validation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: software-verification-windows-py311
+          retention-days: 14
+          path: |
+            outputs/ci_validation/
+            outputs/ci_wheel/
+            outputs/generalization_validation_20261005/
+          if-no-files-found: warn

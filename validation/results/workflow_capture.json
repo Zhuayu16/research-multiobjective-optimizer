@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "screenshots": [
+    "variables",
+    "run_settings",
+    "summary",
+    "predicted",
+    "input_pareto",
+    "coverage",
+    "holdout",
+    "preferences",
+    "project_restored",
+    "auxiliary_response",
+    "model_comparison",
+    "known_optimum"
+  ],
+  "data": "synthetic and analytical only",
+  "battery_train": 50,
+  "battery_holdout": 10,
+  "project_restoration": "verified",
+  "auxiliary_response": "3 modelled responses, 2 objectives",
+  "auto_model_families": "actual cross-validation comparison"
+}

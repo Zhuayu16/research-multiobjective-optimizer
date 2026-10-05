@@ -1,0 +1,115 @@
+{
+  "software_version": "0.2.0",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "population": 80,
+  "generations": 100,
+  "zdt_dimension": 2,
+  "thresholds": {
+    "zdt1_igd_mean": 0.02,
+    "zdt1_hv_ratio": 0.95,
+    "quadratic_position_error": 0.02,
+    "mixed_objective_gap": 0.0001,
+    "true_constraint_violation": 1e-10,
+    "exact_model_holdout_rmse": 1e-08
+  },
+  "checks": [
+    {
+      "check": "ZDT1 known front coverage (all 10 seeds)",
+      "passed": true,
+      "detail": "Mean reference-to-set distance <= 0.02; objectives unscaled [0,1] front"
+    },
+    {
+      "check": "ZDT1 dominated area (all 10 seeds)",
+      "passed": true,
+      "detail": "HV / sampled analytical-front HV >= 0.95, reference (1.1,1.1)"
+    },
+    {
+      "check": "quadratic excluded-holdout prediction",
+      "passed": true,
+      "detail": "RSM represents these quadratic/linear functions exactly; not evidence of physical accuracy"
+    },
+    {
+      "check": "Interior analytical optimum (all 10 seeds)",
+      "passed": true,
+      "detail": "Euclidean coordinate error <= 0.02 against (0.37,-0.23), absent from training grid"
+    },
+    {
+      "check": "mixed excluded-holdout prediction",
+      "passed": true,
+      "detail": "RSM represents these quadratic/linear functions exactly; not evidence of physical accuracy"
+    },
+    {
+      "check": "Mixed-variable analytical optimum (all 10 seeds)",
+      "passed": true,
+      "detail": "Absolute true loss gap <= 1e-4 against independent finite enumeration"
+    },
+    {
+      "check": "Mixed-variable ground-truth feasibility",
+      "passed": true,
+      "detail": "Reevaluate original functions, integer k, allowed d, temperature >=301.5"
+    },
+    {
+      "check": "battery synthetic constraints by function reevaluation",
+      "passed": true,
+      "detail": "Checks the illustrative function, not CFD or experiments"
+    },
+    {
+      "check": "exchanger synthetic constraints by function reevaluation",
+      "passed": true,
+      "detail": "Checks the illustrative function, not CFD or experiments"
+    },
+    {
+      "check": "structure synthetic constraints by function reevaluation",
+      "passed": true,
+      "detail": "Checks the illustrative function, not CFD or experiments"
+    },
+    {
+      "check": "Holdout adversarial isolation",
+      "passed": true,
+      "detail": "Adding 10000 to all test responses leaves predictions and training checksum identical"
+    },
+    {
+      "check": "Project data and configuration round trip",
+      "passed": true,
+      "detail": "Restore raw numerical table and complete configuration"
+    },
+    {
+      "check": "DOE retained center replicates",
+      "passed": true,
+      "detail": "30 LHS + 3 center rows, numeric-set and integer validity"
+    }
+  ],
+  "status": "passed",
+  "environment": {
+    "python": "3.13.5",
+    "platform": "Windows",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "sklearn": "1.6.1"
+  },
+  "seconds": 22.66249760000028,
+  "scope": "Analytical and synthetic software verification; no private records or physical validation.",
+  "sources": [
+    "https://pymoo.org/problems/definition.html",
+    "https://pymoo.org/misc/indicators.html"
+  ],
+  "source_hash_encoding": "UTF-8 text with LF newlines (platform-independent)",
+  "source_sha256": {
+    "scripts/validate_feasibility.py": "b2a86a03b43c113d9b174f8450aa8564bd4590b7060eeefbc875f538b27cc70a",
+    "mtpv_optimizer/nsga2.py": "0541ee280ba369059c0b42397cb957975d2577d65576a1813f44f53b3bce688d",
+    "mtpv_optimizer/general.py": "2329afad04dd1efdab8dde0e455fbda7e7fcefc90f7b3734abee6c11e4339eb7",
+    "mtpv_optimizer/core.py": "f0f770bb2813cb503f297b96c80c198b32d1b10d141fd8448085aacda1bc417b"
+  }
+}

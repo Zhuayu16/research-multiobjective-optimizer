@@ -1,0 +1,191 @@
+{
+  "name": "Mixed constrained known optimum",
+  "variables": [
+    "x",
+    "k",
+    "d"
+  ],
+  "objectives": [
+    {
+      "column": "loss",
+      "direction": "min",
+      "unit": "",
+      "weight": 1.0
+    }
+  ],
+  "constraints": [
+    {
+      "expression": "temperature",
+      "relation": ">=",
+      "limit": 301.5,
+      "tolerance": 0.0,
+      "scale": 1.0
+    }
+  ],
+  "model": "RSM-Quadratic",
+  "domain": "box",
+  "max_distance": null,
+  "validation": "shuffled",
+  "folds": 5,
+  "group_column": "",
+  "time_column": "",
+  "holdout_column": "role",
+  "holdout_value": "test",
+  "duplicates": "reject",
+  "seed": 0,
+  "population": 80,
+  "generations": 100,
+  "runs": 1,
+  "decision": "IDEAL",
+  "sources": [],
+  "description": "Analytical software verification; not physical measurements.",
+  "responses": [
+    {
+      "column": "temperature",
+      "unit": ""
+    }
+  ],
+  "mode": "general",
+  "problem": {
+    "name": "Mixed constrained known optimum",
+    "variables": [
+      {
+        "column": "x",
+        "lower": -1,
+        "upper": 1,
+        "unit": "",
+        "kind": "continuous",
+        "allowed": []
+      },
+      {
+        "column": "k",
+        "lower": 1,
+        "upper": 4,
+        "unit": "",
+        "kind": "integer",
+        "allowed": []
+      },
+      {
+        "column": "d",
+        "lower": 0.1,
+        "upper": 0.9,
+        "unit": "",
+        "kind": "discrete",
+        "allowed": [
+          0.1,
+          0.5,
+          0.9
+        ]
+      }
+    ],
+    "objectives": [
+      {
+        "column": "loss",
+        "direction": "min",
+        "unit": "",
+        "weight": 1.0
+      }
+    ],
+    "constraints": [
+      {
+        "expression": "temperature",
+        "relation": ">=",
+        "limit": 301.5,
+        "tolerance": 0.0,
+        "scale": 1.0
+      }
+    ],
+    "model": "RSM-Quadratic",
+    "domain": "box",
+    "max_distance": null,
+    "validation": "shuffled",
+    "folds": 5,
+    "group_column": "",
+    "time_column": "",
+    "holdout_column": "role",
+    "holdout_value": "test",
+    "duplicates": "reject",
+    "seed": 0,
+    "population": 80,
+    "generations": 100,
+    "runs": 1,
+    "decision": "IDEAL",
+    "sources": [],
+    "description": "Analytical software verification; not physical measurements.",
+    "responses": [
+      {
+        "column": "temperature",
+        "unit": ""
+      }
+    ]
+  },
+  "target_names": [
+    "loss"
+  ],
+  "software_version": "0.2.0",
+  "directions": [
+    "min"
+  ],
+  "normalized_weights": [
+    1.0
+  ],
+  "decision_method": "IDEAL",
+  "anchor_minimum": [
+    0.0024999999999999988
+  ],
+  "anchor_maximum": [
+    2.4385
+  ],
+  "anchor_source": "training_only_before_search",
+  "search_lower": [
+    -1.0,
+    1.0,
+    0.1
+  ],
+  "search_upper": [
+    1.0,
+    4.0,
+    0.9
+  ],
+  "sample_count": 108,
+  "holdout_count": 30,
+  "cv": "随机 K 折验证",
+  "cv_folds": 5,
+  "cv_fold_sizes": [
+    {
+      "train": 86,
+      "validation": 22
+    },
+    {
+      "train": 86,
+      "validation": 22
+    },
+    {
+      "train": 86,
+      "validation": 22
+    },
+    {
+      "train": 87,
+      "validation": 21
+    },
+    {
+      "train": 87,
+      "validation": 21
+    }
+  ],
+  "cv_seed": 0,
+  "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+  "selected_models": {
+    "loss": "RSM-Quadratic",
+    "temperature": "RSM-Quadratic"
+  },
+  "library_versions": {
+    "python": "3.13.5",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "sklearn": "1.6.1"
+  },
+  "clean_data_sha256": "2e332725c570ca356fa176256997f81bb92c722cee4d644c3cc5982f9336f351",
+  "source_sha256": {}
+}
