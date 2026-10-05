@@ -6,6 +6,8 @@
 
 **From engineering data to traceable design decisions**
 
+**Author: 周华禹 · Chongqing University of Technology (重庆理工大学)**
+
 ![Version](https://img.shields.io/badge/version-0.2.0-2563eb)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![Desktop](https://img.shields.io/badge/desktop-PyQt5-41CD52)

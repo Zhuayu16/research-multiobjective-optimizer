@@ -7,6 +7,8 @@
 **从工程数据到可追溯的优化方案**<br>
 可配置问题定义 · 代理模型验证 · 约束优化 · 决策与图表导出
 
+**重庆理工大学 · 周华禹**
+
 ![Version](https://img.shields.io/badge/version-0.2.0-2563eb)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![Desktop](https://img.shields.io/badge/desktop-PyQt5-41CD52)

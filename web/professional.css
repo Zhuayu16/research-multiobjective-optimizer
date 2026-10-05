@@ -1,4 +1,5 @@
 /* A research workspace with readable controls and evidence-rich analysis. */
+.author-credit{display:flex;align-items:center;gap:10px;margin:16px 0 0;color:#536f8b;font-size:13px;line-height:1.8;letter-spacing:.02em}.author-credit span{color:#9aacc0}
 .analysis-card svg{max-height:310px}.analysis-legend{display:flex;flex-wrap:wrap;gap:10px 17px;margin:13px 0 20px;font-size:10px;color:#7c90a8;line-height:1.8}.analysis-legend>span{display:flex;align-items:center;gap:6px}
 :root{--ink:#182536;--muted:#647286;--blue:#086aca;--line:#dfe6ef;--surface:#f3f6fa}
 .global-nav{height:60px;background:rgba(255,255,255,.92)}

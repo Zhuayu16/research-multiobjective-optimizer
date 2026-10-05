@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f5f7">
+  <meta name="author" content="周华禹 · 重庆理工大学">
   <meta name="description" content="在浏览器中完成代理模型验证、约束多目标优化与研究结果导出。数据留在你的设备，无需安装桌面软件。">
   <title>研究多目标优化器 · 数据建模、验证与优化</title>
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
@@ -30,6 +31,7 @@
       <div class="capability-chips"><span>8 类代理模型</span><span>约束 NSGA-II</span><span>混合变量</span><span>独立留出验证</span></div>
       <div class="hero-actions"><a class="button" href="#workspace">进入研究工作台 <span aria-hidden="true">↗</span></a><button class="text-button" id="try-example">载入换热器示例 <span aria-hidden="true">›</span></button></div>
       <p class="microcopy">无需安装或配置后端。首次计算需联网下载运行环境。</p>
+      <p class="author-credit">重庆理工大学 <span aria-hidden="true">·</span> 周华禹</p>
       <div class="hero-specs"><div><b>配置驱动</b><span>变量 / 目标 / 工程约束</span></div><div><b>验证优先</b><span>分组 / 时间 / 独立留出</span></div><div><b>结果可复现</b><span>项目 / 参数 / 数据校验值</span></div></div>
       </div>
       <div class="hero-device" aria-label="换热器合成示例的真实计算结果预览">
@@ -111,7 +113,7 @@
     <section id="verification" class="verification section-wrap"><div class="section-heading"><p class="eyebrow">VERIFICATION & BENCHMARKS</p><h2>公开基准，支撑软件可行性。</h2><p>解析前沿、已知最优解与合成案例复算，分别检查搜索、建模和跨领域工作流。</p></div><div class="evidence-grid"><article><span>二维 ZDT1 · 10 个种子</span><strong>99.18<span>%</span></strong><h3>平均参考前沿 HV 比</h3><p>等函数调用预算的随机搜索作为基线；仅检查二维搜索内核。</p></article><article><span>连续解析问题 · 10 次运行</span><strong>8.36<span>×10⁻⁵</span></strong><h3>平均最优坐标误差</h3><p>从完整代理模型工作流找回训练网格外的已知最优点。</p></article><article><span>三个合成工程示例</span><strong>100<span>%</span></strong><h3>原函数约束可行率</h3><p>电池、换热器和结构候选逐一复算；不代表真实工程物理精度。</p></article></div><div class="benchmark-grid"><figure><img src="assets/benchmark-zdt1.png" width="2194" height="994" loading="lazy" alt="已公开的二维 ZDT1 解析前沿、多种子搜索与随机基线验证图"><figcaption><b>解析前沿与等预算基线</b><span>桌面计算内核 · 逐种子结果已公开</span></figcaption></figure><figure><img src="assets/benchmark-optima.png" width="2211" height="874" loading="lazy" alt="已公开的连续及混合变量问题最优解误差验证图"><figcaption><b>完整工作流的最优解误差</b><span>解析真值对照 · 连续 / 整数 / 离散约束</span></figcaption></figure></div><div class="evidence-links"><a class="button secondary compact" href="https://github.com/Zhuayu16/research-multiobjective-optimizer/blob/main/docs/verification.md" target="_blank" rel="noopener">基准方法与原始数据 ↗</a><a class="button secondary compact" href="https://github.com/Zhuayu16/research-multiobjective-optimizer/blob/main/docs/web-guide.md" target="_blank" rel="noopener">浏览器验证与复现文档 ↗</a><a class="text-button" href="https://github.com/Zhuayu16/research-multiobjective-optimizer/actions/workflows/pages.yml" target="_blank" rel="noopener">查看自动验证记录 ↗</a></div><p class="evidence-note">图表与三项数值来自已发布的桌面内核验证。网页版复用相同源码，另有真实浏览器工作流检查；实际运行依赖、验证划分和样本校验值写入每次导出配置。</p></section>
     <section id="guide" class="guide-section"><div class="section-wrap guide-grid"><div><p class="eyebrow">让研究回到研究本身。</p><h2>开始，很简单。</h2><p>无需注册，无需配置服务器。<br>打开网页，准备好你的数据即可。</p><a class="button" href="#workspace">开始你的研究</a></div><div class="guide-steps"><article><span>01</span><div><h3>带上你的数据。</h3><p>导入 CSV、Excel 或记录列表 JSON。也可以打开桌面版 .optproj 项目，或体验合成示例。</p></div></article><article><span>02</span><div><h3>定义你关心的目标。</h3><p>选择变量类型与边界，设置各目标方向、辅助响应、约束和验证方式。</p></div></article><article><span>03</span><div><h3>运行，比较，留存。</h3><p>查看 Pareto 权衡和模型误差，导出候选、完整工作簿、图表与可恢复项目。</p></div></article><details><summary>第一次计算、设备与数据说明</summary><p>首次运行会从 Pyodide CDN 与 PyPI 下载计算环境，需要网络连接；计算与文件处理发生在浏览器内存中。推荐使用最新桌面版 Chrome、Edge、Firefox 或 Safari。关闭页面会结束计算，请及时下载项目。浏览器中树模型使用单线程，Auto 选型可能耗时较长。网站不自动调用 Fluent，也不导入二进制 .dat.h5 文件。</p></details></div></div></section>
   </main>
-  <footer><div class="section-wrap"><div class="footer-top"><span>研究多目标优化器 · Web</span><a href="https://github.com/Zhuayu16/research-multiobjective-optimizer" target="_blank" rel="noopener">源码与桌面版 ↗</a></div><p>可配置研究问题 · 可复现计算 · 浏览器本地运行</p><p class="footer-small">v0.2.0 · 本网站采用静态托管。示例来自合成函数，不能替代真实试验或仿真。</p></div></footer>
+  <footer><div class="section-wrap"><div class="footer-top"><span>研究多目标优化器 · Web</span><a href="https://github.com/Zhuayu16/research-multiobjective-optimizer" target="_blank" rel="noopener">源码与桌面版 ↗</a></div><p>重庆理工大学 · 周华禹</p><p>可配置研究问题 · 可复现计算 · 浏览器本地运行</p><p class="footer-small">v0.2.0 · 本网站采用静态托管。示例来自合成函数，不能替代真实试验或仿真。</p></div></footer>
   <div id="toast" role="alert" hidden></div><div id="chart-tooltip" role="tooltip" hidden></div>
   <noscript><p class="noscript">请启用 JavaScript 以使用浏览器研究工作台。</p></noscript>
 </body>
