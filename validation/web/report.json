@@ -1,7 +1,7 @@
 {
   "status": "passed",
-  "url": "http://127.0.0.1:36820/",
-  "date": "2026-10-05T15:13:53.126Z",
+  "url": "http://127.0.0.1:9028/",
+  "date": "2026-10-05T15:22:21.802Z",
   "browser": "154.0.8037.93",
   "candidateCounts": {
     "battery": 32,
@@ -11,6 +11,11 @@
   "checks": [
     {
       "name": "Preview is explicitly synthetic and cannot be exported",
+      "status": "passed",
+      "detail": {}
+    },
+    {
+      "name": "Interrupted dependency download recovers without reloading the page",
       "status": "passed",
       "detail": {}
     },
@@ -117,7 +122,7 @@
       "status": "passed",
       "detail": {
         "page_errors": 0,
-        "requests": 32
+        "requests": 33
       }
     }
   ]

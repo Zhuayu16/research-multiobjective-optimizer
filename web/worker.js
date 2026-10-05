@@ -7,7 +7,7 @@ async function initialize(id) {
   importScripts(INDEX + 'pyodide.js');
   const py = await loadPyodide({indexURL:INDEX});
   stage(12, '正在准备数值分析与代理模型');
-  const packages=['pandas', 'scikit-learn', 'xlrd', 'micropip'];
+  const packages=['numpy', 'scipy', 'joblib', 'threadpoolctl', 'pandas', 'scikit-learn', 'xlrd', 'micropip'];
   for(let attempt=1;attempt<=3;attempt++) {
     const failures=[];
     await py.loadPackage(packages, {errorCallback:message=>failures.push(message)});

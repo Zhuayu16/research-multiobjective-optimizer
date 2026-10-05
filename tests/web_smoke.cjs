@@ -16,7 +16,9 @@ async function csvRows(file){const content=fs.readFileSync(file,'utf8').replace(
  let url=process.env.WEB_CHECK_URL;
  if(!url){server=http.createServer((req,res)=>{const requested=decodeURIComponent(new URL(req.url,'http://localhost').pathname);const relative=requested==='/'?'index.html':requested.slice(1);const file=path.resolve(root,'web',relative);if(!file.startsWith(path.join(root,'web')+path.sep)){res.writeHead(403);res.end();return;}fs.readFile(file,(error,data)=>{if(error){res.writeHead(404);res.end();return;}res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.py':'text/plain','.zip':'application/zip'})[path.extname(file)]||'application/octet-stream');res.end(data);});});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));url=`http://127.0.0.1:${server.address().port}/`;}
  browser=await chromium.launch({headless:true,...(process.env.WEB_BROWSER_EXECUTABLE?{executablePath:process.env.WEB_BROWSER_EXECUTABLE}:{})});
- const context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});page=await context.newPage();
+ const context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});let interrupted=false;
+ await context.route(/\/scipy-[^/]+\.whl$/,async route=>{if(!interrupted){interrupted=true;await route.abort('failed');}else await route.continue();});
+ page=await context.newPage();
  page.on('pageerror',error=>errors.push(error.message));page.on('request',req=>requests.push({method:req.method(),url:req.url()}));
  await page.goto(url,{waitUntil:'networkidle'});await page.waitForSelector('#main-chart svg');
  assert.equal(await page.locator('#result-state').innerText(),'合成示例预览');assert(await page.locator('#export-toggle').isDisabled());
@@ -31,6 +33,7 @@ async function csvRows(file){const content=fs.readFileSync(file,'utf8').replace(
    for(const row of rows){if(key==='battery'){assert(Number.isInteger(row.channels));assert(row.Tmax_K<=315+1e-8);const truth=320-5*row.flow_L_min-.45*row.channel_mm-.5*row.channels+.2*row.flow_L_min**2;assert(Math.abs(truth-row.Tmax_K)<1e-6);assert(truth<=315+1e-8);}if(key==='exchanger'){assert([2,4,6].includes(row.pitch_mm));assert(row.dp_Pa<=350+1e-8);assert(Math.abs(20+15*row.velocity_m_s**2+4*row.pitch_mm-row.dp_Pa)<1e-6);}if(key==='structure')assert(row.safety_margin>=-1e-8);}
    await tab('result','validation');assert(await page.locator('#metric-table tbody tr').count()>0);assert(await page.locator('#validation-chart circle').count()>0);
    if(key==='battery'){
+     assert(interrupted);record('Interrupted dependency download recovers without reloading the page',{});
      assert.equal(config.sample_count,50);assert.equal(config.holdout_count,10);assert(await page.locator('#holdout-table tbody tr').count()>0);
      await page.waitForTimeout(7100);await page.locator('.workspace-shell').screenshot({path:path.join(out,'desktop-validation.png')});
      const workbook=await download('xlsx','browser-results.xlsx');assert.equal(fs.readFileSync(workbook).subarray(0,2).toString(),'PK');
