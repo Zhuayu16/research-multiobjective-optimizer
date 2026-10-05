@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "research-multiobjective-optimizer"
+version = "0.2.0"
+description = "Configurable desktop surrogate modelling and constrained multi-objective optimization"
+requires-python = ">=3.10"
+dependencies = ["numpy>=2.0", "pandas>=2.2", "scikit-learn>=1.6", "matplotlib>=3.10", "openpyxl>=3.1", "xlrd>=2.0", "PyQt5>=5.15", "scipy>=1.15", "threadpoolctl>=3.5"]
+
+[project.gui-scripts]
+research-optimizer = "mtpv_optimizer.launcher:main"
+
+[tool.setuptools]
+packages = ["mtpv_optimizer"]
+py-modules = ["app"]
+include-package-data = false

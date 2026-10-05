@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+build/
+*.egg-info/
+outputs/
+backups/
+# Private research records are intentionally not published.
+data/research_46_20261002.json
+.publish/
+.pytest_cache/
+.idea/
+.vscode/
