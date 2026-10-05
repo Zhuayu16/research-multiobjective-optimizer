@@ -27,6 +27,8 @@ The static web edition runs the same general numerical-table Python engine in a 
 
 ![Actual browser computation with independent holdout](docs/assets/web/workspace.png)
 
+The research analysis interface adds objective trade-off profiles, response-selectable prediction and residual plots, model comparison, measured/predicted feasibility, sample coverage, independent seeds and preference sensitivity. Scientific panels use the current engine output and are invalidated together with the result when configuration changes.
+
 ![Actual application window with the synthetic battery example](docs/assets/overview.png)
 
 *Actual running application. This battery example uses synthetic functions, not experimental or CFD results.*

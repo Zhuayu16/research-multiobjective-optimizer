@@ -1,3 +1,4 @@
+import {renderProblemSnapshot,renderScientificPanels} from './analysis.js';
 const $ = id => document.getElementById(id);
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone = value => structuredClone(value);
@@ -45,6 +46,7 @@ function setBusy(busy, message='正在准备计算') {
   $('cancel-button').hidden=!busy; $('progress-track').hidden=!busy;
   $('progress-bar').style.width='3%'; $('export-toggle').disabled=busy || !state.result;
   if(message) $('run-status').textContent=message;
+  if(state.p) renderProblemSnapshot(readProblem(),state.rows,state.result,busy);
 }
 function clearResult(message='配置已变更，运行优化以生成当前结果。') {
   state.result=null; state.preview=[]; $('dirty-badge').textContent='待计算'; $('export-options').hidden=true; $('export-toggle').setAttribute('aria-expanded','false');
@@ -173,19 +175,17 @@ function renderOverview() {
   $('result-stats').innerHTML=stats.map(([label,value,note])=>`<div class="stat"><span>${escapeHTML(label)}</span><strong>${escapeHTML(format(value))}</strong><small>${escapeHTML(note)}</small></div>`).join('');
   scatter($('main-chart'),{predicted:state.showPredicted?pred:[],observed:state.showObserved?obs:[],x:$('axis-x').value,y:$('axis-y').value,color:$('axis-color').value});
   renderRecommendation(pred[0]);
+  renderProblemSnapshot(p,state.rows,result,state.busy);
 }
 function renderResults() {
   if(!state.p) return;
   const result=state.result,p=readProblem();
   $('result-state').textContent=result?'本次优化已完成':state.preview.length?'合成示例预览':'等待计算';
-  $('result-title').textContent=result?'每一份权衡，都有依据。':state.preview.length?'先看见，再进一步。':'准备探索你的设计空间。';
+  $('result-title').textContent=result?'优化结果与研究证据':state.preview.length?'合成案例 · 设计权衡预览':'配置研究问题后开始计算';
   renderOverview(); renderCandidateTable();
   table('data-table',state.rows,state.columns); $('data-description').textContent=`${state.rows.length} 行完整输入数据 · ${state.columns.length} 列`;
   table('metric-table',result?.metrics);table('model-table',result?.model_comparison);table('holdout-table',result?.holdout_metrics);
-  if(result?.validation?.length) {
-    const target=p.objectives[0]?.column, records=result.validation.filter(r=>r['目标']===target&&r['用于验证']!==false);
-    scatter($('validation-chart'),{predicted:records.map(r=>({truth:r['实测值'],prediction:r['冻结模型预测值']??r['交叉验证预测值']??r['预测值']})),x:'truth',y:'prediction',recommended:false,interactive:false,label:'交叉验证预测与实测数值',height:260});
-  } else $('validation-chart').innerHTML=emptyChart('完成计算后，检查模型预测。');
+  renderScientificPanels(p,state.rows,result,state.preview);
   if(result) {
     const rows=[['计算位置','当前浏览器 · WebAssembly'],['代理模型',Object.entries(result.config.selected_models).map(([k,v])=>`${k}: ${v}`).join(' / ')],['验证方式',result.config.cv],['随机种子',result.config.seed],['搜索设置',`种群 ${result.config.population} / 迭代 ${result.config.generations} / ${result.config.runs} 次`],['软件版本',result.config.software_version],['训练数据 SHA-256',result.config.clean_data_sha256]];
     $('trace-summary').innerHTML=rows.map(([k,v])=>`<div class="trace-row"><span>${escapeHTML(k)}</span><b>${escapeHTML(v)}</b></div>`).join('')+`<div class="trace-notes">${result.notes.map(n=>`<p>${escapeHTML(n)}</p>`).join('')}</div>`;

@@ -41,8 +41,9 @@ def main():
                     browser_adjustment='Forest estimators run with n_jobs=1 in the browser.')
     (folder / 'engine-manifest.json').write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf-8')
     if args.output:
-        static = ['index.html', 'styles.css', 'app.js', 'worker.js', 'bridge.py',
-                  'assets/icon.svg', 'assets/engine.zip', 'assets/engine-manifest.json', 'assets/examples.json']
+        static = ['index.html', 'styles.css', 'professional.css', 'app.js', 'analysis.js', 'worker.js', 'bridge.py',
+                  'assets/icon.svg', 'assets/engine.zip', 'assets/engine-manifest.json', 'assets/examples.json',
+                  'assets/benchmark-zdt1.png', 'assets/benchmark-optima.png']
         for relative in static:
             destination = args.output / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
