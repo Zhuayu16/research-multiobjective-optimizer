@@ -1,7 +1,7 @@
 {
   "status": "passed",
-  "url": "http://127.0.0.1:56302/",
-  "date": "2026-10-05T15:57:11.101Z",
+  "url": "http://127.0.0.1:57046/",
+  "date": "2026-10-06T07:42:03.996Z",
   "browser": "154.0.8037.93",
   "candidateCounts": {
     "battery": 32,
@@ -25,6 +25,31 @@
       "detail": {
         "validation_points": 50,
         "holdout_points": 10
+      }
+    },
+    {
+      "name": "Paper-style SVG/PNG and three-objective normalization use auditable engine matrices",
+      "status": "passed",
+      "detail": {
+        "rows": 32,
+        "python_fits": 18,
+        "objective_vector_rows": 992
+      }
+    },
+    {
+      "name": "Correlation and per-generation records preserve training isolation and actual iterations",
+      "status": "passed",
+      "detail": {
+        "training_rows": 50,
+        "generations": 10
+      }
+    },
+    {
+      "name": "Spatial temperature interpolation reproduces a known plane and masks extrapolation",
+      "status": "passed",
+      "detail": {
+        "grid": 1024,
+        "masked": 496
       }
     },
     {
@@ -95,6 +120,41 @@
       "detail": 2
     },
     {
+      "name": "Additional browser model and coefficient-weighted decision: Ridge-L2",
+      "status": "passed",
+      "detail": {
+        "fits": 12
+      }
+    },
+    {
+      "name": "Additional browser model and coefficient-weighted decision: ElasticNet",
+      "status": "passed",
+      "detail": {
+        "fits": 12
+      }
+    },
+    {
+      "name": "Additional browser model and coefficient-weighted decision: RSM-Cubic",
+      "status": "passed",
+      "detail": {
+        "fits": 12
+      }
+    },
+    {
+      "name": "Additional browser model and coefficient-weighted decision: KNN-Distance",
+      "status": "passed",
+      "detail": {
+        "fits": 12
+      }
+    },
+    {
+      "name": "Additional browser model and coefficient-weighted decision: AdaBoost",
+      "status": "passed",
+      "detail": {
+        "fits": 12
+      }
+    },
+    {
       "name": "Configuration changes invalidate previous results and scientific views",
       "status": "passed",
       "detail": {}
@@ -120,7 +180,7 @@
     {
       "name": "Excel import and worksheet selection",
       "status": "passed",
-      "detail": 14
+      "detail": 20
     },
     {
       "name": "Next experiment design exports 30 samples and 3 centres",
@@ -144,7 +204,7 @@
       "status": "passed",
       "detail": {
         "page_errors": 0,
-        "requests": 37
+        "requests": 39
       }
     }
   ]

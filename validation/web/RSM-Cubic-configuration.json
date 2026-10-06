@@ -27,7 +27,7 @@
       "scale": 100
     }
   ],
-  "model": "RSM-Quadratic",
+  "model": "RSM-Cubic",
   "domain": "box",
   "max_distance": null,
   "validation": "shuffled",
@@ -41,7 +41,7 @@
   "population": 32,
   "generations": 10,
   "runs": 1,
-  "decision": "IDEAL",
+  "decision": "IDEAL-COEFFICIENT",
   "sources": [],
   "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
   "responses": [],
@@ -93,7 +93,7 @@
         "scale": 100
       }
     ],
-    "model": "RSM-Quadratic",
+    "model": "RSM-Cubic",
     "domain": "box",
     "max_distance": null,
     "validation": "shuffled",
@@ -107,7 +107,7 @@
     "population": 32,
     "generations": 10,
     "runs": 1,
-    "decision": "IDEAL",
+    "decision": "IDEAL-COEFFICIENT",
     "sources": [],
     "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
     "responses": []
@@ -125,7 +125,7 @@
     0.5,
     0.5
   ],
-  "decision_method": "IDEAL",
+  "decision_method": "IDEAL-COEFFICIENT",
   "anchor_minimum": [
     219.7758624845,
     43.0
@@ -172,8 +172,8 @@
   "cv_seed": 42,
   "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
   "selected_models": {
-    "heat_W": "RSM-Quadratic",
-    "dp_Pa": "RSM-Quadratic"
+    "heat_W": "RSM-Cubic",
+    "dp_Pa": "RSM-Cubic"
   },
   "library_versions": {
     "python": "3.13.2",
@@ -189,20 +189,20 @@
       "fit_attempts": 12,
       "fits_completed": 12,
       "candidate_families": [
-        "RSM-Quadratic"
+        "RSM-Cubic"
       ],
       "response_count": 2,
       "validation_folds": 5,
       "validation_timings": [
         {
           "target": "heat_W",
-          "model": "RSM-Quadratic",
-          "seconds": 0.011800000000008026
+          "model": "RSM-Cubic",
+          "seconds": 0.016100000000008663
         },
         {
           "target": "dp_Pa",
-          "model": "RSM-Quadratic",
-          "seconds": 0.009499999999988518
+          "model": "RSM-Cubic",
+          "seconds": 0.01659999999999684
         }
       ]
     },
@@ -217,56 +217,62 @@
     "selected_model_parameters": {
       "heat_W": {
         "memory": "None",
-        "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+        "steps": "[('poly', PolynomialFeatures(degree=3, include_bias=False)), ('scale', StandardScaler()), ('regression', Ridge(alpha=0.1))]",
         "transform_input": "None",
         "verbose": "False",
-        "poly": "PolynomialFeatures(include_bias=False)",
+        "poly": "PolynomialFeatures(degree=3, include_bias=False)",
         "scale": "StandardScaler()",
-        "regression": "LinearRegression(n_jobs=1)",
-        "poly__degree": "2",
+        "regression": "Ridge(alpha=0.1)",
+        "poly__degree": "3",
         "poly__include_bias": "False",
         "poly__interaction_only": "False",
         "poly__order": "C",
         "scale__copy": "True",
         "scale__with_mean": "True",
         "scale__with_std": "True",
+        "regression__alpha": "0.1",
         "regression__copy_X": "True",
         "regression__fit_intercept": "True",
-        "regression__n_jobs": "1",
+        "regression__max_iter": "None",
         "regression__positive": "False",
-        "regression__tol": "1e-06"
+        "regression__random_state": "None",
+        "regression__solver": "auto",
+        "regression__tol": "0.0001"
       },
       "dp_Pa": {
         "memory": "None",
-        "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+        "steps": "[('poly', PolynomialFeatures(degree=3, include_bias=False)), ('scale', StandardScaler()), ('regression', Ridge(alpha=0.1))]",
         "transform_input": "None",
         "verbose": "False",
-        "poly": "PolynomialFeatures(include_bias=False)",
+        "poly": "PolynomialFeatures(degree=3, include_bias=False)",
         "scale": "StandardScaler()",
-        "regression": "LinearRegression(n_jobs=1)",
-        "poly__degree": "2",
+        "regression": "Ridge(alpha=0.1)",
+        "poly__degree": "3",
         "poly__include_bias": "False",
         "poly__interaction_only": "False",
         "poly__order": "C",
         "scale__copy": "True",
         "scale__with_mean": "True",
         "scale__with_std": "True",
+        "regression__alpha": "0.1",
         "regression__copy_X": "True",
         "regression__fit_intercept": "True",
-        "regression__n_jobs": "1",
+        "regression__max_iter": "None",
         "regression__positive": "False",
-        "regression__tol": "1e-06"
+        "regression__random_state": "None",
+        "regression__solver": "auto",
+        "regression__tol": "0.0001"
       }
     },
     "runtime_seconds": {
-      "preprocessing": 0.012599999999991951,
-      "model_validation_and_fit": 0.04230000000001155,
-      "holdout_and_constraints": 0.0023999999999944066,
-      "nsga2_search": 0.08299999999999841,
-      "postprocessing": 0.048500000000004206,
-      "total": 0.18890000000000384
+      "preprocessing": 0.007899999999992247,
+      "model_validation_and_fit": 0.05089999999999861,
+      "holdout_and_constraints": 0.0028000000000076852,
+      "nsga2_search": 0.09590000000000032,
+      "postprocessing": 0.05189999999998918,
+      "total": 0.20939999999998804
     },
-    "distance_formula": "sqrt(sum(w*delta^2))",
+    "distance_formula": "sqrt(sum((w*delta)^2))",
     "weights": "Input weights divided by their sum",
     "normalization": "Frozen training minima and maxima; improvements beyond ideal have zero loss",
     "reference_score": "S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",

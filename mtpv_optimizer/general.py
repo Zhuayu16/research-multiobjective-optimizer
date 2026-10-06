@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import platform
+import time
 from pathlib import Path
 
 import numpy as np
@@ -15,6 +16,7 @@ from .core import decision_scores, fit_surrogates, ideal_distances, normalized_w
 from .nsga2 import _non_dominated_sort, optimize_nsga2
 from .problem import ConstraintEvaluator, Problem
 from .workflow import RunOutput
+from .scientific import decision_matrix, correlations
 
 
 def _clean(frame, problem, notes):
@@ -149,13 +151,15 @@ def _rank(frame, problem, anchors, weights=None):
     result = frame.copy()
     y = result[problem.target_names].to_numpy(float)
     result["综合效用"] = decision_scores(y, problem.weights if weights is None else weights, problem.decision, anchors, problem.directions)
-    result["理想点距离"] = ideal_distances(y, problem.weights if weights is None else weights, anchors, problem.directions)
+    result["理想点距离"] = ideal_distances(y, problem.weights if weights is None else weights, anchors, problem.directions,
+        "coefficient" if problem.decision.upper() == "IDEAL-COEFFICIENT" else "variance")
     result = result.sort_values("综合效用", ascending=False, kind="stable").reset_index(drop=True)
     result.insert(0, "推荐排序", np.arange(1, len(result) + 1))
     return result
 
 
 def run_general(frame, problem: Problem, progress=None):
+    started = time.perf_counter()
     problem.validate(frame)
     notes = []
     train, holdout, audit = _clean(frame, problem, notes)
@@ -167,8 +171,10 @@ def run_general(frame, problem: Problem, progress=None):
         raise ValueError("六维以上建议采用边界框加最近样本距离，避免凸包计算规模失控。")
     if progress:
         progress(2, "训练集验证与模型比较")
+    prepared = time.perf_counter()
     with threadpool_limits(limits=1):
         bundle = fit_surrogates(train, variables, problem.response_names, lower, upper, integers, problem.seed, problem.model, problem.domain == "hull", folds)
+        fitted_at = time.perf_counter()
         bundle.target_names = targets
         if any(not np.isfinite(m.r2_cv) or m.r2_cv < .8 for m in bundle.metrics):
             notes.append("存在验证 R² < 0.8 或未定义的响应；预测候选只宜用于补充样本选点，应先核查模型误差。")
@@ -228,8 +234,10 @@ def run_general(frame, problem: Problem, progress=None):
         anchors = (actual.min(axis=0), actual.max(axis=0))
         if progress:
             progress(25, "工程约束内多次 NSGA-II 搜索")
+        search_started = time.perf_counter()
         result = optimize_nsga2(bundle, problem.population, problem.generations, problem.seed, problem.weights,
             problem.runs, problem.decision, (lambda current, total: progress(25 + round(70 * current / total), "工程约束内多次 NSGA-II 搜索")) if progress else None, anchors)
+        search_finished = time.perf_counter()
     predicted = pd.DataFrame(np.column_stack([result.variables, result.objectives]), columns=variables + targets)
     predicted = _rank(predicted, problem, anchors)
     predicted["结果类型"] = "代理模型预测"
@@ -293,11 +301,24 @@ def run_general(frame, problem: Problem, progress=None):
         library_versions={"python": platform.python_version(), "numpy": np.__version__, "pandas": pd.__version__, "scipy": scipy.__version__, "sklearn": sklearn.__version__},
         clean_data_sha256=hashlib.sha256(train.to_json(orient="records", double_precision=15).encode("utf-8")).hexdigest(),
         source_sha256={p: hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in problem.sources if Path(p).is_file()})
+    saved["calculation_audit"] = dict(training=getattr(bundle, "training_audit", {}), search=result.evaluation_audit,
+        selected_model_parameters={name: {k: str(v) for k, v in model.get_params(deep=True).items()} for name, model in bundle.models.items()},
+        runtime_seconds=dict(preprocessing=prepared-started, model_validation_and_fit=fitted_at-prepared,
+            holdout_and_constraints=search_started-fitted_at, nsga2_search=search_finished-search_started),
+        distance_formula="sqrt(sum((w*delta)^2))" if problem.decision.upper() == "IDEAL-COEFFICIENT" else "sqrt(sum(w*delta^2))",
+        weights="Input weights divided by their sum", normalization="Frozen training minima and maxima; improvements beyond ideal have zero loss",
+        reference_score="S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",
+        direct_cfd_solves=0)
     notes.append("CV 模型比较与误差报告共用折；独立留出结果用于评估选型后的性能。最近样本距离只表示覆盖程度。")
     if any(np.min(np.abs(train[t])) <= max(np.max(np.abs(train[t])) * 1e-8, 1e-12) for t in targets):
         notes.append("响应含零值或接近零的值，相对误差置为空；请采用 RMSE、MAE 和 NRMSE。")
     output = RunOutput(saved, bundle, all_observed, predicted, observed, pd.DataFrame(sensitivity), pd.DataFrame(summaries), pd.DataFrame(), notes)
     output.constraint_audit, output.cleaning_audit, output.holdout_metrics = diagnostic, audit, pd.DataFrame(holdout_metrics)
+    output.decision_matrix = decision_matrix(predicted, targets, problem.directions, problem.weights, anchors, problem.decision)
+    output.observed_decision_matrix = decision_matrix(observed, targets, problem.directions, problem.weights, anchors, problem.decision)
+    output.correlation = correlations(train, variables + problem.response_names)
+    output.search_history = pd.DataFrame(result.history)
+    saved["calculation_audit"]["runtime_seconds"].update(postprocessing=time.perf_counter()-search_finished, total=time.perf_counter()-started)
     if progress:
         progress(100, "完成")
     return output

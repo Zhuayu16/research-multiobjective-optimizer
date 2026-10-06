@@ -7,7 +7,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 WEB = ROOT / 'web'
 MODULES = ['__init__', 'core', 'coupled', 'dat_parser', 'doe', 'domain', 'general',
-           'nsga2', 'presets', 'problem', 'workflow']
+           'nsga2', 'presets', 'problem', 'workflow', 'scientific']
 
 
 def main():
@@ -41,7 +41,7 @@ def main():
                     browser_adjustment='Forest estimators run with n_jobs=1 in the browser.')
     (folder / 'engine-manifest.json').write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf-8')
     if args.output:
-        static = ['index.html', 'styles.css', 'professional.css', 'app.js', 'analysis.js', 'worker.js', 'bridge.py',
+        static = ['index.html', 'styles.css', 'professional.css', 'app.js', 'analysis.js', 'plot-lab.js', 'plot-lab.css', 'worker.js', 'bridge.py',
                   'assets/icon.svg', 'assets/engine.zip', 'assets/engine-manifest.json', 'assets/examples.json',
                   'assets/benchmark-zdt1.png', 'assets/benchmark-optima.png']
         for relative in static:

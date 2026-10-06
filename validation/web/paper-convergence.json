@@ -1,0 +1,1088 @@
+{
+  "format": "research-figure-evidence",
+  "version": 1,
+  "created_utc": "2026-10-06T07:40:26.169Z",
+  "plot": {
+    "type": "convergence",
+    "source": "decision_matrix",
+    "x": "归一化::Tmax_K",
+    "y": "归一化::deltaT_K",
+    "color": "归一化::pump_W",
+    "xlabel": "归一化::Tmax_K",
+    "ylabel": "归一化::deltaT_K",
+    "colorlabel": "归一化::pump_W",
+    "title": "Per-generation reference utility",
+    "panel": "(a)",
+    "W": 1000,
+    "H": 650,
+    "size": 19,
+    "radius": 5,
+    "font": "Times New Roman",
+    "colormap": "viridis",
+    "marker": "filled",
+    "xmin": null,
+    "xmax": null,
+    "ymin": null,
+    "ymax": null,
+    "cmin": null,
+    "cmax": null,
+    "reference": true,
+    "grid": false,
+    "connect": false,
+    "correlation": "pearson"
+  },
+  "source": "Actual post-selection population records per generation and seed",
+  "data_rows": 10,
+  "training_data_sha256": "02b01a0b9940b22e2b5fe3d3f6153985a9bc91a891c8c06f717c8912b50045d0",
+  "config": {
+    "name": "电池液冷",
+    "variables": [
+      "flow_L_min",
+      "channel_mm",
+      "channels"
+    ],
+    "objectives": [
+      {
+        "column": "Tmax_K",
+        "direction": "min",
+        "unit": "K",
+        "weight": 1
+      },
+      {
+        "column": "deltaT_K",
+        "direction": "min",
+        "unit": "K",
+        "weight": 1
+      },
+      {
+        "column": "pump_W",
+        "direction": "min",
+        "unit": "W",
+        "weight": 1
+      }
+    ],
+    "constraints": [
+      {
+        "expression": "Tmax_K",
+        "relation": "<=",
+        "limit": 315,
+        "tolerance": 0,
+        "scale": 10
+      }
+    ],
+    "model": "RSM-Quadratic",
+    "domain": "box",
+    "max_distance": null,
+    "validation": "group",
+    "folds": 5,
+    "group_column": "batch",
+    "time_column": "",
+    "holdout_column": "batch",
+    "holdout_value": "F",
+    "duplicates": "reject",
+    "seed": 42,
+    "population": 32,
+    "generations": 10,
+    "runs": 1,
+    "decision": "IDEAL",
+    "sources": [],
+    "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+    "responses": [],
+    "mode": "general",
+    "problem": {
+      "name": "电池液冷",
+      "variables": [
+        {
+          "column": "flow_L_min",
+          "lower": 0.5,
+          "upper": 3,
+          "unit": "L/min",
+          "kind": "continuous",
+          "allowed": []
+        },
+        {
+          "column": "channel_mm",
+          "lower": 2,
+          "upper": 8,
+          "unit": "mm",
+          "kind": "continuous",
+          "allowed": []
+        },
+        {
+          "column": "channels",
+          "lower": 2,
+          "upper": 6,
+          "unit": "",
+          "kind": "integer",
+          "allowed": []
+        }
+      ],
+      "objectives": [
+        {
+          "column": "Tmax_K",
+          "direction": "min",
+          "unit": "K",
+          "weight": 1
+        },
+        {
+          "column": "deltaT_K",
+          "direction": "min",
+          "unit": "K",
+          "weight": 1
+        },
+        {
+          "column": "pump_W",
+          "direction": "min",
+          "unit": "W",
+          "weight": 1
+        }
+      ],
+      "constraints": [
+        {
+          "expression": "Tmax_K",
+          "relation": "<=",
+          "limit": 315,
+          "tolerance": 0,
+          "scale": 10
+        }
+      ],
+      "model": "RSM-Quadratic",
+      "domain": "box",
+      "max_distance": null,
+      "validation": "group",
+      "folds": 5,
+      "group_column": "batch",
+      "time_column": "",
+      "holdout_column": "batch",
+      "holdout_value": "F",
+      "duplicates": "reject",
+      "seed": 42,
+      "population": 32,
+      "generations": 10,
+      "runs": 1,
+      "decision": "IDEAL",
+      "sources": [],
+      "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+      "responses": []
+    },
+    "target_names": [
+      "Tmax_K",
+      "deltaT_K",
+      "pump_W"
+    ],
+    "software_version": "0.2.0",
+    "directions": [
+      "min",
+      "min",
+      "min"
+    ],
+    "normalized_weights": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "decision_method": "IDEAL",
+    "anchor_minimum": [
+      300.2,
+      3.9694139786,
+      1.2
+    ],
+    "anchor_maximum": [
+      315.65,
+      6.716834427,
+      12.6
+    ],
+    "anchor_source": "training_only_before_search",
+    "search_lower": [
+      0.5,
+      2,
+      2
+    ],
+    "search_upper": [
+      3,
+      8,
+      6
+    ],
+    "sample_count": 50,
+    "holdout_count": 10,
+    "cv": "按指定分组验证",
+    "cv_folds": 5,
+    "cv_fold_sizes": [
+      {
+        "train": 40,
+        "validation": 10
+      },
+      {
+        "train": 40,
+        "validation": 10
+      },
+      {
+        "train": 40,
+        "validation": 10
+      },
+      {
+        "train": 40,
+        "validation": 10
+      },
+      {
+        "train": 40,
+        "validation": 10
+      }
+    ],
+    "cv_seed": 42,
+    "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+    "selected_models": {
+      "Tmax_K": "RSM-Quadratic",
+      "deltaT_K": "RSM-Quadratic",
+      "pump_W": "RSM-Quadratic"
+    },
+    "library_versions": {
+      "python": "3.13.2",
+      "numpy": "2.2.5",
+      "pandas": "2.3.3",
+      "scipy": "1.14.1",
+      "sklearn": "1.7.0"
+    },
+    "clean_data_sha256": "02b01a0b9940b22e2b5fe3d3f6153985a9bc91a891c8c06f717c8912b50045d0",
+    "source_sha256": {},
+    "calculation_audit": {
+      "training": {
+        "fit_attempts": 18,
+        "fits_completed": 18,
+        "candidate_families": [
+          "RSM-Quadratic"
+        ],
+        "response_count": 3,
+        "validation_folds": 5,
+        "validation_timings": [
+          {
+            "target": "Tmax_K",
+            "model": "RSM-Quadratic",
+            "seconds": 0.0829000000000022
+          },
+          {
+            "target": "deltaT_K",
+            "model": "RSM-Quadratic",
+            "seconds": 0.046299999999998676
+          },
+          {
+            "target": "pump_W",
+            "model": "RSM-Quadratic",
+            "seconds": 0.04649999999999821
+          }
+        ]
+      },
+      "search": {
+        "objective_vector_rows": 992,
+        "objective_prediction_batches": 21,
+        "population_size": 32,
+        "generations": 10,
+        "runs": 1,
+        "semantics": "Rows requested from the objective surrogate, including repeated evaluations; not CFD solves or unique designs."
+      },
+      "selected_model_parameters": {
+        "Tmax_K": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        },
+        "deltaT_K": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        },
+        "pump_W": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        }
+      },
+      "runtime_seconds": {
+        "preprocessing": 0.05099999999999838,
+        "model_validation_and_fit": 0.2703000000000024,
+        "holdout_and_constraints": 0.044299999999999784,
+        "nsga2_search": 0.3434999999999988,
+        "postprocessing": 0.19960000000000022,
+        "total": 0.9086999999999996
+      },
+      "distance_formula": "sqrt(sum(w*delta^2))",
+      "weights": "Input weights divided by their sum",
+      "normalization": "Frozen training minima and maxima; improvements beyond ideal have zero loss",
+      "reference_score": "S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",
+      "direct_cfd_solves": 0,
+      "runtime_initialization_seconds": 26.995399999991058,
+      "runtime_warm": false
+    },
+    "browser_runtime": {
+      "platform": "emscripten",
+      "python": "3.13.2",
+      "numpy": "2.2.5",
+      "pandas": "2.3.3",
+      "scipy": "1.14.1",
+      "sklearn": "1.7.0",
+      "openpyxl": "3.1.5",
+      "pyodide": "0.29.3",
+      "source_sha256": {
+        "mtpv_optimizer/__init__.py": "c5393d3218aca0011f762aefd1443bed0233cfea21e009e6328c0d66d7319bd6",
+        "mtpv_optimizer/core.py": "6dc6a26eb7e57f0d51cdfc7f571ec891e27ec8263ca2e75cf128a3d97d31645b",
+        "mtpv_optimizer/coupled.py": "a6869ea24416dc86fc2611f4511ae75dae03c2f2902c54dd3f8a36d388a48d80",
+        "mtpv_optimizer/dat_parser.py": "059582ea4a4f64574b5ed5854ecba11a1bd4a699082a583dacc3c116b25a5fde",
+        "mtpv_optimizer/doe.py": "cbd571d6f4d589f7c057e1cfacbae60c71809ee8be0dd7b11e29f4297e8fd90a",
+        "mtpv_optimizer/domain.py": "5def038bde5d6422f462b721e910440dc5a00ae4f4059b0f31fd053c0071eb20",
+        "mtpv_optimizer/general.py": "ce7980db1d46688aec71f0543e08b0c847720cc6d69be9e98c8939e8134b597c",
+        "mtpv_optimizer/nsga2.py": "dfd8fcbacc8f121d4e130483a8cb4616989b034bd679ec0350dde6b11253609a",
+        "mtpv_optimizer/presets.py": "19622217b24e6c5dbc6f3965f7d8e7b6740409e430af27e756222a8f7dcc2b30",
+        "mtpv_optimizer/problem.py": "71200acc9ff03474b9f61206d365e1a9785008be3e6dc68fdd7fe9a06414a4bb",
+        "mtpv_optimizer/workflow.py": "7e8a59f79de74aa8885500d5ee3de15397e26861e3ada7efe4f5bf70889f3e7f",
+        "mtpv_optimizer/scientific.py": "09c669f57c4c51e5a01403be4f6becbb6b91bcc8ab7eee0c857ac4072e6f0611"
+      },
+      "scope": "General numerical-table workflow; no Qt, no private research records.",
+      "browser_adjustment": "Forest estimators run with n_jobs=1 in the browser."
+    }
+  },
+  "calculation_audit": {
+    "training": {
+      "fit_attempts": 18,
+      "fits_completed": 18,
+      "candidate_families": [
+        "RSM-Quadratic"
+      ],
+      "response_count": 3,
+      "validation_folds": 5,
+      "validation_timings": [
+        {
+          "target": "Tmax_K",
+          "model": "RSM-Quadratic",
+          "seconds": 0.0829000000000022
+        },
+        {
+          "target": "deltaT_K",
+          "model": "RSM-Quadratic",
+          "seconds": 0.046299999999998676
+        },
+        {
+          "target": "pump_W",
+          "model": "RSM-Quadratic",
+          "seconds": 0.04649999999999821
+        }
+      ]
+    },
+    "search": {
+      "objective_vector_rows": 992,
+      "objective_prediction_batches": 21,
+      "population_size": 32,
+      "generations": 10,
+      "runs": 1,
+      "semantics": "Rows requested from the objective surrogate, including repeated evaluations; not CFD solves or unique designs."
+    },
+    "selected_model_parameters": {
+      "Tmax_K": {
+        "memory": "None",
+        "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+        "transform_input": "None",
+        "verbose": "False",
+        "poly": "PolynomialFeatures(include_bias=False)",
+        "scale": "StandardScaler()",
+        "regression": "LinearRegression(n_jobs=1)",
+        "poly__degree": "2",
+        "poly__include_bias": "False",
+        "poly__interaction_only": "False",
+        "poly__order": "C",
+        "scale__copy": "True",
+        "scale__with_mean": "True",
+        "scale__with_std": "True",
+        "regression__copy_X": "True",
+        "regression__fit_intercept": "True",
+        "regression__n_jobs": "1",
+        "regression__positive": "False",
+        "regression__tol": "1e-06"
+      },
+      "deltaT_K": {
+        "memory": "None",
+        "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+        "transform_input": "None",
+        "verbose": "False",
+        "poly": "PolynomialFeatures(include_bias=False)",
+        "scale": "StandardScaler()",
+        "regression": "LinearRegression(n_jobs=1)",
+        "poly__degree": "2",
+        "poly__include_bias": "False",
+        "poly__interaction_only": "False",
+        "poly__order": "C",
+        "scale__copy": "True",
+        "scale__with_mean": "True",
+        "scale__with_std": "True",
+        "regression__copy_X": "True",
+        "regression__fit_intercept": "True",
+        "regression__n_jobs": "1",
+        "regression__positive": "False",
+        "regression__tol": "1e-06"
+      },
+      "pump_W": {
+        "memory": "None",
+        "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+        "transform_input": "None",
+        "verbose": "False",
+        "poly": "PolynomialFeatures(include_bias=False)",
+        "scale": "StandardScaler()",
+        "regression": "LinearRegression(n_jobs=1)",
+        "poly__degree": "2",
+        "poly__include_bias": "False",
+        "poly__interaction_only": "False",
+        "poly__order": "C",
+        "scale__copy": "True",
+        "scale__with_mean": "True",
+        "scale__with_std": "True",
+        "regression__copy_X": "True",
+        "regression__fit_intercept": "True",
+        "regression__n_jobs": "1",
+        "regression__positive": "False",
+        "regression__tol": "1e-06"
+      }
+    },
+    "runtime_seconds": {
+      "preprocessing": 0.05099999999999838,
+      "model_validation_and_fit": 0.2703000000000024,
+      "holdout_and_constraints": 0.044299999999999784,
+      "nsga2_search": 0.3434999999999988,
+      "postprocessing": 0.19960000000000022,
+      "total": 0.9086999999999996
+    },
+    "distance_formula": "sqrt(sum(w*delta^2))",
+    "weights": "Input weights divided by their sum",
+    "normalization": "Frozen training minima and maxima; improvements beyond ideal have zero loss",
+    "reference_score": "S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",
+    "direct_cfd_solves": 0,
+    "runtime_initialization_seconds": 26.995399999991058,
+    "runtime_warm": false
+  },
+  "scope": "Current recorded data only. Surrogate predictions are not new CFD solutions.",
+  "data": [
+    {
+      "seed": 42,
+      "generation": 1,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.72846116130829
+    },
+    {
+      "seed": 42,
+      "generation": 2,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.72846116130829
+    },
+    {
+      "seed": 42,
+      "generation": 3,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.72846116130829
+    },
+    {
+      "seed": 42,
+      "generation": 4,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.72846116130829
+    },
+    {
+      "seed": 42,
+      "generation": 5,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.733160328032138
+    },
+    {
+      "seed": 42,
+      "generation": 6,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.733160328032138
+    },
+    {
+      "seed": 42,
+      "generation": 7,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.733160328032138
+    },
+    {
+      "seed": 42,
+      "generation": 8,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.733160328032138
+    },
+    {
+      "seed": 42,
+      "generation": 9,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.726265979865237
+    },
+    {
+      "seed": 42,
+      "generation": 10,
+      "feasible_count": 32,
+      "nondominated_count": 32,
+      "reference_ideal_utility": 0.726265979865237
+    }
+  ],
+  "rendered_metadata": {
+    "format": "research-figure-evidence",
+    "version": 1,
+    "created_utc": "2026-10-06T07:40:26.169Z",
+    "plot": {
+      "type": "convergence",
+      "source": "decision_matrix",
+      "x": "归一化::Tmax_K",
+      "y": "归一化::deltaT_K",
+      "color": "归一化::pump_W",
+      "xlabel": "归一化::Tmax_K",
+      "ylabel": "归一化::deltaT_K",
+      "colorlabel": "归一化::pump_W",
+      "title": "Per-generation reference utility",
+      "panel": "(a)",
+      "W": 1000,
+      "H": 650,
+      "size": 19,
+      "radius": 5,
+      "font": "Times New Roman",
+      "colormap": "viridis",
+      "marker": "filled",
+      "xmin": null,
+      "xmax": null,
+      "ymin": null,
+      "ymax": null,
+      "cmin": null,
+      "cmax": null,
+      "reference": true,
+      "grid": false,
+      "connect": false,
+      "correlation": "pearson"
+    },
+    "source": "Actual post-selection population records per generation and seed",
+    "data_rows": 10,
+    "training_data_sha256": "02b01a0b9940b22e2b5fe3d3f6153985a9bc91a891c8c06f717c8912b50045d0",
+    "config": {
+      "name": "电池液冷",
+      "variables": [
+        "flow_L_min",
+        "channel_mm",
+        "channels"
+      ],
+      "objectives": [
+        {
+          "column": "Tmax_K",
+          "direction": "min",
+          "unit": "K",
+          "weight": 1
+        },
+        {
+          "column": "deltaT_K",
+          "direction": "min",
+          "unit": "K",
+          "weight": 1
+        },
+        {
+          "column": "pump_W",
+          "direction": "min",
+          "unit": "W",
+          "weight": 1
+        }
+      ],
+      "constraints": [
+        {
+          "expression": "Tmax_K",
+          "relation": "<=",
+          "limit": 315,
+          "tolerance": 0,
+          "scale": 10
+        }
+      ],
+      "model": "RSM-Quadratic",
+      "domain": "box",
+      "max_distance": null,
+      "validation": "group",
+      "folds": 5,
+      "group_column": "batch",
+      "time_column": "",
+      "holdout_column": "batch",
+      "holdout_value": "F",
+      "duplicates": "reject",
+      "seed": 42,
+      "population": 32,
+      "generations": 10,
+      "runs": 1,
+      "decision": "IDEAL",
+      "sources": [],
+      "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+      "responses": [],
+      "mode": "general",
+      "problem": {
+        "name": "电池液冷",
+        "variables": [
+          {
+            "column": "flow_L_min",
+            "lower": 0.5,
+            "upper": 3,
+            "unit": "L/min",
+            "kind": "continuous",
+            "allowed": []
+          },
+          {
+            "column": "channel_mm",
+            "lower": 2,
+            "upper": 8,
+            "unit": "mm",
+            "kind": "continuous",
+            "allowed": []
+          },
+          {
+            "column": "channels",
+            "lower": 2,
+            "upper": 6,
+            "unit": "",
+            "kind": "integer",
+            "allowed": []
+          }
+        ],
+        "objectives": [
+          {
+            "column": "Tmax_K",
+            "direction": "min",
+            "unit": "K",
+            "weight": 1
+          },
+          {
+            "column": "deltaT_K",
+            "direction": "min",
+            "unit": "K",
+            "weight": 1
+          },
+          {
+            "column": "pump_W",
+            "direction": "min",
+            "unit": "W",
+            "weight": 1
+          }
+        ],
+        "constraints": [
+          {
+            "expression": "Tmax_K",
+            "relation": "<=",
+            "limit": 315,
+            "tolerance": 0,
+            "scale": 10
+          }
+        ],
+        "model": "RSM-Quadratic",
+        "domain": "box",
+        "max_distance": null,
+        "validation": "group",
+        "folds": 5,
+        "group_column": "batch",
+        "time_column": "",
+        "holdout_column": "batch",
+        "holdout_value": "F",
+        "duplicates": "reject",
+        "seed": 42,
+        "population": 32,
+        "generations": 10,
+        "runs": 1,
+        "decision": "IDEAL",
+        "sources": [],
+        "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+        "responses": []
+      },
+      "target_names": [
+        "Tmax_K",
+        "deltaT_K",
+        "pump_W"
+      ],
+      "software_version": "0.2.0",
+      "directions": [
+        "min",
+        "min",
+        "min"
+      ],
+      "normalized_weights": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "decision_method": "IDEAL",
+      "anchor_minimum": [
+        300.2,
+        3.9694139786,
+        1.2
+      ],
+      "anchor_maximum": [
+        315.65,
+        6.716834427,
+        12.6
+      ],
+      "anchor_source": "training_only_before_search",
+      "search_lower": [
+        0.5,
+        2,
+        2
+      ],
+      "search_upper": [
+        3,
+        8,
+        6
+      ],
+      "sample_count": 50,
+      "holdout_count": 10,
+      "cv": "按指定分组验证",
+      "cv_folds": 5,
+      "cv_fold_sizes": [
+        {
+          "train": 40,
+          "validation": 10
+        },
+        {
+          "train": 40,
+          "validation": 10
+        },
+        {
+          "train": 40,
+          "validation": 10
+        },
+        {
+          "train": 40,
+          "validation": 10
+        },
+        {
+          "train": 40,
+          "validation": 10
+        }
+      ],
+      "cv_seed": 42,
+      "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+      "selected_models": {
+        "Tmax_K": "RSM-Quadratic",
+        "deltaT_K": "RSM-Quadratic",
+        "pump_W": "RSM-Quadratic"
+      },
+      "library_versions": {
+        "python": "3.13.2",
+        "numpy": "2.2.5",
+        "pandas": "2.3.3",
+        "scipy": "1.14.1",
+        "sklearn": "1.7.0"
+      },
+      "clean_data_sha256": "02b01a0b9940b22e2b5fe3d3f6153985a9bc91a891c8c06f717c8912b50045d0",
+      "source_sha256": {},
+      "calculation_audit": {
+        "training": {
+          "fit_attempts": 18,
+          "fits_completed": 18,
+          "candidate_families": [
+            "RSM-Quadratic"
+          ],
+          "response_count": 3,
+          "validation_folds": 5,
+          "validation_timings": [
+            {
+              "target": "Tmax_K",
+              "model": "RSM-Quadratic",
+              "seconds": 0.0829000000000022
+            },
+            {
+              "target": "deltaT_K",
+              "model": "RSM-Quadratic",
+              "seconds": 0.046299999999998676
+            },
+            {
+              "target": "pump_W",
+              "model": "RSM-Quadratic",
+              "seconds": 0.04649999999999821
+            }
+          ]
+        },
+        "search": {
+          "objective_vector_rows": 992,
+          "objective_prediction_batches": 21,
+          "population_size": 32,
+          "generations": 10,
+          "runs": 1,
+          "semantics": "Rows requested from the objective surrogate, including repeated evaluations; not CFD solves or unique designs."
+        },
+        "selected_model_parameters": {
+          "Tmax_K": {
+            "memory": "None",
+            "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+            "transform_input": "None",
+            "verbose": "False",
+            "poly": "PolynomialFeatures(include_bias=False)",
+            "scale": "StandardScaler()",
+            "regression": "LinearRegression(n_jobs=1)",
+            "poly__degree": "2",
+            "poly__include_bias": "False",
+            "poly__interaction_only": "False",
+            "poly__order": "C",
+            "scale__copy": "True",
+            "scale__with_mean": "True",
+            "scale__with_std": "True",
+            "regression__copy_X": "True",
+            "regression__fit_intercept": "True",
+            "regression__n_jobs": "1",
+            "regression__positive": "False",
+            "regression__tol": "1e-06"
+          },
+          "deltaT_K": {
+            "memory": "None",
+            "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+            "transform_input": "None",
+            "verbose": "False",
+            "poly": "PolynomialFeatures(include_bias=False)",
+            "scale": "StandardScaler()",
+            "regression": "LinearRegression(n_jobs=1)",
+            "poly__degree": "2",
+            "poly__include_bias": "False",
+            "poly__interaction_only": "False",
+            "poly__order": "C",
+            "scale__copy": "True",
+            "scale__with_mean": "True",
+            "scale__with_std": "True",
+            "regression__copy_X": "True",
+            "regression__fit_intercept": "True",
+            "regression__n_jobs": "1",
+            "regression__positive": "False",
+            "regression__tol": "1e-06"
+          },
+          "pump_W": {
+            "memory": "None",
+            "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+            "transform_input": "None",
+            "verbose": "False",
+            "poly": "PolynomialFeatures(include_bias=False)",
+            "scale": "StandardScaler()",
+            "regression": "LinearRegression(n_jobs=1)",
+            "poly__degree": "2",
+            "poly__include_bias": "False",
+            "poly__interaction_only": "False",
+            "poly__order": "C",
+            "scale__copy": "True",
+            "scale__with_mean": "True",
+            "scale__with_std": "True",
+            "regression__copy_X": "True",
+            "regression__fit_intercept": "True",
+            "regression__n_jobs": "1",
+            "regression__positive": "False",
+            "regression__tol": "1e-06"
+          }
+        },
+        "runtime_seconds": {
+          "preprocessing": 0.05099999999999838,
+          "model_validation_and_fit": 0.2703000000000024,
+          "holdout_and_constraints": 0.044299999999999784,
+          "nsga2_search": 0.3434999999999988,
+          "postprocessing": 0.19960000000000022,
+          "total": 0.9086999999999996
+        },
+        "distance_formula": "sqrt(sum(w*delta^2))",
+        "weights": "Input weights divided by their sum",
+        "normalization": "Frozen training minima and maxima; improvements beyond ideal have zero loss",
+        "reference_score": "S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",
+        "direct_cfd_solves": 0,
+        "runtime_initialization_seconds": 26.995399999991058,
+        "runtime_warm": false
+      },
+      "browser_runtime": {
+        "platform": "emscripten",
+        "python": "3.13.2",
+        "numpy": "2.2.5",
+        "pandas": "2.3.3",
+        "scipy": "1.14.1",
+        "sklearn": "1.7.0",
+        "openpyxl": "3.1.5",
+        "pyodide": "0.29.3",
+        "source_sha256": {
+          "mtpv_optimizer/__init__.py": "c5393d3218aca0011f762aefd1443bed0233cfea21e009e6328c0d66d7319bd6",
+          "mtpv_optimizer/core.py": "6dc6a26eb7e57f0d51cdfc7f571ec891e27ec8263ca2e75cf128a3d97d31645b",
+          "mtpv_optimizer/coupled.py": "a6869ea24416dc86fc2611f4511ae75dae03c2f2902c54dd3f8a36d388a48d80",
+          "mtpv_optimizer/dat_parser.py": "059582ea4a4f64574b5ed5854ecba11a1bd4a699082a583dacc3c116b25a5fde",
+          "mtpv_optimizer/doe.py": "cbd571d6f4d589f7c057e1cfacbae60c71809ee8be0dd7b11e29f4297e8fd90a",
+          "mtpv_optimizer/domain.py": "5def038bde5d6422f462b721e910440dc5a00ae4f4059b0f31fd053c0071eb20",
+          "mtpv_optimizer/general.py": "ce7980db1d46688aec71f0543e08b0c847720cc6d69be9e98c8939e8134b597c",
+          "mtpv_optimizer/nsga2.py": "dfd8fcbacc8f121d4e130483a8cb4616989b034bd679ec0350dde6b11253609a",
+          "mtpv_optimizer/presets.py": "19622217b24e6c5dbc6f3965f7d8e7b6740409e430af27e756222a8f7dcc2b30",
+          "mtpv_optimizer/problem.py": "71200acc9ff03474b9f61206d365e1a9785008be3e6dc68fdd7fe9a06414a4bb",
+          "mtpv_optimizer/workflow.py": "7e8a59f79de74aa8885500d5ee3de15397e26861e3ada7efe4f5bf70889f3e7f",
+          "mtpv_optimizer/scientific.py": "09c669f57c4c51e5a01403be4f6becbb6b91bcc8ab7eee0c857ac4072e6f0611"
+        },
+        "scope": "General numerical-table workflow; no Qt, no private research records.",
+        "browser_adjustment": "Forest estimators run with n_jobs=1 in the browser."
+      }
+    },
+    "calculation_audit": {
+      "training": {
+        "fit_attempts": 18,
+        "fits_completed": 18,
+        "candidate_families": [
+          "RSM-Quadratic"
+        ],
+        "response_count": 3,
+        "validation_folds": 5,
+        "validation_timings": [
+          {
+            "target": "Tmax_K",
+            "model": "RSM-Quadratic",
+            "seconds": 0.0829000000000022
+          },
+          {
+            "target": "deltaT_K",
+            "model": "RSM-Quadratic",
+            "seconds": 0.046299999999998676
+          },
+          {
+            "target": "pump_W",
+            "model": "RSM-Quadratic",
+            "seconds": 0.04649999999999821
+          }
+        ]
+      },
+      "search": {
+        "objective_vector_rows": 992,
+        "objective_prediction_batches": 21,
+        "population_size": 32,
+        "generations": 10,
+        "runs": 1,
+        "semantics": "Rows requested from the objective surrogate, including repeated evaluations; not CFD solves or unique designs."
+      },
+      "selected_model_parameters": {
+        "Tmax_K": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        },
+        "deltaT_K": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        },
+        "pump_W": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        }
+      },
+      "runtime_seconds": {
+        "preprocessing": 0.05099999999999838,
+        "model_validation_and_fit": 0.2703000000000024,
+        "holdout_and_constraints": 0.044299999999999784,
+        "nsga2_search": 0.3434999999999988,
+        "postprocessing": 0.19960000000000022,
+        "total": 0.9086999999999996
+      },
+      "distance_formula": "sqrt(sum(w*delta^2))",
+      "weights": "Input weights divided by their sum",
+      "normalization": "Frozen training minima and maxima; improvements beyond ideal have zero loss",
+      "reference_score": "S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",
+      "direct_cfd_solves": 0,
+      "runtime_initialization_seconds": 26.995399999991058,
+      "runtime_warm": false
+    },
+    "scope": "Current recorded data only. Surrogate predictions are not new CFD solutions."
+  }
+}

@@ -249,10 +249,14 @@ def export_workbook(output, filename):
                             ("候选模型比较", output.bundle.candidate_metrics), ("交叉验证预测", output.bundle.validation_frame),
                             ("响应留出检验", getattr(output.bundle, "holdout_frame", pd.DataFrame())), ("源数据", output.clean)):
             table.to_excel(writer, index=False, sheet_name=name)
-        for attribute, name in (("constraint_audit", "可行性与覆盖诊断"), ("cleaning_audit", "数据清理记录"), ("holdout_metrics", "独立留出指标")):
+        for attribute, name in (("constraint_audit", "可行性与覆盖诊断"), ("cleaning_audit", "数据清理记录"), ("holdout_metrics", "独立留出指标"),
+                                ("decision_matrix", "预测决策矩阵"), ("observed_decision_matrix", "实测决策矩阵"), ("search_history", "逐代搜索记录")):
             table = getattr(output, attribute, None)
             if table is not None:
                 table.to_excel(writer, index=False, sheet_name=name)
+        if hasattr(output, "correlation"):
+            for key, name in (("pearson", "Pearson相关矩阵"), ("spearman", "Spearman相关矩阵"), ("pairs", "相关样本数")):
+                output.correlation[key].to_excel(writer, sheet_name=name)
         pd.DataFrame([(key, json.dumps(value, ensure_ascii=False)) for key, value in output.config.items()],
                      columns=["设置", "值"]).to_excel(writer, index=False, sheet_name="运行设置")
     path.with_suffix(".json").write_text(json.dumps(output.config, ensure_ascii=False, indent=2), encoding="utf-8")

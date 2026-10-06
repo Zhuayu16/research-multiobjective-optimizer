@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Callable
 
 import numpy as np
@@ -15,6 +15,8 @@ class NSGA2Result:
     utility: np.ndarray
     recommended_index: int
     run_summary: list[dict] | None = None
+    history: list[dict] = field(default_factory=list)
+    evaluation_audit: dict = field(default_factory=dict)
 
 
 def _dominates(a: np.ndarray, b: np.ndarray) -> bool:
@@ -199,6 +201,8 @@ def _run_once(
     generations: int = 100,
     seed: int = 42,
     progress: Callable[[int, int], None] | None = None,
+    trace=None,
+    audit=None,
 ) -> tuple[np.ndarray, np.ndarray]:
     if population_size < 20:
         raise ValueError("种群规模至少为 20。")
@@ -226,8 +230,14 @@ def _run_once(
         if not valid.all():
             population[~valid] = population[rng.choice(np.flatnonzero(valid), size=int((~valid).sum()))]
 
+    def evaluate(values):
+        if audit is not None:
+            audit["objective_vector_rows"] += len(values)
+            audit["objective_prediction_batches"] += 1
+        return _fitness(bundle, values)
+
     for generation in range(generations):
-        predicted, fitness = _fitness(bundle, population)
+        predicted, fitness = evaluate(population)
         rank, crowding, _ = _rank_and_crowding(fitness, _violations(bundle, population, predicted))
         children: list[np.ndarray] = []
         while len(children) < population_size:
@@ -241,8 +251,9 @@ def _run_once(
                 children.append(domain.repair(c2, p2) if domain is not None else c2)
 
         combined = np.vstack((population, np.asarray(children)))
-        combined_predicted, combined_fitness = _fitness(bundle, combined)
-        _, _, fronts = _rank_and_crowding(combined_fitness, _violations(bundle, combined, combined_predicted))
+        combined_predicted, combined_fitness = evaluate(combined)
+        combined_violation = _violations(bundle, combined, combined_predicted)
+        _, _, fronts = _rank_and_crowding(combined_fitness, combined_violation)
         selected: list[int] = []
         for front in fronts:
             remaining = population_size - len(selected)
@@ -254,10 +265,12 @@ def _run_once(
                 selected.extend(front[order[:remaining]].tolist())
                 break
         population = combined[np.asarray(selected, dtype=int)]
+        if trace:
+            trace(generation + 1, combined_predicted[selected], combined_violation[selected])
         if progress and (generation == 0 or (generation + 1) % 5 == 0 or generation + 1 == generations):
             progress(generation + 1, generations)
 
-    predicted, final_fitness = _fitness(bundle, population)
+    predicted, final_fitness = evaluate(population)
     violations = _violations(bundle, population, predicted)
     fronts, _ = _non_dominated_sort(final_fitness, violations)
     pareto_indices = fronts[0]
@@ -290,17 +303,34 @@ def optimize_nsga2(
     directions = getattr(bundle, "directions", None)
     weights = normalized_weights(weights, len(bundle.target_names))
     summaries = []
+    history = []
+    evaluation_audit = dict(objective_vector_rows=0, objective_prediction_batches=0,
+        population_size=population_size, generations=generations, runs=runs,
+        semantics="Rows requested from the objective surrogate, including repeated evaluations; not CFD solves or unique designs.")
     total_steps = generations * runs
     for run_index in range(runs):
         callback = None
         if progress:
             callback = lambda current, _total, offset=run_index * generations: progress(offset + current, total_steps)
+        run_seed = seed + 7919 * run_index
+        def trace(generation, y, violations):
+            feasible = violations <= 1e-10
+            valid = y[feasible]
+            if len(valid):
+                front = _non_dominated_sort(valid * objective_signs(directions, valid.shape[1]))[0][0]
+                reference = decision_scores(valid, weights, "IDEAL", anchors, directions) if anchors is not None else None
+            else:
+                front, reference = [], None
+            history.append(dict(seed=run_seed, generation=generation, feasible_count=int(feasible.sum()),
+                nondominated_count=len(front), reference_ideal_utility=float(reference.max()) if reference is not None else None))
         run_x, run_y = _run_once(
             bundle,
             population_size=population_size,
             generations=generations,
             seed=seed + 7919 * run_index,
             progress=callback,
+            trace=trace,
+            audit=evaluation_audit,
         )
         all_x.append(run_x)
         all_y.append(run_y)
@@ -335,4 +365,6 @@ def optimize_nsga2(
         utility=utility[order],
         recommended_index=recommended_sorted,
         run_summary=summaries,
+        history=history,
+        evaluation_audit=evaluation_audit,
     )

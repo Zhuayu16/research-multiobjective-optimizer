@@ -137,7 +137,7 @@ class GeneralWindow(QMainWindow):
         self.runs = self.number(2, True, 1, 20)
         self.seed = self.number(42, minimum=0, maximum=2**32 - 1)
         self.seed.setDecimals(0)
-        self.decision_box = self.choice([(n, n) for n in ("IDEAL", "TOPSIS", "ARAS")])
+        self.decision_box = self.choice([(n, n) for n in ("IDEAL", "IDEAL-COEFFICIENT", "TOPSIS", "ARAS")])
         for name, control in (("项目名称", self.name_edit), ("代理模型", self.model_box), ("种群规模", self.population),
              ("迭代次数", self.generations), ("独立运行次数", self.runs), ("随机种子", self.seed), ("推荐排序方法", self.decision_box)):
             form.addRow(name, control)

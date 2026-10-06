@@ -1,6 +1,7 @@
 /* The worker receives files in memory; it never uploads their contents. */
 const INDEX = 'https://cdn.jsdelivr.net/pyodide/v0.29.3/full/';
 let ready;
+let initialized = false;
 async function initialize(id) {
   const stage = (percent, message) => self.postMessage({type:'progress', id, percent, message});
   stage(4, '正在加载浏览器计算环境');
@@ -34,8 +35,13 @@ self.onmessage = event => {
   const request = event.data;
   queue = queue.catch(()=>{}).then(async()=> {
     try {
+      const started = performance.now(), warm = initialized;
       ready ??= initialize(request.id).catch(error => {ready=undefined; throw error;});
       const py = await ready;
+      initialized = true;
+      request.payload ??= {};
+      request.payload.runtime_initialization_seconds = (performance.now()-started)/1000;
+      request.payload.runtime_warm = warm;
       py.globals.set('_browser_request', JSON.stringify(request));
       const result = JSON.parse(await py.runPythonAsync('browser_call(_browser_request)'));
       self.postMessage({type:'result', id:request.id, result});

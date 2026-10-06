@@ -1,4 +1,5 @@
 import {renderProblemSnapshot,renderScientificPanels} from './analysis.js';
+import {initializePlotLab,updatePlotLab,paperScatterSVG} from './plot-lab.js';
 const $ = id => document.getElementById(id);
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone = value => structuredClone(value);
@@ -42,7 +43,7 @@ function request(op,payload) {
 function setBusy(busy, message='正在准备计算') {
   state.busy=busy; $('config-fieldset').disabled=busy; $('run-button').disabled=busy || !state.p;
   $('run-button').textContent=busy?'正在计算…':'运行优化 ↗';
-  ['example-select','import-button','sheet-select','download-input','doe-button'].forEach(id=>$(id).disabled=busy);
+  ['example-select','import-button','sheet-select','download-input','doe-button','plot-window-button'].forEach(id=>$(id).disabled=busy);
   $('cancel-button').hidden=!busy; $('progress-track').hidden=!busy;
   $('progress-bar').style.width='3%'; $('export-toggle').disabled=busy || !state.result;
   if(message) $('run-status').textContent=message;
@@ -132,7 +133,7 @@ function table(id,rows,columns=null,limit=100) {
   columns=columns||Object.keys(rows[0]);
   $(id).innerHTML=`<table><thead><tr>${columns.map(c=>`<th scope="col">${escapeHTML(c)}</th>`).join('')}</tr></thead><tbody>${rows.slice(0,limit).map(row=>`<tr>${columns.map(c=>`<td>${escapeHTML(format(row[c]))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 }
-function emptyChart(message='运行优化，探索你的设计空间。') {return `<div class="empty-state"><span class="empty-glyph">↗</span><strong>${escapeHTML(message)}</strong><p>设置设计变量、目标方向与工程约束，生成当前配置下的候选和验证结果。</p></div>`;}
+function emptyChart(message='当前配置尚无计算结果') {return `<div class="empty-state"><span class="empty-glyph">↗</span><strong>${escapeHTML(message)}</strong><p>设置设计变量、目标方向与工程约束，生成当前配置下的候选和验证结果。</p></div>`;}
 function scatter(host, {predicted=[],observed=[],x,y,color='',recommended=true,interactive=true,label='',height=320}) {
   const valid=row=>row[x]!==null&&row[y]!==null&&Number.isFinite(Number(row[x]))&&Number.isFinite(Number(row[y]));
   const a=predicted.filter(valid),b=observed.filter(valid),all=[...a,...b];
@@ -154,6 +155,14 @@ function scatter(host, {predicted=[],observed=[],x,y,color='',recommended=true,i
   const rec=a[0];
   const star=rec&&recommended?`<path d="M0-8 2.2-2.6 8-2.6 3.6 1 5.2 7 0 3.6-5.2 7-3.6 1-8-2.6-2.2-2.6Z" transform="translate(${X(rec[x])} ${Y(rec[y])})" fill="#d68c61" stroke="white" stroke-width="1.2"><title>当前偏好推荐</title></path>`:'';
   host.innerHTML=`<svg class="scatter-chart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escapeHTML(label||`${x} 与 ${y} 的设计权衡`)}" style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif"><rect width="${W}" height="${H}" fill="white"/>${lines}<path d="M${L} ${T}V${H-B}H${W-R}" fill="none" stroke="#dbe1e8" stroke-width="1"/><g fill="#98a2b0" font-size="10">${ticks}</g>${points(b,'observed')}${points(a,'predicted')}${star}<text x="${(W+L-R)/2}" y="${H-9}" fill="#818e9f" text-anchor="middle" font-size="11">${escapeHTML(x)}</text><text transform="translate(15 ${(H+T-B)/2}) rotate(-90)" fill="#818e9f" text-anchor="middle" font-size="11">${escapeHTML(y)}</text></svg>`;
+  if(host.id==='main-chart'){
+    const p=readProblem(),unit=key=>[...p.variables,...p.objectives,...p.responses].find(t=>t.column===key)?.unit||'';
+    const caption=key=>key+(unit(key)?` (${unit(key)})`:'');
+    host.innerHTML=paperScatterSVG({predicted:a,observed:b,x,y,color,xlabel:caption(x),ylabel:caption(y),colorlabel:caption(color),
+      W:1000,H:650,title:state.result?'Pareto set · surrogate and measured responses':'Synthetic example preview',
+      evidence:{source:state.result?'Current engine output':'Precomputed synthetic example',training_data_sha256:state.result?.config.clean_data_sha256||null,
+        scope:p.objectives.length>2?'Projection of a higher-dimensional Pareto set':'Objective trade-off plot'}});
+  }
   if(interactive) host.querySelectorAll('.point').forEach(point=>{
     const row=(point.dataset.kind==='observed'?b:a)[Number(point.dataset.index)];
     point.addEventListener('pointermove',event=>{
@@ -176,6 +185,7 @@ function renderOverview() {
   scatter($('main-chart'),{predicted:state.showPredicted?pred:[],observed:state.showObserved?obs:[],x:$('axis-x').value,y:$('axis-y').value,color:$('axis-color').value});
   renderRecommendation(pred[0]);
   renderProblemSnapshot(p,state.rows,result,state.busy);
+  $('budget-evidence').innerHTML=`<b>N = ${escapeHTML(p.population)}，G = ${escapeHTML(p.generations)}，R = ${escapeHTML(p.runs)}</b><br>每个个体是一组设计变量。每代产生 N 个子代，与 N 个父代合并排序后保留 N 个；执行 G 代，无提前停止。当前实现预计请求 ${escapeHTML(format(p.runs*p.population*(3*p.generations+1)))} 行目标向量预测（含重复评估），不是 CFD 求解次数。`;
 }
 function renderResults() {
   if(!state.p) return;
@@ -186,11 +196,16 @@ function renderResults() {
   table('data-table',state.rows,state.columns); $('data-description').textContent=`${state.rows.length} 行完整输入数据 · ${state.columns.length} 列`;
   table('metric-table',result?.metrics);table('model-table',result?.model_comparison);table('holdout-table',result?.holdout_metrics);
   renderScientificPanels(p,state.rows,result,state.preview);
+  updatePlotLab({problem:p,rows:state.rows,columns:state.columns,result,busy:state.busy});
+  table('decision-matrix-table',result?.decision_matrix);table('observed-matrix-table',result?.observed_decision_matrix);
+  const audit=result?.config.calculation_audit;
+  $('matrix-formula').innerHTML=result?`<span>uᵢⱼ = (yᵢⱼ − aⱼ)/(bⱼ − aⱼ)；a、b 为冻结训练响应最小值与最大值。</span><span>最小化：δ = u；最大化：δ = 1 − u；δ⁺ = max(δ, 0)；w = 输入权重 / 权重总和。</span><span>${result.config.decision_method==='IDEAL-COEFFICIENT'?'Dᵢ = √Σ(wⱼδ⁺ᵢⱼ)²（附件形式）':'Dᵢ = √Σwⱼ(δ⁺ᵢⱼ)²'}；S_c = 1/(1+Dᵢ)。TOPSIS / ARAS 的实际综合效用单独列出。</span>`:'完成计算后显示冻结训练锚点与距离公式。';
+  if(audit){const seconds=audit.runtime_seconds;const diff=Math.max(0,...result.decision_matrix.map(r=>Math.abs(r['效用复算差'])));$('calculation-record').innerHTML=`<b>实际完成 ${escapeHTML(audit.training.fits_completed)} 次模型拟合；${escapeHTML(audit.search.objective_vector_rows)} 行目标向量代理评估。</b><br>种群 ${escapeHTML(audit.search.population_size)}，迭代 ${escapeHTML(audit.search.generations)} 代，独立运行 ${escapeHTML(audit.search.runs)} 次；逐代记录 ${result.search_history.length} 条。<br>预处理 ${format(seconds.preprocessing,3)} s；交叉验证与最终拟合 ${format(seconds.model_validation_and_fit,3)} s；留出/约束准备 ${format(seconds.holdout_and_constraints,3)} s；NSGA-II ${format(seconds.nsga2_search,3)} s；后处理 ${format(seconds.postprocessing,3)} s。<br>计算环境准备 ${format(audit.runtime_initialization_seconds,3)} s（${audit.runtime_warm?'已加载环境复用':'本次初始化'}）；引擎总耗时 ${format(seconds.total,3)} s；CFD 求解次数 0。<br>决策效用最大复算差 ${escapeHTML(format(diff))}。计算速度取决于样本量、模型复杂度、验证折数与搜索预算；当前流程评估已拟合代理模型，不求解流场。`;}else $('calculation-record').textContent='尚无本次运行记录。示例预览已预先计算；点击“运行优化”才执行当前配置。';
   if(result) {
     const rows=[['计算位置','当前浏览器 · WebAssembly'],['代理模型',Object.entries(result.config.selected_models).map(([k,v])=>`${k}: ${v}`).join(' / ')],['验证方式',result.config.cv],['随机种子',result.config.seed],['搜索设置',`种群 ${result.config.population} / 迭代 ${result.config.generations} / ${result.config.runs} 次`],['软件版本',result.config.software_version],['训练数据 SHA-256',result.config.clean_data_sha256]];
     $('trace-summary').innerHTML=rows.map(([k,v])=>`<div class="trace-row"><span>${escapeHTML(k)}</span><b>${escapeHTML(v)}</b></div>`).join('')+`<div class="trace-notes">${result.notes.map(n=>`<p>${escapeHTML(n)}</p>`).join('')}</div>`;
     $('config-json').textContent=JSON.stringify(result.config,null,2);
-  } else {$('trace-summary').innerHTML=emptyChart('可追溯的结果，从一次计算开始。');$('config-json').textContent='尚未运行。';}
+  } else {$('trace-summary').innerHTML=emptyChart('运行配置与数据校验记录');$('config-json').textContent='尚未运行。';}
 }
 function renderCandidateTable() {const source=$('candidate-source').value;const rows=state.result?.[source]||(source==='predicted'?state.preview:[]); const p=readProblem();table('candidate-table',rows,['推荐排序',...p.variables.map(v=>v.column),...p.objectives.map(t=>t.column),...p.responses.map(t=>t.column),'综合效用','最近样本距离','约束违反量']);}
 
@@ -199,11 +214,11 @@ async function run() {
   const snapshot={problem:readProblem(),columns:[...state.columns],rows:clone(state.rows)};
   const invalid=$('config-fieldset').querySelector('input:invalid');
   if(invalid) {invalid.reportValidity();invalid.focus();return;}
-  clearResult('正在开始本次研究');setBusy(true,'正在准备浏览器计算环境。首次运行需要网络连接。');
+  clearResult('正在执行本次优化计算');setBusy(true,'正在准备浏览器计算环境。首次运行需要网络连接。');
   try {
     const result=await request('run',snapshot);state.result=result;$('dirty-badge').textContent='本次计算';renderResults();
     $('run-status').textContent=`已完成 · ${result.predicted.length} 个预测候选 · ${format(result.elapsed_seconds,3)} 秒。`;
-    toast('优化完成。查看模型验证，并下载项目以留存这次研究。');
+    toast('优化计算完成。请核查模型验证与决策矩阵，并保存结果。');
   } catch(error) { $('run-status').textContent=error.message==='已取消'?'已取消计算，可修改配置后重新开始。':'计算未完成：'+error.message; if(error.message!=='已取消') toast('计算未完成。'+error.message); }
   finally {setBusy(false,null);}
 }
@@ -295,4 +310,5 @@ async function main() {
     scatter($('hero-chart'),{predicted:e.preview,observed:e.table.data.map(values=>Object.fromEntries(e.table.columns.map((c,i)=>[c,values[i]]))),x:'heat_W',y:'dp_Pa',height:270,interactive:false});
   }catch(error){$('run-status').textContent='页面资源未能加载，请通过网站地址打开或刷新重试。';toast(error.message);}
 }
+initializePlotLab({request,notify:toast});
 main();

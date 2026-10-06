@@ -5,16 +5,18 @@ from pathlib import Path
 from typing import Any, Iterable
 import warnings
 import json
+import time
 
 import numpy as np
 import pandas as pd
 from sklearn.base import clone
 from sklearn.compose import TransformedTargetRegressor
-from sklearn.ensemble import ExtraTreesRegressor, GradientBoostingRegressor, RandomForestRegressor
+from sklearn.ensemble import AdaBoostRegressor, ExtraTreesRegressor, GradientBoostingRegressor, RandomForestRegressor
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import ConstantKernel, Matern
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import ElasticNet, LinearRegression, Ridge
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import KFold, cross_val_predict
 from sklearn.neural_network import MLPRegressor
@@ -201,7 +203,15 @@ def _candidate_models(seed: int, n_variables: int = 3) -> dict[str, Any]:
     )
     return {
         "Linear": scaled_linear,
+        "Ridge-L2": Pipeline([("scale", StandardScaler()), ("regression", Ridge(alpha=1.0))]),
+        "ElasticNet": Pipeline([("scale", StandardScaler()), ("regression", TransformedTargetRegressor(
+            regressor=ElasticNet(alpha=0.003, l1_ratio=0.5, max_iter=10000, random_state=seed), transformer=StandardScaler()))]),
         "RSM-Quadratic": quadratic,
+        "RSM-Cubic": Pipeline([("poly", PolynomialFeatures(degree=3, include_bias=False)),
+            ("scale", StandardScaler()), ("regression", Ridge(alpha=0.1))]),
+        "KNN-Distance": Pipeline([("scale", StandardScaler()),
+            ("regression", KNeighborsRegressor(n_neighbors=3, weights="distance", n_jobs=1))]),
+        "AdaBoost": AdaBoostRegressor(n_estimators=120, learning_rate=0.05, random_state=seed),
         "MLP-NeuralNet": mlp,
         "GaussianProcess": gpr,
         "SVR-RBF": Pipeline(
@@ -277,18 +287,24 @@ def fit_surrogates(
         if model_mode not in candidates:
             raise ValueError(f"未知代理模型：{model_mode}")
         candidates = {model_mode: candidates[model_mode]}
+    fit_attempts = fit_completed = 0
+    validation_timings = []
     for name in target_names:
         y = frame[name].to_numpy(dtype=float)
         scale = max(float(np.std(y, ddof=1)), 1e-12)
         evaluated: list[tuple[float, str, Any, np.ndarray, dict[str, float]]] = []
         for model_name, candidate in candidates.items():
+            candidate_started = time.perf_counter()
             try:
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", category=ConvergenceWarning)
                     warnings.simplefilter("ignore", category=UserWarning)
                     predicted_cv = np.full(len(x), np.nan)
                     for train, test in cv:
-                        predicted_cv[test] = clone(candidate).fit(x[train], y[train]).predict(x[test])
+                        fit_attempts += 1
+                        fitted = clone(candidate).fit(x[train], y[train])
+                        fit_completed += 1
+                        predicted_cv[test] = fitted.predict(x[test])
                 truth, pred = y[scored], predicted_cv[scored]
                 rmse = float(np.sqrt(mean_squared_error(truth, pred)))
                 # Relative errors are undefined near zero; keep absolute metrics usable.
@@ -327,13 +343,16 @@ def fit_surrogates(
                         "状态": f"失败: {exc}",
                     }
                 )
+            validation_timings.append(dict(target=name, model=model_name, seconds=time.perf_counter()-candidate_started))
         if not evaluated:
             raise ValueError(f"目标“{name}”的所有候选模型均训练失败。")
         _, best_name, best_template, predicted_cv, values = min(evaluated, key=lambda item: item[0])
         model = clone(best_template)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=ConvergenceWarning)
+            fit_attempts += 1
             model.fit(x, y)
+            fit_completed += 1
         predicted_fit = model.predict(x)
         metrics.append(
             Metric(
@@ -362,7 +381,7 @@ def fit_surrogates(
             )
         )
 
-    return ModelBundle(
+    bundle = ModelBundle(
         variable_names=variable_names,
         target_names=target_names,
         models=models,
@@ -375,6 +394,9 @@ def fit_surrogates(
         domain=SampleDomain(x, lower, upper, integer_indices) if use_hull else None,
         training_x=x,
     )
+    bundle.training_audit = dict(fit_attempts=fit_attempts, fits_completed=fit_completed,
+        candidate_families=list(candidates), response_count=len(target_names), validation_folds=len(cv), validation_timings=validation_timings)
+    return bundle
 
 
 def objective_signs(directions, count):
@@ -421,7 +443,7 @@ def topsis_scores(objectives, weights=None, directions=None):
     return negative_distance / np.maximum(positive_distance + negative_distance, 1e-12)
 
 
-def ideal_distances(objectives, weights=None, anchors=None, directions=None):
+def ideal_distances(objectives, weights=None, anchors=None, directions=None, weighting="variance"):
     values = _objective_array(objectives)
     count = values.shape[1]
     if anchors is None:
@@ -436,12 +458,17 @@ def ideal_distances(objectives, weights=None, anchors=None, directions=None):
     # improvements beyond the ideal anchor as zero loss, never as a penalty.
     if directions is not None:
         cost = np.maximum(cost, 0.0)
-    return np.sqrt(np.sum(normalized_weights(weights, count) * cost**2, axis=1))
+    if weighting not in {"variance", "coefficient"}:
+        raise ValueError("Distance weighting must be variance or coefficient.")
+    w = normalized_weights(weights, count)
+    return np.sqrt(np.sum((w if weighting == "variance" else w**2) * cost**2, axis=1))
 
 
 def decision_scores(objectives, weights=None, method="TOPSIS", anchors=None, directions=None):
     if method.upper() == "IDEAL":
         return 1.0 / (1.0 + ideal_distances(objectives, weights, anchors, directions))
+    if method.upper() == "IDEAL-COEFFICIENT":
+        return 1.0 / (1.0 + ideal_distances(objectives, weights, anchors, directions, "coefficient"))
     if method.upper() == "TOPSIS":
         return topsis_scores(objectives, weights, directions)
     if method.upper() == "ARAS":

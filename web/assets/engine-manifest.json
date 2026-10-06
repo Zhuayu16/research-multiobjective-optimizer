@@ -2,16 +2,17 @@
   "pyodide": "0.29.3",
   "source_sha256": {
     "mtpv_optimizer/__init__.py": "c5393d3218aca0011f762aefd1443bed0233cfea21e009e6328c0d66d7319bd6",
-    "mtpv_optimizer/core.py": "f0f770bb2813cb503f297b96c80c198b32d1b10d141fd8448085aacda1bc417b",
+    "mtpv_optimizer/core.py": "6dc6a26eb7e57f0d51cdfc7f571ec891e27ec8263ca2e75cf128a3d97d31645b",
     "mtpv_optimizer/coupled.py": "a6869ea24416dc86fc2611f4511ae75dae03c2f2902c54dd3f8a36d388a48d80",
     "mtpv_optimizer/dat_parser.py": "059582ea4a4f64574b5ed5854ecba11a1bd4a699082a583dacc3c116b25a5fde",
     "mtpv_optimizer/doe.py": "cbd571d6f4d589f7c057e1cfacbae60c71809ee8be0dd7b11e29f4297e8fd90a",
     "mtpv_optimizer/domain.py": "5def038bde5d6422f462b721e910440dc5a00ae4f4059b0f31fd053c0071eb20",
-    "mtpv_optimizer/general.py": "2329afad04dd1efdab8dde0e455fbda7e7fcefc90f7b3734abee6c11e4339eb7",
-    "mtpv_optimizer/nsga2.py": "0541ee280ba369059c0b42397cb957975d2577d65576a1813f44f53b3bce688d",
+    "mtpv_optimizer/general.py": "ce7980db1d46688aec71f0543e08b0c847720cc6d69be9e98c8939e8134b597c",
+    "mtpv_optimizer/nsga2.py": "dfd8fcbacc8f121d4e130483a8cb4616989b034bd679ec0350dde6b11253609a",
     "mtpv_optimizer/presets.py": "19622217b24e6c5dbc6f3965f7d8e7b6740409e430af27e756222a8f7dcc2b30",
     "mtpv_optimizer/problem.py": "71200acc9ff03474b9f61206d365e1a9785008be3e6dc68fdd7fe9a06414a4bb",
-    "mtpv_optimizer/workflow.py": "ca506ec953ec039e31653a23ee09d6289402a242e460705fa7326bc3bda0ef71"
+    "mtpv_optimizer/workflow.py": "7e8a59f79de74aa8885500d5ee3de15397e26861e3ada7efe4f5bf70889f3e7f",
+    "mtpv_optimizer/scientific.py": "09c669f57c4c51e5a01403be4f6becbb6b91bcc8ab7eee0c857ac4072e6f0611"
   },
   "scope": "General numerical-table workflow; no Qt, no private research records.",
   "browser_adjustment": "Forest estimators run with n_jobs=1 in the browser."

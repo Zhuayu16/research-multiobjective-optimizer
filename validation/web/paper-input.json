@@ -1,0 +1,1698 @@
+{
+  "format": "research-figure-evidence",
+  "version": 1,
+  "created_utc": "2026-10-06T07:40:37.423Z",
+  "plot": {
+    "type": "scatter",
+    "source": "input",
+    "x": "Tmax_K",
+    "y": "deltaT_K",
+    "color": "pump_W",
+    "xlabel": "Tmax_K (K)",
+    "ylabel": "deltaT_K (K)",
+    "colorlabel": "pump_W (W)",
+    "title": "Input samples",
+    "panel": "(a)",
+    "W": 1000,
+    "H": 650,
+    "size": 19,
+    "radius": 5,
+    "font": "Times New Roman",
+    "colormap": "viridis",
+    "marker": "filled",
+    "xmin": null,
+    "xmax": null,
+    "ymin": null,
+    "ymax": null,
+    "cmin": null,
+    "cmax": null,
+    "reference": true,
+    "grid": false,
+    "connect": false,
+    "correlation": "pearson"
+  },
+  "source": "完整输入表",
+  "data_rows": 60,
+  "training_data_sha256": "02b01a0b9940b22e2b5fe3d3f6153985a9bc91a891c8c06f717c8912b50045d0",
+  "config": {
+    "name": "电池液冷",
+    "variables": [
+      "flow_L_min",
+      "channel_mm",
+      "channels"
+    ],
+    "objectives": [
+      {
+        "column": "Tmax_K",
+        "direction": "min",
+        "unit": "K",
+        "weight": 1
+      },
+      {
+        "column": "deltaT_K",
+        "direction": "min",
+        "unit": "K",
+        "weight": 1
+      },
+      {
+        "column": "pump_W",
+        "direction": "min",
+        "unit": "W",
+        "weight": 1
+      }
+    ],
+    "constraints": [
+      {
+        "expression": "Tmax_K",
+        "relation": "<=",
+        "limit": 315,
+        "tolerance": 0,
+        "scale": 10
+      }
+    ],
+    "model": "RSM-Quadratic",
+    "domain": "box",
+    "max_distance": null,
+    "validation": "group",
+    "folds": 5,
+    "group_column": "batch",
+    "time_column": "",
+    "holdout_column": "batch",
+    "holdout_value": "F",
+    "duplicates": "reject",
+    "seed": 42,
+    "population": 32,
+    "generations": 10,
+    "runs": 1,
+    "decision": "IDEAL",
+    "sources": [],
+    "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+    "responses": [],
+    "mode": "general",
+    "problem": {
+      "name": "电池液冷",
+      "variables": [
+        {
+          "column": "flow_L_min",
+          "lower": 0.5,
+          "upper": 3,
+          "unit": "L/min",
+          "kind": "continuous",
+          "allowed": []
+        },
+        {
+          "column": "channel_mm",
+          "lower": 2,
+          "upper": 8,
+          "unit": "mm",
+          "kind": "continuous",
+          "allowed": []
+        },
+        {
+          "column": "channels",
+          "lower": 2,
+          "upper": 6,
+          "unit": "",
+          "kind": "integer",
+          "allowed": []
+        }
+      ],
+      "objectives": [
+        {
+          "column": "Tmax_K",
+          "direction": "min",
+          "unit": "K",
+          "weight": 1
+        },
+        {
+          "column": "deltaT_K",
+          "direction": "min",
+          "unit": "K",
+          "weight": 1
+        },
+        {
+          "column": "pump_W",
+          "direction": "min",
+          "unit": "W",
+          "weight": 1
+        }
+      ],
+      "constraints": [
+        {
+          "expression": "Tmax_K",
+          "relation": "<=",
+          "limit": 315,
+          "tolerance": 0,
+          "scale": 10
+        }
+      ],
+      "model": "RSM-Quadratic",
+      "domain": "box",
+      "max_distance": null,
+      "validation": "group",
+      "folds": 5,
+      "group_column": "batch",
+      "time_column": "",
+      "holdout_column": "batch",
+      "holdout_value": "F",
+      "duplicates": "reject",
+      "seed": 42,
+      "population": 32,
+      "generations": 10,
+      "runs": 1,
+      "decision": "IDEAL",
+      "sources": [],
+      "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+      "responses": []
+    },
+    "target_names": [
+      "Tmax_K",
+      "deltaT_K",
+      "pump_W"
+    ],
+    "software_version": "0.2.0",
+    "directions": [
+      "min",
+      "min",
+      "min"
+    ],
+    "normalized_weights": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "decision_method": "IDEAL",
+    "anchor_minimum": [
+      300.2,
+      3.9694139786,
+      1.2
+    ],
+    "anchor_maximum": [
+      315.65,
+      6.716834427,
+      12.6
+    ],
+    "anchor_source": "training_only_before_search",
+    "search_lower": [
+      0.5,
+      2,
+      2
+    ],
+    "search_upper": [
+      3,
+      8,
+      6
+    ],
+    "sample_count": 50,
+    "holdout_count": 10,
+    "cv": "按指定分组验证",
+    "cv_folds": 5,
+    "cv_fold_sizes": [
+      {
+        "train": 40,
+        "validation": 10
+      },
+      {
+        "train": 40,
+        "validation": 10
+      },
+      {
+        "train": 40,
+        "validation": 10
+      },
+      {
+        "train": 40,
+        "validation": 10
+      },
+      {
+        "train": 40,
+        "validation": 10
+      }
+    ],
+    "cv_seed": 42,
+    "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+    "selected_models": {
+      "Tmax_K": "RSM-Quadratic",
+      "deltaT_K": "RSM-Quadratic",
+      "pump_W": "RSM-Quadratic"
+    },
+    "library_versions": {
+      "python": "3.13.2",
+      "numpy": "2.2.5",
+      "pandas": "2.3.3",
+      "scipy": "1.14.1",
+      "sklearn": "1.7.0"
+    },
+    "clean_data_sha256": "02b01a0b9940b22e2b5fe3d3f6153985a9bc91a891c8c06f717c8912b50045d0",
+    "source_sha256": {},
+    "calculation_audit": {
+      "training": {
+        "fit_attempts": 18,
+        "fits_completed": 18,
+        "candidate_families": [
+          "RSM-Quadratic"
+        ],
+        "response_count": 3,
+        "validation_folds": 5,
+        "validation_timings": [
+          {
+            "target": "Tmax_K",
+            "model": "RSM-Quadratic",
+            "seconds": 0.0829000000000022
+          },
+          {
+            "target": "deltaT_K",
+            "model": "RSM-Quadratic",
+            "seconds": 0.046299999999998676
+          },
+          {
+            "target": "pump_W",
+            "model": "RSM-Quadratic",
+            "seconds": 0.04649999999999821
+          }
+        ]
+      },
+      "search": {
+        "objective_vector_rows": 992,
+        "objective_prediction_batches": 21,
+        "population_size": 32,
+        "generations": 10,
+        "runs": 1,
+        "semantics": "Rows requested from the objective surrogate, including repeated evaluations; not CFD solves or unique designs."
+      },
+      "selected_model_parameters": {
+        "Tmax_K": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        },
+        "deltaT_K": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        },
+        "pump_W": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        }
+      },
+      "runtime_seconds": {
+        "preprocessing": 0.05099999999999838,
+        "model_validation_and_fit": 0.2703000000000024,
+        "holdout_and_constraints": 0.044299999999999784,
+        "nsga2_search": 0.3434999999999988,
+        "postprocessing": 0.19960000000000022,
+        "total": 0.9086999999999996
+      },
+      "distance_formula": "sqrt(sum(w*delta^2))",
+      "weights": "Input weights divided by their sum",
+      "normalization": "Frozen training minima and maxima; improvements beyond ideal have zero loss",
+      "reference_score": "S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",
+      "direct_cfd_solves": 0,
+      "runtime_initialization_seconds": 26.995399999991058,
+      "runtime_warm": false
+    },
+    "browser_runtime": {
+      "platform": "emscripten",
+      "python": "3.13.2",
+      "numpy": "2.2.5",
+      "pandas": "2.3.3",
+      "scipy": "1.14.1",
+      "sklearn": "1.7.0",
+      "openpyxl": "3.1.5",
+      "pyodide": "0.29.3",
+      "source_sha256": {
+        "mtpv_optimizer/__init__.py": "c5393d3218aca0011f762aefd1443bed0233cfea21e009e6328c0d66d7319bd6",
+        "mtpv_optimizer/core.py": "6dc6a26eb7e57f0d51cdfc7f571ec891e27ec8263ca2e75cf128a3d97d31645b",
+        "mtpv_optimizer/coupled.py": "a6869ea24416dc86fc2611f4511ae75dae03c2f2902c54dd3f8a36d388a48d80",
+        "mtpv_optimizer/dat_parser.py": "059582ea4a4f64574b5ed5854ecba11a1bd4a699082a583dacc3c116b25a5fde",
+        "mtpv_optimizer/doe.py": "cbd571d6f4d589f7c057e1cfacbae60c71809ee8be0dd7b11e29f4297e8fd90a",
+        "mtpv_optimizer/domain.py": "5def038bde5d6422f462b721e910440dc5a00ae4f4059b0f31fd053c0071eb20",
+        "mtpv_optimizer/general.py": "ce7980db1d46688aec71f0543e08b0c847720cc6d69be9e98c8939e8134b597c",
+        "mtpv_optimizer/nsga2.py": "dfd8fcbacc8f121d4e130483a8cb4616989b034bd679ec0350dde6b11253609a",
+        "mtpv_optimizer/presets.py": "19622217b24e6c5dbc6f3965f7d8e7b6740409e430af27e756222a8f7dcc2b30",
+        "mtpv_optimizer/problem.py": "71200acc9ff03474b9f61206d365e1a9785008be3e6dc68fdd7fe9a06414a4bb",
+        "mtpv_optimizer/workflow.py": "7e8a59f79de74aa8885500d5ee3de15397e26861e3ada7efe4f5bf70889f3e7f",
+        "mtpv_optimizer/scientific.py": "09c669f57c4c51e5a01403be4f6becbb6b91bcc8ab7eee0c857ac4072e6f0611"
+      },
+      "scope": "General numerical-table workflow; no Qt, no private research records.",
+      "browser_adjustment": "Forest estimators run with n_jobs=1 in the browser."
+    }
+  },
+  "calculation_audit": {
+    "training": {
+      "fit_attempts": 18,
+      "fits_completed": 18,
+      "candidate_families": [
+        "RSM-Quadratic"
+      ],
+      "response_count": 3,
+      "validation_folds": 5,
+      "validation_timings": [
+        {
+          "target": "Tmax_K",
+          "model": "RSM-Quadratic",
+          "seconds": 0.0829000000000022
+        },
+        {
+          "target": "deltaT_K",
+          "model": "RSM-Quadratic",
+          "seconds": 0.046299999999998676
+        },
+        {
+          "target": "pump_W",
+          "model": "RSM-Quadratic",
+          "seconds": 0.04649999999999821
+        }
+      ]
+    },
+    "search": {
+      "objective_vector_rows": 992,
+      "objective_prediction_batches": 21,
+      "population_size": 32,
+      "generations": 10,
+      "runs": 1,
+      "semantics": "Rows requested from the objective surrogate, including repeated evaluations; not CFD solves or unique designs."
+    },
+    "selected_model_parameters": {
+      "Tmax_K": {
+        "memory": "None",
+        "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+        "transform_input": "None",
+        "verbose": "False",
+        "poly": "PolynomialFeatures(include_bias=False)",
+        "scale": "StandardScaler()",
+        "regression": "LinearRegression(n_jobs=1)",
+        "poly__degree": "2",
+        "poly__include_bias": "False",
+        "poly__interaction_only": "False",
+        "poly__order": "C",
+        "scale__copy": "True",
+        "scale__with_mean": "True",
+        "scale__with_std": "True",
+        "regression__copy_X": "True",
+        "regression__fit_intercept": "True",
+        "regression__n_jobs": "1",
+        "regression__positive": "False",
+        "regression__tol": "1e-06"
+      },
+      "deltaT_K": {
+        "memory": "None",
+        "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+        "transform_input": "None",
+        "verbose": "False",
+        "poly": "PolynomialFeatures(include_bias=False)",
+        "scale": "StandardScaler()",
+        "regression": "LinearRegression(n_jobs=1)",
+        "poly__degree": "2",
+        "poly__include_bias": "False",
+        "poly__interaction_only": "False",
+        "poly__order": "C",
+        "scale__copy": "True",
+        "scale__with_mean": "True",
+        "scale__with_std": "True",
+        "regression__copy_X": "True",
+        "regression__fit_intercept": "True",
+        "regression__n_jobs": "1",
+        "regression__positive": "False",
+        "regression__tol": "1e-06"
+      },
+      "pump_W": {
+        "memory": "None",
+        "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+        "transform_input": "None",
+        "verbose": "False",
+        "poly": "PolynomialFeatures(include_bias=False)",
+        "scale": "StandardScaler()",
+        "regression": "LinearRegression(n_jobs=1)",
+        "poly__degree": "2",
+        "poly__include_bias": "False",
+        "poly__interaction_only": "False",
+        "poly__order": "C",
+        "scale__copy": "True",
+        "scale__with_mean": "True",
+        "scale__with_std": "True",
+        "regression__copy_X": "True",
+        "regression__fit_intercept": "True",
+        "regression__n_jobs": "1",
+        "regression__positive": "False",
+        "regression__tol": "1e-06"
+      }
+    },
+    "runtime_seconds": {
+      "preprocessing": 0.05099999999999838,
+      "model_validation_and_fit": 0.2703000000000024,
+      "holdout_and_constraints": 0.044299999999999784,
+      "nsga2_search": 0.3434999999999988,
+      "postprocessing": 0.19960000000000022,
+      "total": 0.9086999999999996
+    },
+    "distance_formula": "sqrt(sum(w*delta^2))",
+    "weights": "Input weights divided by their sum",
+    "normalization": "Frozen training minima and maxima; improvements beyond ideal have zero loss",
+    "reference_score": "S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",
+    "direct_cfd_solves": 0,
+    "runtime_initialization_seconds": 26.995399999991058,
+    "runtime_warm": false
+  },
+  "scope": "Current recorded data only. Surrogate predictions are not new CFD solutions.",
+  "data": [
+    {
+      "case": "SYNTHETIC_001",
+      "flow_L_min": 0.5,
+      "channel_mm": 2,
+      "channels": 2,
+      "Tmax_K": 315.65,
+      "deltaT_K": 6.71,
+      "pump_W": 1.2,
+      "batch": "A",
+      "time": 0
+    },
+    {
+      "case": "SYNTHETIC_002",
+      "flow_L_min": 3,
+      "channel_mm": 8,
+      "channels": 6,
+      "Tmax_K": 300.2,
+      "deltaT_K": 4.56,
+      "pump_W": 12.6,
+      "batch": "A",
+      "time": 1
+    },
+    {
+      "case": "SYNTHETIC_003",
+      "flow_L_min": 1.171419453,
+      "channel_mm": 5.1464825831,
+      "channels": 3,
+      "Tmax_K": 310.6014302795,
+      "deltaT_K": 5.9455129271,
+      "pump_W": 2.853992371,
+      "batch": "A",
+      "time": 2
+    },
+    {
+      "case": "SYNTHETIC_004",
+      "flow_L_min": 2.9628928659,
+      "channel_mm": 4.396277383,
+      "channels": 3,
+      "Tmax_K": 303.4629576753,
+      "deltaT_K": 4.6301819721,
+      "pump_W": 11.7042948306,
+      "batch": "A",
+      "time": 3
+    },
+    {
+      "case": "SYNTHETIC_005",
+      "flow_L_min": 1.0497281217,
+      "channel_mm": 7.3351921572,
+      "channels": 2,
+      "Tmax_K": 310.6709087468,
+      "deltaT_K": 6.716834427,
+      "pump_W": 2.4890745632,
+      "batch": "A",
+      "time": 4
+    },
+    {
+      "case": "SYNTHETIC_006",
+      "flow_L_min": 0.5800208733,
+      "channel_mm": 4.8184795071,
+      "channels": 3,
+      "Tmax_K": 313.498864698,
+      "deltaT_K": 6.327151327,
+      "pump_W": 1.5946330315,
+      "batch": "A",
+      "time": 5
+    },
+    {
+      "case": "SYNTHETIC_007",
+      "flow_L_min": 2.6367427743,
+      "channel_mm": 3.2979066009,
+      "channels": 5,
+      "Tmax_K": 304.2227106498,
+      "deltaT_K": 4.3499555957,
+      "pump_W": 9.7577902792,
+      "batch": "A",
+      "time": 6
+    },
+    {
+      "case": "SYNTHETIC_008",
+      "flow_L_min": 0.9270614979,
+      "channel_mm": 7.631076422,
+      "channels": 3,
+      "Tmax_K": 310.6025967249,
+      "deltaT_K": 6.6410671192,
+      "pump_W": 2.3628854461,
+      "batch": "A",
+      "time": 7
+    },
+    {
+      "case": "SYNTHETIC_009",
+      "flow_L_min": 2.6084072847,
+      "channel_mm": 3.2011270448,
+      "channels": 5,
+      "Tmax_K": 304.3782141188,
+      "deltaT_K": 4.3736653615,
+      "pump_W": 9.5746026279,
+      "batch": "A",
+      "time": 8
+    },
+    {
+      "case": "SYNTHETIC_010",
+      "flow_L_min": 2.3080958294,
+      "channel_mm": 6.6117625749,
+      "channels": 2,
+      "Tmax_K": 305.5496889657,
+      "deltaT_K": 5.6494203208,
+      "pump_W": 7.5233557582,
+      "batch": "A",
+      "time": 9
+    },
+    {
+      "case": "SYNTHETIC_011",
+      "flow_L_min": 0.6980147436,
+      "channel_mm": 5.6056408046,
+      "channels": 6,
+      "Tmax_K": 311.0848328363,
+      "deltaT_K": 5.5866257913,
+      "pump_W": 2.264951539,
+      "batch": "B",
+      "time": 10
+    },
+    {
+      "case": "SYNTHETIC_012",
+      "flow_L_min": 0.7591144347,
+      "channel_mm": 7.079947697,
+      "channels": 4,
+      "Tmax_K": 311.1337023078,
+      "deltaT_K": 6.3496619623,
+      "pump_W": 2.1455030548,
+      "batch": "B",
+      "time": 11
+    },
+    {
+      "case": "SYNTHETIC_013",
+      "flow_L_min": 1.6322714766,
+      "channel_mm": 5.8263005202,
+      "channels": 4,
+      "Tmax_K": 307.7496694177,
+      "deltaT_K": 5.4673509204,
+      "pump_W": 4.5884872339,
+      "batch": "B",
+      "time": 12
+    },
+    {
+      "case": "SYNTHETIC_014",
+      "flow_L_min": 2.3573150682,
+      "channel_mm": 7.2257101425,
+      "channels": 6,
+      "Tmax_K": 303.0732419611,
+      "deltaT_K": 4.7706018921,
+      "pump_W": 8.4296067039,
+      "batch": "B",
+      "time": 13
+    },
+    {
+      "case": "SYNTHETIC_015",
+      "flow_L_min": 0.7900087412,
+      "channel_mm": 4.3611287957,
+      "channels": 4,
+      "Tmax_K": 312.2122710983,
+      "deltaT_K": 5.8994330174,
+      "pump_W": 2.0669930132,
+      "batch": "B",
+      "time": 14
+    },
+    {
+      "case": "SYNTHETIC_016",
+      "flow_L_min": 0.9465022627,
+      "channel_mm": 4.411768304,
+      "channels": 2,
+      "Tmax_K": 312.4613662562,
+      "deltaT_K": 6.2924659076,
+      "pump_W": 2.0956282552,
+      "batch": "B",
+      "time": 15
+    },
+    {
+      "case": "SYNTHETIC_017",
+      "flow_L_min": 2.4306036991,
+      "channel_mm": 5.4597913168,
+      "channels": 3,
+      "Tmax_K": 305.0716422802,
+      "deltaT_K": 5.1030128645,
+      "pump_W": 8.3123907766,
+      "batch": "B",
+      "time": 16
+    },
+    {
+      "case": "SYNTHETIC_018",
+      "flow_L_min": 1.3115016003,
+      "channel_mm": 7.6239057189,
+      "channels": 5,
+      "Tmax_K": 307.8557417145,
+      "deltaT_K": 5.8697347005,
+      "pump_W": 3.6952390231,
+      "batch": "B",
+      "time": 17
+    },
+    {
+      "case": "SYNTHETIC_019",
+      "flow_L_min": 2.5150780354,
+      "channel_mm": 2.1933622555,
+      "channels": 5,
+      "Tmax_K": 305.202720313,
+      "deltaT_K": 4.5238702179,
+      "pump_W": 8.9504091416,
+      "batch": "B",
+      "time": 18
+    },
+    {
+      "case": "SYNTHETIC_020",
+      "flow_L_min": 0.7871545401,
+      "channel_mm": 5.4921803539,
+      "channels": 5,
+      "Tmax_K": 311.2166685943,
+      "deltaT_K": 5.7578995174,
+      "pump_W": 2.2681437417,
+      "batch": "B",
+      "time": 19
+    },
+    {
+      "case": "SYNTHETIC_021",
+      "flow_L_min": 2.8554843223,
+      "channel_mm": 7.9366952477,
+      "channels": 3,
+      "Tmax_K": 302.28182367,
+      "deltaT_K": 5.3897976583,
+      "pump_W": 11.1313836202,
+      "batch": "C",
+      "time": 20
+    },
+    {
+      "case": "SYNTHETIC_022",
+      "flow_L_min": 0.5387383193,
+      "channel_mm": 5.6348867737,
+      "channels": 6,
+      "Tmax_K": 311.8286571507,
+      "deltaT_K": 5.7024951025,
+      "pump_W": 2.0300311107,
+      "batch": "C",
+      "time": 21
+    },
+    {
+      "case": "SYNTHETIC_023",
+      "flow_L_min": 0.8767240133,
+      "channel_mm": 7.0763011709,
+      "channels": 6,
+      "Tmax_K": 309.5857734057,
+      "deltaT_K": 5.7663643699,
+      "pump_W": 2.6761890531,
+      "batch": "C",
+      "time": 22
+    },
+    {
+      "case": "SYNTHETIC_024",
+      "flow_L_min": 0.685421722,
+      "channel_mm": 3.3255279273,
+      "channels": 5,
+      "Tmax_K": 312.6703644101,
+      "deltaT_K": 5.7149118562,
+      "pump_W": 1.9800399208,
+      "batch": "C",
+      "time": 23
+    },
+    {
+      "case": "SYNTHETIC_025",
+      "flow_L_min": 2.1913929116,
+      "channel_mm": 6.0380498841,
+      "channels": 5,
+      "Tmax_K": 304.7863535727,
+      "deltaT_K": 4.8629318527,
+      "pump_W": 7.3145459659,
+      "batch": "C",
+      "time": 24
+    },
+    {
+      "case": "SYNTHETIC_026",
+      "flow_L_min": 2.7285479023,
+      "channel_mm": 7.6862458518,
+      "channels": 4,
+      "Tmax_K": 302.3874445863,
+      "deltaT_K": 5.1472777246,
+      "pump_W": 10.4182806787,
+      "batch": "C",
+      "time": 25
+    },
+    {
+      "case": "SYNTHETIC_027",
+      "flow_L_min": 0.7037187836,
+      "channel_mm": 4.9928047722,
+      "channels": 6,
+      "Tmax_K": 311.3336879599,
+      "deltaT_K": 5.5066793996,
+      "pump_W": 2.2439043902,
+      "batch": "C",
+      "time": 26
+    },
+    {
+      "case": "SYNTHETIC_028",
+      "flow_L_min": 1.4907992274,
+      "channel_mm": 7.0998368145,
+      "channels": 5,
+      "Tmax_K": 307.2955737639,
+      "deltaT_K": 5.5927968082,
+      "pump_W": 4.2719706443,
+      "batch": "C",
+      "time": 27
+    },
+    {
+      "case": "SYNTHETIC_029",
+      "flow_L_min": 2.6794336187,
+      "channel_mm": 5.5422012123,
+      "channels": 3,
+      "Tmax_K": 304.0447142642,
+      "deltaT_K": 4.9403758743,
+      "pump_W": 9.8423474813,
+      "batch": "C",
+      "time": 28
+    },
+    {
+      "case": "SYNTHETIC_030",
+      "flow_L_min": 0.6505371596,
+      "channel_mm": 2.8727356484,
+      "channels": 3,
+      "Tmax_K": 314.0392228794,
+      "deltaT_K": 6.262907698,
+      "pump_W": 1.6014750977,
+      "batch": "C",
+      "time": 29
+    },
+    {
+      "case": "SYNTHETIC_031",
+      "flow_L_min": 1.3620034735,
+      "channel_mm": 3.3613208304,
+      "channels": 4,
+      "Tmax_K": 310.0483989513,
+      "deltaT_K": 5.4901404284,
+      "pump_W": 3.4941301956,
+      "batch": "D",
+      "time": 30
+    },
+    {
+      "case": "SYNTHETIC_032",
+      "flow_L_min": 1.4930680201,
+      "channel_mm": 4.0467596259,
+      "channels": 3,
+      "Tmax_K": 309.6594684903,
+      "deltaT_K": 5.6458750369,
+      "pump_W": 3.8274405165,
+      "batch": "D",
+      "time": 31
+    },
+    {
+      "case": "SYNTHETIC_033",
+      "flow_L_min": 1.4967395339,
+      "channel_mm": 3.8056984156,
+      "channels": 5,
+      "Tmax_K": 308.7517838901,
+      "deltaT_K": 5.1399064188,
+      "pump_W": 4.1285599995,
+      "batch": "D",
+      "time": 32
+    },
+    {
+      "case": "SYNTHETIC_034",
+      "flow_L_min": 2.8168158859,
+      "channel_mm": 3.4464749332,
+      "channels": 6,
+      "Tmax_K": 302.9518971978,
+      "deltaT_K": 3.9694139786,
+      "pump_W": 11.0936658284,
+      "batch": "D",
+      "time": 33
+    },
+    {
+      "case": "SYNTHETIC_035",
+      "flow_L_min": 2.5612304731,
+      "channel_mm": 5.091555402,
+      "channels": 6,
+      "Tmax_K": 303.2146280108,
+      "deltaT_K": 4.2166295047,
+      "pump_W": 9.5264596139,
+      "batch": "D",
+      "time": 34
+    },
+    {
+      "case": "SYNTHETIC_036",
+      "flow_L_min": 2.9766777672,
+      "channel_mm": 2.0894113164,
+      "channels": 4,
+      "Tmax_K": 303.9484981774,
+      "deltaT_K": 4.464127754,
+      "pump_W": 11.8372032018,
+      "batch": "D",
+      "time": 35
+    },
+    {
+      "case": "SYNTHETIC_037",
+      "flow_L_min": 0.6207599354,
+      "channel_mm": 7.8387205786,
+      "channels": 5,
+      "Tmax_K": 310.9458446423,
+      "deltaT_K": 6.421673484,
+      "pump_W": 2.1043475057,
+      "batch": "D",
+      "time": 36
+    },
+    {
+      "case": "SYNTHETIC_038",
+      "flow_L_min": 1.595372083,
+      "channel_mm": 7.5744954465,
+      "channels": 5,
+      "Tmax_K": 306.6236590505,
+      "deltaT_K": 5.6558101587,
+      "pump_W": 4.6829792724,
+      "batch": "D",
+      "time": 37
+    },
+    {
+      "case": "SYNTHETIC_039",
+      "flow_L_min": 2.2974131022,
+      "channel_mm": 7.6473638677,
+      "channels": 5,
+      "Tmax_K": 303.6272421408,
+      "deltaT_K": 5.1868886331,
+      "pump_W": 7.9660965482,
+      "batch": "D",
+      "time": 38
+    },
+    {
+      "case": "SYNTHETIC_040",
+      "flow_L_min": 2.2210423504,
+      "channel_mm": 6.7908635943,
+      "channels": 6,
+      "Tmax_K": 303.8255054549,
+      "deltaT_K": 4.7526444107,
+      "pump_W": 7.6591781266,
+      "batch": "D",
+      "time": 39
+    },
+    {
+      "case": "SYNTHETIC_041",
+      "flow_L_min": 2.8395082029,
+      "channel_mm": 3.8775649203,
+      "channels": 5,
+      "Tmax_K": 303.1701161383,
+      "deltaT_K": 4.2004951703,
+      "pump_W": 11.1192464471,
+      "batch": "E",
+      "time": 40
+    },
+    {
+      "case": "SYNTHETIC_042",
+      "flow_L_min": 1.8557962161,
+      "channel_mm": 3.5929775628,
+      "channels": 5,
+      "Tmax_K": 307.2929749355,
+      "deltaT_K": 4.8894288906,
+      "pump_W": 5.5624243929,
+      "batch": "E",
+      "time": 41
+    },
+    {
+      "case": "SYNTHETIC_043",
+      "flow_L_min": 0.9028234044,
+      "channel_mm": 3.5895532369,
+      "channels": 3,
+      "Tmax_K": 312.5336020412,
+      "deltaT_K": 6.0565533435,
+      "pump_W": 2.1075857813,
+      "batch": "E",
+      "time": 42
+    },
+    {
+      "case": "SYNTHETIC_044",
+      "flow_L_min": 1.4064909208,
+      "channel_mm": 3.5743694764,
+      "channels": 4,
+      "Tmax_K": 309.7547224737,
+      "deltaT_K": 5.4541901987,
+      "pump_W": 3.6525785262,
+      "batch": "E",
+      "time": 43
+    },
+    {
+      "case": "SYNTHETIC_045",
+      "flow_L_min": 0.9191347128,
+      "channel_mm": 2.0184877491,
+      "channels": 6,
+      "Tmax_K": 311.6649686728,
+      "deltaT_K": 5.414031088,
+      "pump_W": 2.5146947319,
+      "batch": "E",
+      "time": 44
+    },
+    {
+      "case": "SYNTHETIC_046",
+      "flow_L_min": 0.6950253206,
+      "channel_mm": 7.0503960042,
+      "channels": 4,
+      "Tmax_K": 311.4488072346,
+      "deltaT_K": 6.386686827,
+      "pump_W": 2.0321920357,
+      "batch": "E",
+      "time": 45
+    },
+    {
+      "case": "SYNTHETIC_047",
+      "flow_L_min": 2.8936756961,
+      "channel_mm": 6.8092950077,
+      "channels": 2,
+      "Tmax_K": 303.1421105727,
+      "deltaT_K": 5.2862984505,
+      "pump_W": 11.1884955917,
+      "batch": "E",
+      "time": 46
+    },
+    {
+      "case": "SYNTHETIC_048",
+      "flow_L_min": 1.7601898595,
+      "channel_mm": 3.9668035652,
+      "channels": 3,
+      "Tmax_K": 308.5336427666,
+      "deltaT_K": 5.4572472498,
+      "pump_W": 4.8662621879,
+      "batch": "E",
+      "time": 47
+    },
+    {
+      "case": "SYNTHETIC_049",
+      "flow_L_min": 1.2061323954,
+      "channel_mm": 2.74587235,
+      "channels": 4,
+      "Tmax_K": 311.0246465367,
+      "deltaT_K": 5.6335382167,
+      "pump_W": 2.9830000437,
+      "batch": "E",
+      "time": 48
+    },
+    {
+      "case": "SYNTHETIC_050",
+      "flow_L_min": 2.1420804632,
+      "channel_mm": 3.6322428126,
+      "channels": 6,
+      "Tmax_K": 305.5727901605,
+      "deltaT_K": 4.438598346,
+      "pump_W": 7.0878225936,
+      "batch": "E",
+      "time": 49
+    },
+    {
+      "case": "SYNTHETIC_051",
+      "flow_L_min": 1.551178789,
+      "channel_mm": 7.1664346861,
+      "channels": 3,
+      "Tmax_K": 308.0004415733,
+      "deltaT_K": 6.0685558863,
+      "pump_W": 4.1957084969,
+      "batch": "F",
+      "time": 50
+    },
+    {
+      "case": "SYNTHETIC_052",
+      "flow_L_min": 2.9654841966,
+      "channel_mm": 5.0950830762,
+      "channels": 6,
+      "Tmax_K": 301.6386109369,
+      "deltaT_K": 3.9340310017,
+      "pump_W": 12.2076699779,
+      "batch": "F",
+      "time": 51
+    },
+    {
+      "case": "SYNTHETIC_053",
+      "flow_L_min": 0.9301416188,
+      "channel_mm": 2.8806339807,
+      "channels": 6,
+      "Tmax_K": 311.226039301,
+      "deltaT_K": 5.3166327579,
+      "pump_W": 2.5822278162,
+      "batch": "F",
+      "time": 52
+    },
+    {
+      "case": "SYNTHETIC_054",
+      "flow_L_min": 1.3303169708,
+      "channel_mm": 6.7663160703,
+      "channels": 5,
+      "Tmax_K": 308.1575215628,
+      "deltaT_K": 5.6202046259,
+      "pump_W": 3.712007695,
+      "batch": "F",
+      "time": 53
+    },
+    {
+      "case": "SYNTHETIC_055",
+      "flow_L_min": 1.1186534446,
+      "channel_mm": 7.4004746787,
+      "channels": 3,
+      "Tmax_K": 309.8267962775,
+      "deltaT_K": 6.437481204,
+      "pump_W": 2.8216863688,
+      "batch": "F",
+      "time": 54
+    },
+    {
+      "case": "SYNTHETIC_056",
+      "flow_L_min": 2.1578048353,
+      "channel_mm": 3.3141701013,
+      "channels": 3,
+      "Tmax_K": 307.1508236192,
+      "deltaT_K": 5.1846345233,
+      "pump_W": 6.7030545539,
+      "batch": "F",
+      "time": 55
+    },
+    {
+      "case": "SYNTHETIC_057",
+      "flow_L_min": 0.79862305,
+      "channel_mm": 2.9858767267,
+      "channels": 3,
+      "Tmax_K": 313.290799978,
+      "deltaT_K": 6.15181924,
+      "pump_W": 1.8646523676,
+      "batch": "F",
+      "time": 56
+    },
+    {
+      "case": "SYNTHETIC_058",
+      "flow_L_min": 2.5297468666,
+      "channel_mm": 2.874805587,
+      "channels": 4,
+      "Tmax_K": 305.3375269944,
+      "deltaT_K": 4.6973158038,
+      "pump_W": 8.9232833305,
+      "batch": "F",
+      "time": 57
+    },
+    {
+      "case": "SYNTHETIC_059",
+      "flow_L_min": 2.0073521177,
+      "channel_mm": 4.0291515994,
+      "channels": 5,
+      "Tmax_K": 306.4560136965,
+      "deltaT_K": 4.7854705422,
+      "pump_W": 6.2868126095,
+      "batch": "F",
+      "time": 58
+    },
+    {
+      "case": "SYNTHETIC_060",
+      "flow_L_min": 1.602291142,
+      "channel_mm": 4.2454397079,
+      "channels": 4,
+      "Tmax_K": 308.5915638022,
+      "deltaT_K": 5.3257146208,
+      "pump_W": 4.3930762699,
+      "batch": "F",
+      "time": 59
+    }
+  ],
+  "rendered_metadata": {
+    "format": "research-figure-evidence",
+    "version": 1,
+    "created_utc": "2026-10-06T07:40:37.423Z",
+    "plot": {
+      "type": "scatter",
+      "source": "input",
+      "x": "Tmax_K",
+      "y": "deltaT_K",
+      "color": "pump_W",
+      "xlabel": "Tmax_K (K)",
+      "ylabel": "deltaT_K (K)",
+      "colorlabel": "pump_W (W)",
+      "title": "Input samples",
+      "panel": "(a)",
+      "W": 1000,
+      "H": 650,
+      "size": 19,
+      "radius": 5,
+      "font": "Times New Roman",
+      "colormap": "viridis",
+      "marker": "filled",
+      "xmin": null,
+      "xmax": null,
+      "ymin": null,
+      "ymax": null,
+      "cmin": null,
+      "cmax": null,
+      "reference": true,
+      "grid": false,
+      "connect": false,
+      "correlation": "pearson"
+    },
+    "source": "完整输入表",
+    "data_rows": 60,
+    "training_data_sha256": "02b01a0b9940b22e2b5fe3d3f6153985a9bc91a891c8c06f717c8912b50045d0",
+    "config": {
+      "name": "电池液冷",
+      "variables": [
+        "flow_L_min",
+        "channel_mm",
+        "channels"
+      ],
+      "objectives": [
+        {
+          "column": "Tmax_K",
+          "direction": "min",
+          "unit": "K",
+          "weight": 1
+        },
+        {
+          "column": "deltaT_K",
+          "direction": "min",
+          "unit": "K",
+          "weight": 1
+        },
+        {
+          "column": "pump_W",
+          "direction": "min",
+          "unit": "W",
+          "weight": 1
+        }
+      ],
+      "constraints": [
+        {
+          "expression": "Tmax_K",
+          "relation": "<=",
+          "limit": 315,
+          "tolerance": 0,
+          "scale": 10
+        }
+      ],
+      "model": "RSM-Quadratic",
+      "domain": "box",
+      "max_distance": null,
+      "validation": "group",
+      "folds": 5,
+      "group_column": "batch",
+      "time_column": "",
+      "holdout_column": "batch",
+      "holdout_value": "F",
+      "duplicates": "reject",
+      "seed": 42,
+      "population": 32,
+      "generations": 10,
+      "runs": 1,
+      "decision": "IDEAL",
+      "sources": [],
+      "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+      "responses": [],
+      "mode": "general",
+      "problem": {
+        "name": "电池液冷",
+        "variables": [
+          {
+            "column": "flow_L_min",
+            "lower": 0.5,
+            "upper": 3,
+            "unit": "L/min",
+            "kind": "continuous",
+            "allowed": []
+          },
+          {
+            "column": "channel_mm",
+            "lower": 2,
+            "upper": 8,
+            "unit": "mm",
+            "kind": "continuous",
+            "allowed": []
+          },
+          {
+            "column": "channels",
+            "lower": 2,
+            "upper": 6,
+            "unit": "",
+            "kind": "integer",
+            "allowed": []
+          }
+        ],
+        "objectives": [
+          {
+            "column": "Tmax_K",
+            "direction": "min",
+            "unit": "K",
+            "weight": 1
+          },
+          {
+            "column": "deltaT_K",
+            "direction": "min",
+            "unit": "K",
+            "weight": 1
+          },
+          {
+            "column": "pump_W",
+            "direction": "min",
+            "unit": "W",
+            "weight": 1
+          }
+        ],
+        "constraints": [
+          {
+            "expression": "Tmax_K",
+            "relation": "<=",
+            "limit": 315,
+            "tolerance": 0,
+            "scale": 10
+          }
+        ],
+        "model": "RSM-Quadratic",
+        "domain": "box",
+        "max_distance": null,
+        "validation": "group",
+        "folds": 5,
+        "group_column": "batch",
+        "time_column": "",
+        "holdout_column": "batch",
+        "holdout_value": "F",
+        "duplicates": "reject",
+        "seed": 42,
+        "population": 32,
+        "generations": 10,
+        "runs": 1,
+        "decision": "IDEAL",
+        "sources": [],
+        "description": "合成函数演示数据，只用于软件功能测试，不代表真实试验或仿真结果。",
+        "responses": []
+      },
+      "target_names": [
+        "Tmax_K",
+        "deltaT_K",
+        "pump_W"
+      ],
+      "software_version": "0.2.0",
+      "directions": [
+        "min",
+        "min",
+        "min"
+      ],
+      "normalized_weights": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "decision_method": "IDEAL",
+      "anchor_minimum": [
+        300.2,
+        3.9694139786,
+        1.2
+      ],
+      "anchor_maximum": [
+        315.65,
+        6.716834427,
+        12.6
+      ],
+      "anchor_source": "training_only_before_search",
+      "search_lower": [
+        0.5,
+        2,
+        2
+      ],
+      "search_upper": [
+        3,
+        8,
+        6
+      ],
+      "sample_count": 50,
+      "holdout_count": 10,
+      "cv": "按指定分组验证",
+      "cv_folds": 5,
+      "cv_fold_sizes": [
+        {
+          "train": 40,
+          "validation": 10
+        },
+        {
+          "train": 40,
+          "validation": 10
+        },
+        {
+          "train": 40,
+          "validation": 10
+        },
+        {
+          "train": 40,
+          "validation": 10
+        },
+        {
+          "train": 40,
+          "validation": 10
+        }
+      ],
+      "cv_seed": 42,
+      "model_selection": "最小CV NRMSE；选型与报告共用折，非嵌套验证",
+      "selected_models": {
+        "Tmax_K": "RSM-Quadratic",
+        "deltaT_K": "RSM-Quadratic",
+        "pump_W": "RSM-Quadratic"
+      },
+      "library_versions": {
+        "python": "3.13.2",
+        "numpy": "2.2.5",
+        "pandas": "2.3.3",
+        "scipy": "1.14.1",
+        "sklearn": "1.7.0"
+      },
+      "clean_data_sha256": "02b01a0b9940b22e2b5fe3d3f6153985a9bc91a891c8c06f717c8912b50045d0",
+      "source_sha256": {},
+      "calculation_audit": {
+        "training": {
+          "fit_attempts": 18,
+          "fits_completed": 18,
+          "candidate_families": [
+            "RSM-Quadratic"
+          ],
+          "response_count": 3,
+          "validation_folds": 5,
+          "validation_timings": [
+            {
+              "target": "Tmax_K",
+              "model": "RSM-Quadratic",
+              "seconds": 0.0829000000000022
+            },
+            {
+              "target": "deltaT_K",
+              "model": "RSM-Quadratic",
+              "seconds": 0.046299999999998676
+            },
+            {
+              "target": "pump_W",
+              "model": "RSM-Quadratic",
+              "seconds": 0.04649999999999821
+            }
+          ]
+        },
+        "search": {
+          "objective_vector_rows": 992,
+          "objective_prediction_batches": 21,
+          "population_size": 32,
+          "generations": 10,
+          "runs": 1,
+          "semantics": "Rows requested from the objective surrogate, including repeated evaluations; not CFD solves or unique designs."
+        },
+        "selected_model_parameters": {
+          "Tmax_K": {
+            "memory": "None",
+            "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+            "transform_input": "None",
+            "verbose": "False",
+            "poly": "PolynomialFeatures(include_bias=False)",
+            "scale": "StandardScaler()",
+            "regression": "LinearRegression(n_jobs=1)",
+            "poly__degree": "2",
+            "poly__include_bias": "False",
+            "poly__interaction_only": "False",
+            "poly__order": "C",
+            "scale__copy": "True",
+            "scale__with_mean": "True",
+            "scale__with_std": "True",
+            "regression__copy_X": "True",
+            "regression__fit_intercept": "True",
+            "regression__n_jobs": "1",
+            "regression__positive": "False",
+            "regression__tol": "1e-06"
+          },
+          "deltaT_K": {
+            "memory": "None",
+            "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+            "transform_input": "None",
+            "verbose": "False",
+            "poly": "PolynomialFeatures(include_bias=False)",
+            "scale": "StandardScaler()",
+            "regression": "LinearRegression(n_jobs=1)",
+            "poly__degree": "2",
+            "poly__include_bias": "False",
+            "poly__interaction_only": "False",
+            "poly__order": "C",
+            "scale__copy": "True",
+            "scale__with_mean": "True",
+            "scale__with_std": "True",
+            "regression__copy_X": "True",
+            "regression__fit_intercept": "True",
+            "regression__n_jobs": "1",
+            "regression__positive": "False",
+            "regression__tol": "1e-06"
+          },
+          "pump_W": {
+            "memory": "None",
+            "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+            "transform_input": "None",
+            "verbose": "False",
+            "poly": "PolynomialFeatures(include_bias=False)",
+            "scale": "StandardScaler()",
+            "regression": "LinearRegression(n_jobs=1)",
+            "poly__degree": "2",
+            "poly__include_bias": "False",
+            "poly__interaction_only": "False",
+            "poly__order": "C",
+            "scale__copy": "True",
+            "scale__with_mean": "True",
+            "scale__with_std": "True",
+            "regression__copy_X": "True",
+            "regression__fit_intercept": "True",
+            "regression__n_jobs": "1",
+            "regression__positive": "False",
+            "regression__tol": "1e-06"
+          }
+        },
+        "runtime_seconds": {
+          "preprocessing": 0.05099999999999838,
+          "model_validation_and_fit": 0.2703000000000024,
+          "holdout_and_constraints": 0.044299999999999784,
+          "nsga2_search": 0.3434999999999988,
+          "postprocessing": 0.19960000000000022,
+          "total": 0.9086999999999996
+        },
+        "distance_formula": "sqrt(sum(w*delta^2))",
+        "weights": "Input weights divided by their sum",
+        "normalization": "Frozen training minima and maxima; improvements beyond ideal have zero loss",
+        "reference_score": "S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",
+        "direct_cfd_solves": 0,
+        "runtime_initialization_seconds": 26.995399999991058,
+        "runtime_warm": false
+      },
+      "browser_runtime": {
+        "platform": "emscripten",
+        "python": "3.13.2",
+        "numpy": "2.2.5",
+        "pandas": "2.3.3",
+        "scipy": "1.14.1",
+        "sklearn": "1.7.0",
+        "openpyxl": "3.1.5",
+        "pyodide": "0.29.3",
+        "source_sha256": {
+          "mtpv_optimizer/__init__.py": "c5393d3218aca0011f762aefd1443bed0233cfea21e009e6328c0d66d7319bd6",
+          "mtpv_optimizer/core.py": "6dc6a26eb7e57f0d51cdfc7f571ec891e27ec8263ca2e75cf128a3d97d31645b",
+          "mtpv_optimizer/coupled.py": "a6869ea24416dc86fc2611f4511ae75dae03c2f2902c54dd3f8a36d388a48d80",
+          "mtpv_optimizer/dat_parser.py": "059582ea4a4f64574b5ed5854ecba11a1bd4a699082a583dacc3c116b25a5fde",
+          "mtpv_optimizer/doe.py": "cbd571d6f4d589f7c057e1cfacbae60c71809ee8be0dd7b11e29f4297e8fd90a",
+          "mtpv_optimizer/domain.py": "5def038bde5d6422f462b721e910440dc5a00ae4f4059b0f31fd053c0071eb20",
+          "mtpv_optimizer/general.py": "ce7980db1d46688aec71f0543e08b0c847720cc6d69be9e98c8939e8134b597c",
+          "mtpv_optimizer/nsga2.py": "dfd8fcbacc8f121d4e130483a8cb4616989b034bd679ec0350dde6b11253609a",
+          "mtpv_optimizer/presets.py": "19622217b24e6c5dbc6f3965f7d8e7b6740409e430af27e756222a8f7dcc2b30",
+          "mtpv_optimizer/problem.py": "71200acc9ff03474b9f61206d365e1a9785008be3e6dc68fdd7fe9a06414a4bb",
+          "mtpv_optimizer/workflow.py": "7e8a59f79de74aa8885500d5ee3de15397e26861e3ada7efe4f5bf70889f3e7f",
+          "mtpv_optimizer/scientific.py": "09c669f57c4c51e5a01403be4f6becbb6b91bcc8ab7eee0c857ac4072e6f0611"
+        },
+        "scope": "General numerical-table workflow; no Qt, no private research records.",
+        "browser_adjustment": "Forest estimators run with n_jobs=1 in the browser."
+      }
+    },
+    "calculation_audit": {
+      "training": {
+        "fit_attempts": 18,
+        "fits_completed": 18,
+        "candidate_families": [
+          "RSM-Quadratic"
+        ],
+        "response_count": 3,
+        "validation_folds": 5,
+        "validation_timings": [
+          {
+            "target": "Tmax_K",
+            "model": "RSM-Quadratic",
+            "seconds": 0.0829000000000022
+          },
+          {
+            "target": "deltaT_K",
+            "model": "RSM-Quadratic",
+            "seconds": 0.046299999999998676
+          },
+          {
+            "target": "pump_W",
+            "model": "RSM-Quadratic",
+            "seconds": 0.04649999999999821
+          }
+        ]
+      },
+      "search": {
+        "objective_vector_rows": 992,
+        "objective_prediction_batches": 21,
+        "population_size": 32,
+        "generations": 10,
+        "runs": 1,
+        "semantics": "Rows requested from the objective surrogate, including repeated evaluations; not CFD solves or unique designs."
+      },
+      "selected_model_parameters": {
+        "Tmax_K": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        },
+        "deltaT_K": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        },
+        "pump_W": {
+          "memory": "None",
+          "steps": "[('poly', PolynomialFeatures(include_bias=False)), ('scale', StandardScaler()), ('regression', LinearRegression(n_jobs=1))]",
+          "transform_input": "None",
+          "verbose": "False",
+          "poly": "PolynomialFeatures(include_bias=False)",
+          "scale": "StandardScaler()",
+          "regression": "LinearRegression(n_jobs=1)",
+          "poly__degree": "2",
+          "poly__include_bias": "False",
+          "poly__interaction_only": "False",
+          "poly__order": "C",
+          "scale__copy": "True",
+          "scale__with_mean": "True",
+          "scale__with_std": "True",
+          "regression__copy_X": "True",
+          "regression__fit_intercept": "True",
+          "regression__n_jobs": "1",
+          "regression__positive": "False",
+          "regression__tol": "1e-06"
+        }
+      },
+      "runtime_seconds": {
+        "preprocessing": 0.05099999999999838,
+        "model_validation_and_fit": 0.2703000000000024,
+        "holdout_and_constraints": 0.044299999999999784,
+        "nsga2_search": 0.3434999999999988,
+        "postprocessing": 0.19960000000000022,
+        "total": 0.9086999999999996
+      },
+      "distance_formula": "sqrt(sum(w*delta^2))",
+      "weights": "Input weights divided by their sum",
+      "normalization": "Frozen training minima and maxima; improvements beyond ideal have zero loss",
+      "reference_score": "S_c = 1/(1+D); TOPSIS/ARAS actual utility is reported separately",
+      "direct_cfd_solves": 0,
+      "runtime_initialization_seconds": 26.995399999991058,
+      "runtime_warm": false
+    },
+    "scope": "Current recorded data only. Surrogate predictions are not new CFD solutions.",
+    "title": "Input samples",
+    "x": "Tmax_K",
+    "y": "deltaT_K",
+    "color": "pump_W",
+    "displayed_points": 60,
+    "total_points": 60,
+    "color_clipped": 0,
+    "xlim": [
+      299.27299999999997,
+      316.577
+    ],
+    "ylim": [
+      3.767062796182,
+      6.883802632518
+    ],
+    "color_range": [
+      1.2,
+      12.6
+    ],
+    "connecting": false
+  }
+}

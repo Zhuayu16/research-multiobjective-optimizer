@@ -21,6 +21,8 @@
 
 </div>
 
+The research plot window supports 13 surrogate model families, third-response colorbars, three-objective normalization, decision/correlation matrices, recorded generation histories, and spatial-field interpolation from supplied coordinates. Export editable SVG, 3× PNG, full CSV and evidence JSON. Runtime counters separate model fitting, surrogate evaluations and dependency initialization; no new CFD solve is performed. [Definitions and verification](docs/research-plotting.md).
+
 A desktop research tool for surrogate modelling, constrained multi-objective optimization, and preference-based ranking of numerical experimental or simulation data. Configure variables, objective directions, response constraints, and validation settings in the interface without modifying the source for each domain.
 
 The general workflow includes battery cooling, heat exchanger, and structural design presets. A separate MTPV/MTEG workflow retains hydrogen/air fuel-input and power/efficiency coupling.

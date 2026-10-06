@@ -15,6 +15,7 @@ from mtpv_optimizer import core
 from mtpv_optimizer.general import run_general, design_template
 from mtpv_optimizer.problem import Problem, save_project
 from mtpv_optimizer.workflow import export_workbook
+from mtpv_optimizer.scientific import spatial_field
 
 _models = core._candidate_models
 def _serial_models(*args, **kwargs):
@@ -77,6 +78,8 @@ def dispatch(request, progress):
         frame = pd.DataFrame(payload['rows'], columns=payload['columns'])
         started = time.perf_counter()
         output = run_general(frame, p, progress=progress)
+        output.config['calculation_audit']['runtime_initialization_seconds'] = payload.get('runtime_initialization_seconds',0)
+        output.config['calculation_audit']['runtime_warm'] = payload.get('runtime_warm',False)
         output.config['browser_runtime'] = dict(platform=sys.platform, python=sys.version.split()[0],
             numpy=np.__version__, pandas=pd.__version__, scipy=scipy.__version__,
             sklearn=sklearn.__version__, openpyxl=openpyxl.__version__,
@@ -90,7 +93,20 @@ def dispatch(request, progress):
                     holdout_metrics=_records(output.holdout_metrics),
                     sensitivity=_records(output.sensitivity), runs=_records(output.run_summary),
                     constraints=_records(output.constraint_audit), cleaning=_records(output.cleaning_audit),
+                    decision_matrix=_records(output.decision_matrix), observed_decision_matrix=_records(output.observed_decision_matrix),
+                    correlation={**{k:v for k,v in output.correlation.items() if k not in ('pearson','spearman','pairs')},
+                        **{k:json.loads(output.correlation[k].to_json(orient='values')) for k in ('pearson','spearman','pairs')}},
+                    search_history=_records(output.search_history),
                     config=output.config, notes=output.warnings, elapsed_seconds=time.perf_counter()-started)
+    if op == 'field':
+        frame = pd.DataFrame(payload['rows'], columns=payload['columns'])
+        if len(frame) > 50000:
+            raise ValueError('空间数据最多支持 50,000 行。')
+        result = spatial_field(frame, payload['x'], payload['y'], payload['value'], payload.get('resolution',50))
+        return {**{k:v for k,v in result.items() if k not in ('points','grid')},
+                'points':_records(result['points']), 'grid':_records(result['grid']),
+                'library_versions':{'numpy':np.__version__, 'scipy':scipy.__version__},
+                'engine_source_sha256':json.loads(globals().get('_browser_manifest_json','{}')).get('source_sha256',{})}
     if op == 'doe':
         table = design_template(_problem(payload['problem']), payload.get('samples',30), payload.get('centers',3))
         return _file_result(table.to_csv(index=False).encode('utf-8-sig'), 'next-experiment.csv', 'text/csv')
